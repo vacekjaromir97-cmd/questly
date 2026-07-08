@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --dark:#0E1C35; --navy:#1B2A4A; --navy2:#243554; --navy3:#2D3F62;
@@ -631,7 +632,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <!-- ══ CREATOR DASHBOARD ════════════════════════════════════ -->
 <div class="flow-view" id="v-cr">
   <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti">🛠 Tvorba misí</div><div class="hdr-sub"><span style="color:var(--amber);font-size:11px;font-weight:700;">CREATOR</span></div></div><button class="btn btn-teal btn-sm" onclick="nav('v-cr-new')" style="font-size:12px;padding:8px 14px;">+ Nová</button></div>
-  <div class="scr" style="padding:14px;"><div id="cr-list"></div></div>
+  <div class="scr" style="padding:14px;"><div id="sb-status" style="display:none;font-size:11px;color:var(--txt2);margin-bottom:10px;align-items:center;gap:4px;"></div><div id="cr-list"></div></div>
 </div>
 
 <!-- ══ CREATOR NEW GAME ══════════════════════════════════════ -->
@@ -1033,7 +1034,73 @@ const S={
 };
 let selOpt=-1,startConfirmShown=false,cinTimerId=null;
 
-function persist(){DB.set('users',S.users);DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);}
+// ══ SUPABASE (sdílené uložení misí napříč zařízeními) ══
+// Publishable key je bezpečné mít přímo v kódu — je navržený tak, aby byl veřejně
+// viditelný, přístup hlídají Row Level Security politiky nastavené v Supabase projektu.
+const SUPABASE_URL='https://nqehpqbzfvlsgmbironn.supabase.co';
+const SUPABASE_KEY='sb_publishable_8ZqBfjm0tbm-cCxVpaOduQ_FMTGPKYr';
+let sb=null;
+try{if(window.supabase)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}catch(e){console.warn('Supabase klient se nepodařilo vytvořit',e);}
+function sbErrMsg(e){
+  if(!e)return'neznámá chyba';
+  if(typeof e==='string')return e;
+  const parts=[e.message,e.details,e.hint,e.code].filter(Boolean);
+  if(parts.length)return parts.join(' — ');
+  try{const s=JSON.stringify(e);return s==='{}'?String(e):s;}catch(_){return String(e);}
+}
+
+let sbSyncTimer=null;
+function scheduleSbSync(){
+  if(!sb)return;
+  clearTimeout(sbSyncTimer);
+  sbSyncTimer=setTimeout(syncGamesToSupabase,1000);
+}
+async function syncGamesToSupabase(){
+  if(!sb)return;
+  setSbStatus('syncing');
+  try{
+    const localIds=S.games.map(g=>g.id);
+    if(S.games.length){
+      const rows=S.games.map(g=>({id:g.id,data:g,updated_at:new Date().toISOString()}));
+      const{error}=await sb.from('games').upsert(rows);
+      if(error)throw error;
+    }
+    const{data:remoteRows,error:selErr}=await sb.from('games').select('id');
+    if(selErr)throw selErr;
+    const toDelete=(remoteRows||[]).map(r=>r.id).filter(id=>!localIds.includes(id));
+    if(toDelete.length){
+      const{error:delErr}=await sb.from('games').delete().in('id',toDelete);
+      if(delErr)throw delErr;
+    }
+    setSbStatus('ok');
+  }catch(e){const msg=sbErrMsg(e);console.warn('Supabase sync selhal (data zůstávají bezpečně uložená lokálně):',msg);setSbStatus('error',msg);}
+}
+function withTimeout(promise,ms){
+  return Promise.race([promise,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
+}
+async function loadGamesFromSupabase(){
+  if(!sb)return false;
+  setSbStatus('syncing');
+  try{
+    const{data,error}=await withTimeout(sb.from('games').select('*'),8000);
+    if(error)throw error;
+    if(data&&data.length){S.games=data.map(row=>row.data);DB.set('games',S.games);}
+    setSbStatus('ok');
+    return true;
+  }catch(e){const msg=sbErrMsg(e);console.warn('Nepodařilo se načíst mise ze Supabase, používám lokální data:',msg);setSbStatus('error',msg);return false;}
+}
+function setSbStatus(status,detail){
+  S.sbStatus=status;
+  if(status==='error')S.sbLastError=detail||S.sbLastError;
+  const el=document.getElementById('sb-status');if(!el)return;
+  if(!sb){el.style.display='none';return;}
+  el.style.display='inline-flex';
+  if(status==='syncing')el.innerHTML='☁️ Synchronizuji…';
+  else if(status==='ok')el.innerHTML='☁️ Synchronizováno';
+  else el.innerHTML=`⚠️ Jen lokálně — ${detail||S.sbLastError||'Supabase nedostupné'}`;
+}
+
+function persist(){DB.set('users',S.users);DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);scheduleSbSync();}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function fmt(s){s=Math.max(0,Math.floor(s));return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
 function toast(msg,ms=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),ms);}
@@ -1923,6 +1990,7 @@ function confirmPicker(){
 
 // ══ CREATOR ═══════════════════════════════════════════
 function renderCrList(){
+  setSbStatus(S.sbStatus||(sb?'ok':null));
   const c=document.getElementById('cr-list');if(!S.games.length){c.innerHTML=`<div class="emp"><div class="emp-i">🗺️</div><div class="emp-t">Žádné mise</div></div>`;return;}
   c.innerHTML=S.games.map(g=>`<div style="background:var(--navy2);border:1.5px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;display:flex;gap:12px;align-items:center;">
     <div style="flex:1;min-width:0;display:flex;gap:12px;align-items:center;cursor:pointer;" onclick="openCrDetail('${g.id}')">
@@ -2454,7 +2522,7 @@ function migrateData(){
   });
   if(changed)persist();
 }
-function init(){
+async function init(){
   migrateData();
   initMail();
   if(!S.users.length){
@@ -2463,6 +2531,7 @@ function init(){
       {id:'player1',name:'Demo Hráč',email:'hrac@test.cz',pw:btoa('hrac123'),role:'player',games:[],sessions:[],xp:340,badges:['first'],totalKm:0,completedMissions:1,newsletterOptIn:false,createdAt:Date.now()}
     );persist();
   }
+  await loadGamesFromSupabase();
   const sid=localStorage.getItem('q7_sess');
   if(sid){const u=S.users.find(u=>u.id===sid);if(u){S.cu=u;updateAuthBtns();if(u.role==='creator'){setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');nav('v-cr');},900);return;}}  }
   setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');navMain('v-disc');},900);
