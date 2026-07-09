@@ -1184,7 +1184,7 @@ function authTab(t){document.getElementById('at-in').classList.toggle('a',t==='i
 function renderAuthForm(t){
   const c=document.getElementById('auth-frm');
   if(t==='in')c.innerHTML=`<div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz" autocomplete="email"/></div><div class="ig"><label class="lb">Heslo</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><button class="btn btn-teal btn-f" onclick="login()" style="font-size:15px;padding:15px;">Přihlásit se</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('forgot')" style="color:var(--teal);font-size:13px;cursor:pointer;">Zapomenuté heslo?</a></div>`;
-  else if(t==='up')c.innerHTML=`<div class="ig"><label class="lb">Jméno</label><input class="inp" id="a-nm" type="text" placeholder="Vaše jméno"/></div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz"/></div><div class="ig"><label class="lb">Heslo (min. 6 znaků)</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><div class="ig" style="display:flex;align-items:flex-start;gap:9px;"><input type="checkbox" id="a-nl" style="width:18px;height:18px;accent-color:var(--teal);margin-top:2px;flex-shrink:0;"/><label for="a-nl" style="font-size:12px;color:var(--txt2);line-height:1.5;">Chci dostávat novinky a nabídky e-mailem (odběr lze kdykoli zrušit v profilu)</label></div><button class="btn btn-teal btn-f" onclick="register()" style="font-size:15px;padding:15px;">Vytvořit účet</button>`;
+  else if(t==='up')c.innerHTML=`<div class="ig"><label class="lb">Jméno</label><input class="inp" id="a-nm" type="text" placeholder="Vaše jméno"/></div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz"/></div><div class="ig"><label class="lb">Heslo (min. 6 znaků)</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><div class="ig"><label class="lb">Heslo znovu</label><input class="inp" id="a-pw2" type="password" placeholder="••••••••"/></div><div class="ig" style="display:flex;align-items:flex-start;gap:9px;"><input type="checkbox" id="a-nl" style="width:18px;height:18px;accent-color:var(--teal);margin-top:2px;flex-shrink:0;"/><label for="a-nl" style="font-size:12px;color:var(--txt2);line-height:1.5;">Chci dostávat novinky a nabídky e-mailem (odběr lze kdykoli zrušit v profilu)</label></div><button class="btn btn-teal btn-f" onclick="register()" style="font-size:15px;padding:15px;">Vytvořit účet</button>`;
   else c.innerHTML=renderForgotForm();
 }
 function renderForgotForm(){
@@ -1232,13 +1232,19 @@ async function login(){
     S.cu=profileToUser(data.user,profile);
     await loadEntitlements();
     closeAuth();afterLogin();
-  }catch(e){toast('❌ '+(e.message==='Invalid login credentials'?'Nesprávné údaje':sbErrMsg(e)));}
+  }catch(e){
+    let msg=sbErrMsg(e);
+    if(e.message==='Invalid login credentials')msg='Nesprávné údaje';
+    else if(/email.*not.*confirmed/i.test(e.message||''))msg='E-mail zatím není potvrzený. Zkontrolujte schránku a klikněte na potvrzovací odkaz — nebo ať tvůrce dočasně vypne „Confirm email" v nastavení Supabase (Authentication → Providers → Email).';
+    toast('❌ '+msg,7000);
+  }
 }
 async function register(){
-  const nm=document.getElementById('a-nm')?.value.trim(),em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value;
+  const nm=document.getElementById('a-nm')?.value.trim(),em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value,pw2=document.getElementById('a-pw2')?.value;
   const nl=document.getElementById('a-nl')?.checked||false;
   if(!nm||!em||!pw){toast('⚠️ Vyplňte všechna pole');return;}
   if(pw.length<6){toast('⚠️ Heslo min. 6 znaků');return;}
+  if(pw!==pw2){toast('⚠️ Hesla se neshodují');return;}
   if(!sb){toast('⚠️ Supabase není připojené');return;}
   try{
     // Role (player/creator) se NEposílá odsud — o té rozhoduje výhradně databáze
