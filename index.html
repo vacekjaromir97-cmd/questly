@@ -266,6 +266,19 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </div>
 </div>
 
+<!-- ══ ITEM DETAIL OVERLAY ═════════════════════════════════ -->
+<div class="ov" id="item-detail-ov">
+  <div class="ov-tap" onclick="closeItemDetail()"></div>
+  <div class="ov-sheet" style="text-align:center;">
+    <div class="ov-handle"></div>
+    <div id="item-detail-icon" style="font-size:56px;margin-bottom:10px;">📦</div>
+    <div id="item-detail-name" style="font-size:19px;font-weight:800;margin-bottom:8px;"></div>
+    <div id="item-detail-desc" style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:20px;"></div>
+    <button class="btn btn-teal btn-f" id="item-detail-use" style="margin-bottom:8px;">Použít</button>
+    <button class="btn btn-ghost btn-f" onclick="closeItemDetail()">Zavřít</button>
+  </div>
+</div>
+
 <!-- ══ HINT OVERLAY ═══════════════════════════════════════ -->
 <div class="ov" id="hint-ov">
   <div class="ov-tap" onclick="closeHint()"></div>
@@ -303,6 +316,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div class="ov-handle"></div>
     <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;" id="ans-ov-type"></div>
     <div style="font-size:19px;font-weight:700;line-height:1.4;margin-bottom:6px;letter-spacing:-.3px;" id="ans-ov-q"></div>
+    <div id="ans-ov-qimg-wrap" style="display:none;margin-bottom:12px;"><img id="ans-ov-qimg" style="width:100%;border-radius:12px;max-height:220px;object-fit:cover;" alt=""/></div>
     <div style="font-size:13px;color:var(--txt2);margin-bottom:18px;line-height:1.5;" id="ans-ov-cx"></div>
     <div id="ans-ov-area"></div>
     <div id="ans-ov-fb" style="display:none;"></div>
@@ -380,7 +394,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div id="disc-game-list"></div>
   </div>
   <div id="disc-map-view" style="flex:1;display:none;position:relative;">
-    <div id="disc-map" style="position:absolute;inset:0;"></div>
+    <div id="disc-map" style="position:absolute;inset:0;z-index:1;"></div>
     <div style="position:absolute;top:12px;right:12px;z-index:1000;"><button class="mbtn" onclick="discLocate()">📍</button></div>
     <div style="position:absolute;bottom:16px;left:16px;right:16px;z-index:10;"><div style="background:rgba(14,28,53,.92);backdrop-filter:blur(12px);border:1px solid var(--bdr2);border-radius:14px;padding:12px 16px;font-size:13px;color:var(--txt2);text-align:center;">Klikněte na marker pro zobrazení misí ve městě</div></div>
   </div>
@@ -458,6 +472,11 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <div class="cinematic-bg" style="position:absolute;inset:0;">
     <img id="cin-img" style="width:100%;height:100%;object-fit:cover;opacity:.45;" alt=""/>
   </div>
+  <div id="cin-video-wrap" style="display:none;position:relative;z-index:5;padding:20px 20px 0;">
+    <div style="position:relative;padding-top:56.25%;border-radius:var(--rm);overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(0,0,0,.5);">
+      <iframe id="cin-video-iframe" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
   <div class="cinematic-overlay" style="position:absolute;inset:0;"></div>
   <div style="position:relative;z-index:10;padding:28px 24px 40px;">
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:14px;">📜 Úvod mise</div>
@@ -497,9 +516,9 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--teal);" id="sn-dist">— m</div><div style="font-size:11px;color:var(--txt2);">od startu</div></div>
   </div>
   <div style="flex:1;position:relative;">
-    <div id="start-map" style="position:absolute;inset:0;"></div>
+    <div id="start-map" style="position:absolute;inset:0;z-index:1;"></div>
     <div class="mctr"><button class="mbtn" onclick="centerStartMap()">📍</button></div>
-    <div style="position:absolute;bottom:0;left:0;right:0;z-index:10;background:linear-gradient(to top,rgba(14,28,53,.98),transparent);padding:20px 20px 24px;">
+    <div style="position:absolute;bottom:0;left:0;right:0;z-index:50;background:linear-gradient(to top,rgba(14,28,53,.98),transparent);padding:20px 20px 24px;">
       <div id="sn-prox" style="margin-bottom:12px;"></div>
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;">Navigujte na</div>
       <div style="font-size:20px;font-weight:800;margin-bottom:4px;" id="sn-dest"></div>
@@ -535,7 +554,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </div>
   <!-- Map view (hidden, shown when 📍 tapped) -->
   <div id="g-map-view" style="flex:1;display:none;position:relative;">
-    <div id="game-map" style="position:absolute;inset:0;"></div>
+    <div id="game-map" style="position:absolute;inset:0;z-index:1;"></div>
     <div class="mctr"><button class="mbtn" onclick="centerGameMap()">📍</button></div>
   </div>
   <!-- Bottom 3 buttons -->
@@ -553,10 +572,10 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--amber);" id="trv-time">00:00</div><div style="font-size:11px;color:var(--txt2);">čas úkolů</div></div>
   </div>
   <div style="flex:1;position:relative;">
-    <div id="pmap" style="position:absolute;inset:0;"></div>
+    <div id="pmap" style="position:absolute;inset:0;z-index:1;"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,28,53,.97) 0%,rgba(14,28,53,.3) 50%,transparent 100%);pointer-events:none;"></div>
     <div class="mctr"><button class="mbtn" onclick="centerMap()">📍</button></div>
-    <div style="position:absolute;bottom:0;left:0;right:0;z-index:10;padding:18px 18px 22px;">
+    <div style="position:absolute;bottom:0;left:0;right:0;z-index:50;padding:18px 18px 22px;">
       <div id="trv-prox" style="margin-bottom:10px;"></div>
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;">📍 Přesuňte se na</div>
       <div style="font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.4px;" id="trv-dest"></div>
@@ -644,22 +663,16 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div style="font-size:14px;font-weight:700;margin-bottom:4px;">✨ AI generátor misí</div>
       <div style="font-size:13px;color:var(--txt2);margin-bottom:12px;line-height:1.5;">Popište misi a AI navrhne trasu, příběh, úkoly a nápovědy.</div>
       <div class="cr-tab" style="margin-bottom:12px;">
-        <button class="cr-tab-btn a" id="ai-prov-anthropic" onclick="setAiProvider('anthropic')">Anthropic</button>
-        <button class="cr-tab-btn" id="ai-prov-gemini" onclick="setAiProvider('gemini')">Gemini (zdarma)</button>
+        <button class="cr-tab-btn a" id="ai-prov-gemini" onclick="setAiProvider('gemini')">Gemini (zdarma)</button>
         <button class="cr-tab-btn" id="ai-prov-paste" onclick="setAiProvider('paste')">📋 Vložit z Claude</button>
       </div>
-      <div id="ai-key-wrap-anthropic" style="margin-bottom:10px;">
-        <label class="lb" style="display:flex;align-items:center;justify-content:space-between;">Anthropic API klíč <a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:var(--teal);font-weight:400;text-decoration:underline;">Získat klíč →</a></label>
-        <input class="inp" id="ai-key-anthropic" type="password" placeholder="sk-ant-…" oninput="saveAiKey()"/>
-        <div style="font-size:11px;color:var(--txt2);margin-top:5px;line-height:1.5;">Klíč se ukládá jen ve vašem prohlížeči (localStorage) a posílá se přímo na api.anthropic.com. Generátor používá levný model Claude Haiku — nový účet dostává 5 $ kreditu zdarma, což při běžném používání vydrží dlouho.</div>
-      </div>
-      <div id="ai-key-wrap-gemini" style="margin-bottom:10px;display:none;">
+      <div id="ai-key-wrap-gemini" style="margin-bottom:10px;">
         <label class="lb" style="display:flex;align-items:center;justify-content:space-between;">Google Gemini API klíč <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--teal);font-weight:400;text-decoration:underline;">Získat klíč →</a></label>
         <input class="inp" id="ai-key-gemini" type="password" placeholder="AIza…" oninput="saveAiKey()"/>
-        <div style="font-size:11px;color:var(--txt2);margin-top:5px;line-height:1.5;">Gemini má trvale zdarma denní kvótu, klíč jde získat bez karty. Google ale narozdíl od Anthropicu jasně nepodporuje volání přímo z prohlížeče — je docela možné, že to prohlížeč zablokuje (CORS). Klidně to zkuste, dole uvidíte přesně, co se stalo.</div>
+        <div style="font-size:11px;color:var(--txt2);margin-top:5px;line-height:1.5;">Gemini má trvale zdarma denní kvótu, klíč jde získat bez karty.</div>
       </div>
       <div id="ai-paste-wrap" style="margin-bottom:10px;display:none;">
-        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.6;">Žádný klíč, žádné CORS, nic se neplatí. Zkopírujte šablonu, vložte ji do rozhovoru s Claude (claude.ai), doplňte svůj nápad na misi, a jeho odpověď (jen ten JSON) vložte zpátky sem.</div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.6;">Žádný klíč, nic se neplatí. Zkopírujte šablonu, vložte ji do rozhovoru s Claude (claude.ai), doplňte svůj nápad na misi, a jeho odpověď (jen ten JSON) vložte zpátky sem.</div>
         <button type="button" class="btn btn-ghost btn-f btn-sm" onclick="copyClaudeTemplate()" style="margin-bottom:10px;">📋 Zkopírovat šablonu pro Claude</button>
         <label class="lb">Odpověď od Claude (jen JSON)</label>
         <textarea class="inp" id="ai-paste-text" placeholder='{"name":"...","stations":[...]}' style="min-height:110px;font-family:monospace;font-size:12px;"></textarea>
@@ -674,12 +687,9 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div class="ig"><label class="lb">Název mise</label><input class="inp" id="ng-nm" type="text" placeholder="Záhada starého mlýna…"/></div>
     <div class="ig"><label class="lb">Krátký popis</label><input class="inp" id="ng-ds" type="text" placeholder="Jedna věta lákající hráče…"/></div>
     <div class="ig"><label class="lb">Plný popis / příběh</label><textarea class="inp" id="ng-fdesc" placeholder="Příběh mise, atmosféra, co hráče čeká…" style="min-height:100px;"></textarea></div>
-    <div class="ig"><label class="lb">Video (YouTube nebo Vimeo odkaz, nepovinné)</label><input class="inp" id="ng-video" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
-    <div class="ig"><label class="lb">Město</label><input class="inp" id="ng-city" type="text" placeholder="Praha"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="ig"><label class="lb">Lat středu města</label><input class="inp" id="ng-clat" type="number" step="0.0001" placeholder="50.0755"/></div>
-      <div class="ig"><label class="lb">Lng středu města</label><input class="inp" id="ng-clng" type="number" step="0.0001" placeholder="14.4378"/></div>
-    </div>
+    <div class="ig"><label class="lb">Video jako intro po spuštění mise (YouTube nebo Vimeo odkaz, nepovinné)</label><input class="inp" id="ng-video" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
+    <div class="ig"><label class="lb">Trailer pro ukázku před koupením (nepovinné, jiné video)</label><input class="inp" id="ng-trailer" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
+    <div class="ig"><label class="lb">Město (nepovinné — jakmile přidáte stanoviště s polohou, appka ho určí a doplní sama)</label><input class="inp" id="ng-city" type="text" placeholder="Praha"/></div>
     <div class="ig"><label class="lb">Název startovního bodu</label><input class="inp" id="ng-spnm" type="text" placeholder="Staroměstské náměstí…"/></div>
     <div class="ig"><label class="lb">Instrukce pro start</label><textarea class="inp" id="ng-spinstr" placeholder="Přijeďte metrem A na stanici…"></textarea></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -715,7 +725,8 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <button class="btn btn-ghost btn-sm" onclick="nav('v-cr-sts')">📍 Stanoviště</button>
       <button class="btn btn-ghost btn-sm" onclick="nav('v-cr-codes')">🔑 Kódy</button>
       <button class="btn btn-ghost btn-sm" onclick="S.prevView='v-cr-gd';nav('v-cr-lb')">🏆 Žebříček</button>
-      <button class="btn btn-ghost btn-sm" onclick="editGameVideo()">🎬 Video</button>
+      <button class="btn btn-ghost btn-sm" onclick="editGameVideo()">🎬 Intro video</button>
+      <button class="btn btn-ghost btn-sm" onclick="editGameTrailer()">🎞️ Trailer (náhled)</button>
     </div>
     <div class="dv"></div>
     <button class="btn btn-teal btn-f" id="cgd-start" onclick="toggleGameStatus()" style="font-size:15px;padding:15px;">▶ Spustit misi</button>
@@ -790,6 +801,14 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       </select>
     </div>
     <div class="ig"><label class="lb">Otázka / Zadání</label><textarea class="inp" id="cte-q" placeholder="Co hráč uvidí nebo přečte…"></textarea></div>
+    <div class="ig"><label class="lb">Obrázek k otázce (nepovinné)</label>
+      <div onclick="document.getElementById('cte-qimg-in').click()" style="width:100%;height:120px;border-radius:10px;background:var(--navy3);border:1.5px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;">
+        <img id="cte-qimg-prev" style="width:100%;height:100%;object-fit:cover;display:none;" alt=""/>
+        <span id="cte-qimg-ph" style="font-size:13px;color:var(--txt2);">📷 Přidat obrázek</span>
+      </div>
+      <input type="file" id="cte-qimg-in" accept="image/*" style="display:none;" onchange="handleTaskImg(event,'cte-qimg-prev','cte-qimg-ph','q')"/>
+      <button type="button" class="btn btn-ghost btn-xs" onclick="removeTaskImg('cte-qimg-prev','cte-qimg-ph','q')" style="margin-top:6px;">Odebrat obrázek</button>
+    </div>
     <div class="ig"><label class="lb">Doplňující kontext</label><textarea class="inp" id="cte-cx" placeholder="Volitelná nápověda nebo doplnění…"></textarea></div>
     <div id="cte-tf"></div>
     <div class="dv"></div>
@@ -837,9 +856,14 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <div class="flow-view" id="v-global-lb">
   <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti">🏆 Žebříček hráčů</div><div class="hdr-sub">Podle celkového XP</div></div></div>
   <div class="scr" style="padding:14px;">
-    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:11px 14px;font-size:11px;color:var(--txt2);margin-bottom:14px;line-height:1.5;">ℹ️ Žebříček zatím zahrnuje jen hráče uložené v tomto prohlížeči. Pro sdílený žebříček napříč zařízeními je potřeba reálná databáze (viz poznámky pro vývoj).</div>
     <div id="global-lb-li"></div>
   </div>
+</div>
+
+<!-- ══ PLAYER PROFILE (viewing another player) ═════════════════ -->
+<div class="flow-view" id="v-player-profile">
+  <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti">Profil hráče</div></div></div>
+  <div class="scr" style="padding:14px;" id="pp-content"></div>
 </div>
 
 <!-- ══ PUBLIC INFO PAGE (footer pages) ═══════════════════════ -->
@@ -958,67 +982,14 @@ const DEFAULT_PAGES={
   terms:{title:'Všeobecné obchodní podmínky',content:'Tento text je výchozí šablona a nenahrazuje právní poradenství — před spuštěním ostrého provozu doporučujeme nechat obchodní podmínky zkontrolovat právníkem.\n\n1. Zakoupením mise získáváte časově neomezený přístup k dané hře pro jedno uživatelské konto.\n2. Mise probíhá ve venkovním prostředí — hrajete na vlastní odpovědnost a v souladu s pravidly silničního provozu.\n3. Aktivační kódy lze uplatnit pouze jednou a jsou vázány na první účet, který je zadá.\n4. V případě technického problému znemožňujícího dokončení mise kontaktujte podporu na e-mailu v sekci Kontakt.\n5. Vrácení platby řešíme individuálně dle platných právních předpisů o ochraně spotřebitele.'}
 };
 
-const DEMO_GAMES=[{
-  id:'g1',creatorId:'admin',name:'Záhada starého mlýna',code:'MLÝN24',
-  city:'Praha',cityLat:50.0755,cityLng:14.4378,
-  startPointLat:50.0875,startPointLng:14.4213,startRadius:50,
-  startPointName:'Staroměstské náměstí – u Orloje',
-  startInstructions:'Přijeďte metrem A, stanice Staroměstská. Postavte se u Orloje.',
-  shortDesc:'Odhalte záhadu mlynáře Karla ukrytou v srdci starého města.',
-  fullDesc:'Vydejte se do historické Prahy a odhalte tajemství mlynáře Karla, který před staletími ukryl své bohatství v uličkách města. Mise vás provede nejkrásnějšími zákoutími starého města.',
-  coverImage:null,price:299,xpReward:500,difficulty:'střední',duration:90,
-  rating:4.8,ratingCount:127,status:'active',timeLimit:90,
-  stations:[
-    {id:'s1',name:'Stará radnice',hint:'Stůjte čelem k hlavnímu vchodu radnice.',lat:50.0875,lng:14.4213,radius:30,
-     nextStationId:'s2',
-     tasks:[
-       {type:'mc',q:'Kolik věžiček zdobí vrchol radniční věže?',cx:'Dívejte se nahoru na vrchol.',opts:['Dvě','Tři','Čtyři','Pět'],ci:1,pts:10,pen:5,timer:0,hints:['Lichý počet','Méně než 4','Jsou tři'],givesItem:null},
-       {type:'tx',q:'Jaký rok je vytesán nad hlavním vchodem?',cx:'',ca:'1367',pts:15,pen:5,timer:60,hints:['14. století','Začíná 13...','1367'],givesItem:'📜 Starý pergamen'}
-     ]},
-    {id:'s2',name:'Kašna na náměstí',hint:'Přejděte ke kašně uprostřed náměstí.',lat:50.087,lng:14.421,radius:25,
-     nextStationId:null,
-     tasks:[
-       {type:'nm',q:'Kolik figur tvoří sousoší kašny?',cx:'Počítejte i zvířata.',ca:'4',pts:10,pen:5,timer:0,hints:['Méně než 6','Sudé číslo','Jsou 4'],givesItem:null},
-       {type:'cd',q:'Na severní straně základny kašny najdete čtyřmístný kód.',cx:'',ca:'1348',pts:20,pen:0,timer:0,hints:['Začíná 1...','13xx','1348'],givesItem:'🗝️ Starý klíč'}
-     ]}
-  ],
-  results:[
-    {userId:'u1',team:'Tým Drak',size:4,taskTime:1820,tasksOk:4,totalTasks:4,pts:55,pen:5,xp:480,completedAt:Date.now()-7200000},
-    {userId:'u2',team:'Noční sovy',size:2,taskTime:2310,tasksOk:3,totalTasks:4,pts:45,pen:10,xp:410,completedAt:Date.now()-3600000}
-  ]
-},{
-  id:'g2',creatorId:'admin',name:'Tajemství Špilberku',code:'SPILBERK',
-  city:'Brno',cityLat:49.1951,cityLng:16.6068,
-  startPointLat:49.1951,startPointLng:16.6068,startRadius:50,
-  startPointName:'Vstupní brána hradu Špilberk',startInstructions:'Zastávka Špilberk, jděte ke vstupní bráně hradu.',
-  shortDesc:'Stopujte záhadu středověkého hradu v centru Brna.',
-  fullDesc:'Hrad Špilberk skrývá více tajemství. Vaším úkolem je vysledovat cestu středověkého věznění a odhalit, kdo byl největším vězněm v historii.',
-  coverImage:null,price:249,xpReward:400,difficulty:'lehká',duration:60,
-  rating:4.6,ratingCount:83,status:'active',timeLimit:60,
-  stations:[],results:[]
-},{
-  id:'g3',creatorId:'admin',name:'Ztracená mapa Karla IV.',code:'KAREL4',
-  city:'Praha',cityLat:50.086,cityLng:14.412,
-  startPointLat:50.0865,startPointLng:14.4112,startRadius:50,
-  startPointName:'Karlův most – Staroměstská věž',startInstructions:'Jděte ke Staroměstské mostecké věži Karlova mostu.',
-  shortDesc:'Najděte ztracené poklady Karla IV. v labyrintu pražských uliček.',
-  fullDesc:'Legendární Karel IV. zanechal tajnou mapu. Vaším úkolem je projít stopami panovníka a jako první záhadu vyřešit.',
-  coverImage:null,price:349,xpReward:700,difficulty:'těžká',duration:120,
-  rating:4.9,ratingCount:42,status:'active',timeLimit:120,
-  stations:[],results:[]
-}];
-
 // ══ STATE ═════════════════════════════════════════════
 const S={
-  users:DB.get('users',[]),
-  games:DB.get('games',DEMO_GAMES),
-  codes:DB.get('codes',[
-    {code:'ESC-G1-DEMO000001',gameId:'g1',activatedBy:null,activatedAt:null},
-    {code:'ESC-G1-DEMO000002',gameId:'g1',activatedBy:null,activatedAt:null},
-  ]),
+  games:DB.get('games',[]),
+  codes:DB.get('codes',[]),
   pages:DB.get('pages',DEFAULT_PAGES),
   badges:DB.get('badges',DEFAULT_BADGES),
   reports:DB.get('reports',[]),
+  entitlements:[],
   mailCfg:DB.get('mailCfg',{serviceId:'',publicKey:'',templateWelcome:'',templateReset:'',templateNewsletter:''}),
   resetStep:null,resetEmail:null,
   cu:null,cg:null,csi:null,etask:-1,
@@ -1100,14 +1071,45 @@ function setSbStatus(status,detail){
   else el.innerHTML=`⚠️ Jen lokálně — ${detail||S.sbLastError||'Supabase nedostupné'}`;
 }
 
-function persist(){DB.set('users',S.users);DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);scheduleSbSync();}
+function persist(){DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);scheduleSbSync();}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function fmt(s){s=Math.max(0,Math.floor(s));return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
 function toast(msg,ms=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),ms);}
 function hav(a,b,c,d){const R=6371000,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180;const x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
 function getLvl(xp){for(let i=XP_LEVELS.length-1;i>=0;i--)if(xp>=XP_LEVELS[i])return i+1;return 1;}
-function getSession(uid,gid){const u=S.users.find(u=>u.id===uid);return(u?.sessions||[]).find(s=>s.gameId===gid)||null;}
-function setSession(uid,gid,status){const u=S.users.find(u=>u.id===uid);if(!u)return;if(!u.sessions)u.sessions=[];const ex=u.sessions.find(s=>s.gameId===gid);if(ex){ex.status=status;if(status==='in_progress'&&!ex.startedAt)ex.startedAt=Date.now();if(status==='completed')ex.completedAt=Date.now();}else u.sessions.push({gameId:gid,status,startedAt:status==='in_progress'?Date.now():null,completedAt:null});persist();}
+async function loadEntitlements(){
+  if(!sb||!S.cu){S.entitlements=[];return;}
+  try{
+    const{data,error}=await sb.from('entitlements').select('*').eq('user_id',S.cu.id);
+    if(error)throw error;
+    S.entitlements=data||[];
+  }catch(e){console.warn('Nepodařilo se načíst oprávnění',sbErrMsg(e));}
+}
+function getSession(gid){return(S.entitlements||[]).find(e=>e.game_id===gid)||null;}
+async function setSession(gid,status){
+  if(!S.cu)return;
+  let ent=(S.entitlements||[]).find(e=>e.game_id===gid);
+  if(!ent){ent={user_id:S.cu.id,game_id:gid,status,progress:null};S.entitlements.push(ent);}
+  else ent.status=status;
+  if(!sb)return;
+  try{
+    const{error}=await sb.from('entitlements').upsert({user_id:S.cu.id,game_id:gid,status,progress:ent.progress||null,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
+    if(error)throw error;
+  }catch(e){console.warn('Nepodařilo se uložit stav mise',sbErrMsg(e));}
+}
+let progressSyncTimer=null;
+function scheduleProgressSync(gid){
+  clearTimeout(progressSyncTimer);
+  progressSyncTimer=setTimeout(()=>syncProgress(gid),1200);
+}
+async function syncProgress(gid){
+  if(!sb||!S.cu)return;
+  const ent=(S.entitlements||[]).find(e=>e.game_id===gid);if(!ent)return;
+  try{
+    const{error}=await sb.from('entitlements').upsert({user_id:S.cu.id,game_id:gid,status:ent.status,progress:ent.progress||null,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
+    if(error)throw error;
+  }catch(e){console.warn('Nepodařilo se uložit rozehraný postup',sbErrMsg(e));}
+}
 
 // ══ BADGES (creator-configurable conditions) ═══════════
 function evaluateBadges(u,p,g,ok,tot){
@@ -1168,79 +1170,126 @@ function nav(id){
   if(id==='v-travel')setTimeout(()=>{try{initPMap();}catch(e){console.warn('Mapa se nepodařila načíst',e);}},100);
 }
 function navMain(id){
-  ['v-disc','v-miss','v-prof'].forEach(v=>{
-    document.getElementById(v)?.classList.remove('act');
-    document.getElementById('bn-'+v.split('-')[1])?.classList.remove('act');
-  });
-  document.getElementById(id)?.classList.add('act');
-  const bn='bn-'+id.split('-')[1];
-  document.getElementById(bn)?.classList.add('act');
-  document.getElementById('bot-nav').style.display='flex';
-  if(id==='v-disc'){initDisc();discTab('list');}
-  if(id==='v-miss')renderMiss();
-  if(id==='v-prof')renderProf();
+  nav(id);
+  document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('act'));
+  document.getElementById('bn-'+id.split('-')[1])?.classList.add('act');
+  if(id==='v-disc')discTab('list');
 }
 function navBack(){nav(S.prevView||'v-disc');}
 
 // ══ AUTH ══════════════════════════════════════════════
-const CC='CREATOR-MASTER-2024';
 function openAuth(tab='in'){document.getElementById('auth-ov').classList.add('show');authTab(tab);}
 function closeAuth(){document.getElementById('auth-ov').classList.remove('show');}
-function authTab(t){document.getElementById('at-in').classList.toggle('a',t==='in');document.getElementById('at-up').classList.toggle('a',t==='up');if(t!=='forgot'){S.resetStep=null;S.resetEmail=null;}renderAuthForm(t);}
+function authTab(t){document.getElementById('at-in').classList.toggle('a',t==='in');document.getElementById('at-up').classList.toggle('a',t==='up');renderAuthForm(t);}
 function renderAuthForm(t){
   const c=document.getElementById('auth-frm');
-  if(t==='in')c.innerHTML=`<div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz" autocomplete="email"/></div><div class="ig"><label class="lb">Heslo</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><button class="btn btn-teal btn-f" onclick="login()" style="font-size:15px;padding:15px;">Přihlásit se</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('forgot')" style="color:var(--teal);font-size:13px;cursor:pointer;">Zapomenuté heslo?</a></div><div style="background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);border-radius:10px;padding:11px;margin-top:12px;font-size:11px;color:var(--txt2);">Demo tvůrce: <b style="color:var(--txt);">admin@test.cz / admin123</b><br>Demo hráč: <b style="color:var(--txt);">hrac@test.cz / hrac123</b><br>Aktivační kód: <b style="color:var(--teal);">ESC-G1-DEMO000001</b></div>`;
-  else if(t==='up')c.innerHTML=`<div class="ig"><label class="lb">Jméno</label><input class="inp" id="a-nm" type="text" placeholder="Vaše jméno"/></div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz"/></div><div class="ig"><label class="lb">Heslo (min. 6 znaků)</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><div class="ig"><label class="lb">Kód tvůrce (nepovinné)</label><input class="inp" id="a-cc" type="text" placeholder="Jen pro organizátory…"/></div><div class="ig" style="display:flex;align-items:flex-start;gap:9px;"><input type="checkbox" id="a-nl" style="width:18px;height:18px;accent-color:var(--teal);margin-top:2px;flex-shrink:0;"/><label for="a-nl" style="font-size:12px;color:var(--txt2);line-height:1.5;">Chci dostávat novinky a nabídky e-mailem (odběr lze kdykoli zrušit v profilu)</label></div><button class="btn btn-teal btn-f" onclick="register()" style="font-size:15px;padding:15px;">Vytvořit účet</button>`;
+  if(t==='in')c.innerHTML=`<div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz" autocomplete="email"/></div><div class="ig"><label class="lb">Heslo</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><button class="btn btn-teal btn-f" onclick="login()" style="font-size:15px;padding:15px;">Přihlásit se</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('forgot')" style="color:var(--teal);font-size:13px;cursor:pointer;">Zapomenuté heslo?</a></div>`;
+  else if(t==='up')c.innerHTML=`<div class="ig"><label class="lb">Jméno</label><input class="inp" id="a-nm" type="text" placeholder="Vaše jméno"/></div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz"/></div><div class="ig"><label class="lb">Heslo (min. 6 znaků)</label><input class="inp" id="a-pw" type="password" placeholder="••••••••"/></div><div class="ig" style="display:flex;align-items:flex-start;gap:9px;"><input type="checkbox" id="a-nl" style="width:18px;height:18px;accent-color:var(--teal);margin-top:2px;flex-shrink:0;"/><label for="a-nl" style="font-size:12px;color:var(--txt2);line-height:1.5;">Chci dostávat novinky a nabídky e-mailem (odběr lze kdykoli zrušit v profilu)</label></div><button class="btn btn-teal btn-f" onclick="register()" style="font-size:15px;padding:15px;">Vytvořit účet</button>`;
   else c.innerHTML=renderForgotForm();
 }
 function renderForgotForm(){
-  if(S.resetStep==='code')return`<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;">Kód jsme odeslali na <b style="color:var(--txt);">${S.resetEmail}</b>. Platí 15 minut.</div><div class="ig"><label class="lb">Ověřovací kód</label><input class="inp" id="rf-code" type="text" inputmode="numeric" maxlength="6" placeholder="123456"/></div><div class="ig"><label class="lb">Nové heslo (min. 6 znaků)</label><input class="inp" id="rf-pw" type="password" placeholder="••••••••"/></div><button class="btn btn-teal btn-f" onclick="confirmPasswordReset()" style="font-size:15px;padding:15px;">Nastavit nové heslo</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('in')" style="color:var(--txt2);font-size:13px;cursor:pointer;">← Zpět na přihlášení</a></div>`;
-  return`<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;">Zadejte e-mail, na který jste se registrovali. Pošleme vám ověřovací kód pro nastavení nového hesla.</div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="rf-em" type="email" placeholder="vas@email.cz"/></div><button class="btn btn-teal btn-f" onclick="requestPasswordReset()" style="font-size:15px;padding:15px;">Odeslat ověřovací kód</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('in')" style="color:var(--txt2);font-size:13px;cursor:pointer;">← Zpět na přihlášení</a></div>`;
+  return`<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;">Zadejte e-mail, na který jste se registrovali. Pošleme vám odkaz pro nastavení nového hesla.</div><div class="ig"><label class="lb">E-mail</label><input class="inp" id="rf-em" type="email" placeholder="vas@email.cz"/></div><button class="btn btn-teal btn-f" onclick="requestPasswordReset()" style="font-size:15px;padding:15px;">Odeslat odkaz</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('in')" style="color:var(--txt2);font-size:13px;cursor:pointer;">← Zpět na přihlášení</a></div>`;
 }
-function requestPasswordReset(){
+async function requestPasswordReset(){
   const em=document.getElementById('rf-em')?.value.trim().toLowerCase();
   if(!em){toast('⚠️ Zadejte e-mail');return;}
-  const u=S.users.find(u=>u.email===em);
-  if(u){
-    const code=String(Math.floor(100000+Math.random()*900000));
-    u.resetCode=code;u.resetExpiry=Date.now()+15*60*1000;persist();
-    sendMail('reset',u,{code}).then(sent=>{if(!sent)toast(`✉️ E-mail se nepodařilo odeslat (chybí nastavení). Váš kód: ${code}`,8000);else toast('✅ Ověřovací kód odeslán na e-mail');});
-  }
-  S.resetEmail=em;S.resetStep='code';renderAuthForm('forgot');
+  if(!sb){toast('⚠️ Supabase není připojené');return;}
+  try{
+    const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:window.location.href});
+    if(error)throw error;
+    toast('✅ Pokud e-mail existuje, poslali jsme odkaz pro nastavení nového hesla.',6000);
+    authTab('in');
+  }catch(e){toast('❌ '+sbErrMsg(e));}
 }
-function confirmPasswordReset(){
-  const code=document.getElementById('rf-code')?.value.trim(),pw=document.getElementById('rf-pw')?.value;
-  if(!code||!pw){toast('⚠️ Vyplňte kód i nové heslo');return;}
-  if(pw.length<6){toast('⚠️ Heslo min. 6 znaků');return;}
-  const u=S.users.find(u=>u.email===S.resetEmail);
-  if(!u||u.resetCode!==code||!u.resetExpiry||Date.now()>u.resetExpiry){toast('❌ Neplatný nebo expirovaný kód');return;}
-  u.pw=btoa(pw);u.resetCode=null;u.resetExpiry=null;persist();
-  S.resetStep=null;S.resetEmail=null;toast('✅ Heslo změněno, přihlaste se');authTab('in');
+// ══ SUPABASE AUTH HELPERS ════════════════════════════════
+async function fetchProfile(userId){
+  if(!sb)return null;
+  try{
+    const{data,error}=await sb.from('profiles').select('*').eq('id',userId).single();
+    if(error)throw error;
+    return data;
+  }catch(e){console.warn('Nepodařilo se načíst profil',sbErrMsg(e));return null;}
 }
-function login(){
+function profileToUser(authUser,profile){
+  return{
+    id:authUser.id,email:authUser.email,
+    name:profile?.name||authUser.email.split('@')[0],
+    avatar:profile?.avatar||null,
+    role:profile?.role||'player',
+    xp:profile?.xp||0,badges:profile?.badges||[],
+    completedMissions:profile?.completed_missions||0,
+    newsletterOptIn:profile?.newsletter_opt_in||false
+  };
+}
+async function login(){
   const em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value;
   if(!em||!pw){toast('⚠️ Vyplňte e-mail a heslo');return;}
-  const u=S.users.find(u=>u.email===em&&u.pw===btoa(pw));if(!u){toast('❌ Nesprávné údaje');return;}
-  S.cu=u;localStorage.setItem('q7_sess',u.id);closeAuth();afterLogin();
+  if(!sb){toast('⚠️ Supabase není připojené');return;}
+  try{
+    const{data,error}=await sb.auth.signInWithPassword({email:em,password:pw});
+    if(error)throw error;
+    const profile=await fetchProfile(data.user.id);
+    S.cu=profileToUser(data.user,profile);
+    await loadEntitlements();
+    closeAuth();afterLogin();
+  }catch(e){toast('❌ '+(e.message==='Invalid login credentials'?'Nesprávné údaje':sbErrMsg(e)));}
 }
-function register(){
-  const nm=document.getElementById('a-nm')?.value.trim(),em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value,cc=document.getElementById('a-cc')?.value.trim();
+async function register(){
+  const nm=document.getElementById('a-nm')?.value.trim(),em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value;
   const nl=document.getElementById('a-nl')?.checked||false;
   if(!nm||!em||!pw){toast('⚠️ Vyplňte všechna pole');return;}
   if(pw.length<6){toast('⚠️ Heslo min. 6 znaků');return;}
-  if(S.users.find(u=>u.email===em)){toast('⚠️ E-mail již použit');return;}
-  const role=cc===CC?'creator':'player';
-  const u={id:uid(),name:nm,email:em,pw:btoa(pw),role,games:[],sessions:[],xp:0,badges:[],totalKm:0,completedMissions:0,newsletterOptIn:nl,createdAt:Date.now()};
-  S.users.push(u);persist();S.cu=u;localStorage.setItem('q7_sess',u.id);closeAuth();toast(role==='creator'?'✅ Tvůrčí účet vytvořen!':'✅ Vítejte!');
-  sendMail('welcome',u,{});
-  afterLogin();
+  if(!sb){toast('⚠️ Supabase není připojené');return;}
+  try{
+    // Role (player/creator) se NEposílá odsud — o té rozhoduje výhradně databáze
+    // podle e-mailu (viz handle_new_user() trigger v supabase-setup.sql).
+    const{data,error}=await sb.auth.signUp({email:em,password:pw,options:{data:{name:nm,newsletter_opt_in:nl}}});
+    if(error)throw error;
+    if(!data.session){
+      toast('✅ Účet vytvořen! Zkontrolujte e-mail a potvrďte registraci, pak se přihlaste.',7000);
+      closeAuth();authTab('in');return;
+    }
+    const profile=await fetchProfile(data.user.id);
+    S.cu=profileToUser(data.user,profile);
+    await loadEntitlements();
+    closeAuth();toast(S.cu.role==='creator'?'✅ Tvůrčí účet vytvořen!':'✅ Vítejte!');
+    sendMail('welcome',S.cu,{});
+    afterLogin();
+  }catch(e){toast('❌ '+sbErrMsg(e));}
 }
 function afterLogin(){
   updateAuthBtns();
   if(S.pendingGame){const gid=S.pendingGame;S.pendingGame=null;openDetail(gid);return;}
   if(S.cu.role==='creator')nav('v-cr');
 }
-function logout(){stopTimer();stopWatch();stopWatchStart();stopCountdown();S.cu=null;S.cg=null;localStorage.removeItem('q7_sess');updateAuthBtns();navMain('v-disc');}
+async function logout(){
+  stopTimer();stopWatch();stopWatchStart();stopCountdown();
+  if(sb){try{await sb.auth.signOut();}catch(e){console.warn('Odhlášení selhalo',sbErrMsg(e));}}
+  S.cu=null;S.cg=null;S.entitlements=[];
+  updateAuthBtns();navMain('v-disc');
+}
+async function restoreSession(){
+  if(!sb)return;
+  try{
+    const{data:{session}}=await sb.auth.getSession();
+    if(session?.user){
+      const profile=await fetchProfile(session.user.id);
+      S.cu=profileToUser(session.user,profile);
+      await loadEntitlements();
+    }
+  }catch(e){console.warn('Obnovení přihlášení selhalo',sbErrMsg(e));}
+}
+if(sb)sb.auth.onAuthStateChange((event,session)=>{
+  if(event==='PASSWORD_RECOVERY'){
+    const newPw=prompt('Zadejte nové heslo (min. 6 znaků):');
+    if(newPw&&newPw.length>=6){
+      sb.auth.updateUser({password:newPw}).then(({error})=>{
+        if(error)toast('❌ '+sbErrMsg(error));
+        else toast('✅ Heslo změněno, jste přihlášeni.');
+      });
+    }
+  }
+});
 function updateAuthBtns(){
   const loggedIn=!!S.cu;
   const db=document.getElementById('disc-auth-btn');if(db){db.textContent=loggedIn?(S.cu.role==='creator'?'🛠 Dashboard':'Moje mise'):' Přihlásit se';db.onclick=loggedIn?(S.cu.role==='creator'?()=>nav('v-cr'):()=>navMain('v-miss')):()=>openAuth('in');}
@@ -1331,9 +1380,10 @@ function showDiscSheet(gid){
   document.getElementById('disc-city-lbl').textContent=`📍 ${g.city}`;
   document.getElementById('disc-desc').textContent=g.shortDesc||'';
   document.getElementById('disc-pills').innerHTML=`<span class="pill pill-teal">${g.difficulty}</span><span class="pill pill-amber">⏱ ${g.duration} min</span><span class="pill pill-cream">⭐ ${g.rating}</span>`;
+function ownsGame(gid){return(S.cu&&(S.entitlements||[]).some(e=>e.game_id===gid))||false;}
   document.getElementById('disc-meta').innerHTML=`<div style="font-size:13px;color:var(--txt2);">📌 ${g.stations?.length||0} stanovišť</div><div style="font-size:13px;color:var(--amber);font-weight:700;">+${g.xpReward||500} XP</div>`;
-  const owned=S.cu&&(S.cu.games||[]).includes(g.id);
-  const sess=S.cu?getSession(S.cu.id,g.id):null;
+  const owned=ownsGame(g.id);
+  const sess=S.cu?getSession(g.id):null;
   const cta=document.getElementById('disc-cta');
   if(sess?.status==='completed'){cta.textContent='✅ Mise dokončena';cta.style.opacity='.6';cta.onclick=null;}
   else if(owned){cta.textContent='▶ Pokračovat v misi';cta.style.opacity='1';cta.onclick=()=>{discCloseSheet();openPrep(g.id);};}
@@ -1363,7 +1413,7 @@ function openDetail(gid){
   document.getElementById('det-city').textContent=`📍 ${g.city}`;
   document.getElementById('det-desc').textContent=g.fullDesc||g.shortDesc||'';
   const vidWrap=document.getElementById('det-video-wrap');
-  const embed=toEmbedUrl(g.videoUrl);
+  const embed=toEmbedUrl(g.trailerUrl);
   if(embed){vidWrap.style.display='block';vidWrap.innerHTML=`<div style="position:relative;padding-top:56.25%;border-radius:var(--rm);overflow:hidden;background:#000;"><iframe src="${embed}" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>`;}
   else{vidWrap.style.display='none';vidWrap.innerHTML='';}
   document.getElementById('det-stations').textContent=`${g.stations?.length||0} stanovišť`;
@@ -1371,15 +1421,15 @@ function openDetail(gid){
   document.getElementById('det-start').textContent=g.startPointName||'—';
   document.getElementById('det-xp').textContent=`+${g.xpReward||500} XP`;
   document.getElementById('det-price').textContent=`${g.price} Kč`;
-  const owned=S.cu&&(S.cu.games||[]).includes(g.id);
-  const sess=S.cu?getSession(S.cu.id,g.id):null;
+  const owned=ownsGame(g.id);
+  const sess=S.cu?getSession(g.id):null;
   const cta=document.getElementById('det-cta');
   if(sess?.status==='completed'){cta.textContent='✅ Mise dokončena';cta.disabled=true;}
   else if(owned){cta.textContent='▶ Hrát misi';cta.style.background='linear-gradient(135deg,#14B8A6,#0D9488)';cta.onclick=()=>{S.prevView='v-detail';openPrep(g.id);};}
   else{cta.textContent=`🛒 Koupit za ${g.price} Kč`;cta.onclick=detailCTA;}
   nav('v-detail');
 }
-function detailCTA(){const g=S.detailGame;if(!g)return;if(!S.cu){S.pendingGame=g.id;openAuth('up');return;}if((S.cu.games||[]).includes(g.id)){openPrep(g.id);return;}openPurchase(g.id);}
+function detailCTA(){const g=S.detailGame;if(!g)return;if(!S.cu){S.pendingGame=g.id;openAuth('up');return;}if(ownsGame(g.id)){openPrep(g.id);return;}openPurchase(g.id);}
 
 // ══ PURCHASE ══════════════════════════════════════════
 function openPurchase(gid){
@@ -1399,8 +1449,7 @@ function processPayment(){
   // Stripe integration point
   setTimeout(()=>{
     const g=S.cg;if(!g){btn.disabled=false;return;}
-    if(!S.cu.games)S.cu.games=[];if(!S.cu.games.includes(g.id))S.cu.games.push(g.id);
-    setSession(S.cu.id,g.id,'unlocked');
+    setSession(g.id,'unlocked');
     const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r8=()=>Array.from({length:8},()=>ch[Math.random()*ch.length|0]).join('');
     S.codes.push({code:`ESC-${g.id.slice(-4).toUpperCase()}-${r8()}`,gameId:g.id,activatedBy:S.cu.id,activatedAt:Date.now()});
     persist();btn.textContent='✅ Zaplaceno!';btn.disabled=false;toast('🎉 Mise zakoupena!',3000);
@@ -1414,15 +1463,16 @@ function renderMiss(){
   if(!S.cu){document.getElementById('miss-list').innerHTML=`<div class="emp"><div class="emp-i">🔒</div><div class="emp-t">Přihlaste se</div><div class="emp-d">Přihlaste se pro přístup k vašim misím.</div></div><button class="btn btn-teal btn-f" onclick="openAuth('in')" style="margin-top:8px;">Přihlásit se</button>`;return;}
   const tab=S.missTab||'active';
   document.querySelectorAll('#miss-tabs .cr-tab-btn').forEach((b,i)=>b.classList.toggle('a',i===(tab==='active'?0:1)));
-  const myGames=S.games.filter(g=>(S.cu.games||[]).includes(g.id));
+  const myGameIds=(S.entitlements||[]).map(e=>e.game_id);
+  const myGames=S.games.filter(g=>myGameIds.includes(g.id));
   const c=document.getElementById('miss-list');
   if(!myGames.length){c.innerHTML=`<div class="emp"><div class="emp-i">🗺️</div><div class="emp-t">Žádné mise</div><div class="emp-d">Prozkoumejte mapu a zahajte své první dobrodružství.</div></div><button class="btn btn-teal btn-f" onclick="navMain('v-disc')" style="margin-top:8px;">Mapa misí →</button>`;return;}
-  const games=myGames.filter(g=>{const sess=getSession(S.cu.id,g.id);return tab==='active'?(sess?.status!=='completed'):(sess?.status==='completed');});
+  const games=myGames.filter(g=>{const sess=getSession(g.id);return tab==='active'?(sess?.status!=='completed'):(sess?.status==='completed');});
   if(!games.length){c.innerHTML=`<div class="emp"><div class="emp-i">${tab==='active'?'🎯':'🏆'}</div><div class="emp-t">${tab==='active'?'Žádné aktivní mise':'Žádné dokončené mise'}</div></div>`;return;}
   c.innerHTML=games.map(g=>{
-    const sess=getSession(S.cu.id,g.id);const completed=sess?.status==='completed';
+    const sess=getSession(g.id);const completed=sess?.status==='completed';
     const totalTasks=g.stations.reduce((s,st)=>s+st.tasks.length,0);
-    const doneTasks=sess?.doneTasks||0;const pct=totalTasks?Math.round((doneTasks/totalTasks)*100):0;
+    const doneTasks=sess?.progress?.doneTasks||0;const pct=totalTasks?Math.round((doneTasks/totalTasks)*100):0;
     return`<div class="card" style="margin-bottom:14px;cursor:pointer;overflow:hidden;" onclick="${completed?`nav('v-detail');openDetail('${g.id}')`:` openPrep('${g.id}')`}">
       ${g.coverImage?`<img src="${g.coverImage}" style="width:100%;height:120px;object-fit:cover;" alt=""/>`:`<div style="width:100%;height:120px;background:linear-gradient(135deg,var(--navy3),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:48px;">🗺️</div>`}
       <div style="padding:14px 16px;">
@@ -1430,7 +1480,7 @@ function renderMiss(){
         <div style="font-size:17px;font-weight:800;margin-bottom:4px;letter-spacing:-.3px;">${g.name}</div>
         <div style="font-size:12px;color:var(--txt2);margin-bottom:${completed?'0':'12px'};">📍 ${g.city} · ${g.duration} min · +${g.xpReward||500} XP</div>
         ${!completed?`<div class="prog" style="margin-bottom:8px;"><div class="prog-fill" style="width:${pct}%;"></div></div><div style="font-size:12px;color:var(--txt2);">${pct}% dokončeno · ${doneTasks}/${totalTasks} úkolů</div>`:``}
-        ${!completed?`<div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-teal btn-f btn-sm" style="flex:1;" onclick="event.stopPropagation();openPrep('${g.id}')">${sess?.playerState?'▶ Pokračovat':'Spustit →'}</button>${sess?.playerState?`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();restartMission('${g.id}')" title="Začít znovu">↺</button>`:''}</div>`:''}
+        ${!completed?`<div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-teal btn-f btn-sm" style="flex:1;" onclick="event.stopPropagation();openPrep('${g.id}')">${sess?.progress?'▶ Pokračovat':'Spustit →'}</button>${sess?.progress?`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();restartMission('${g.id}')" title="Začít znovu">↺</button>`:''}</div>`:''}
       </div>
     </div>`;
   }).join('');
@@ -1449,14 +1499,18 @@ function openPage(key){
   document.getElementById('pg-body').textContent=p.content;
   nav('v-page');
 }
-function toggleNewsletter(){if(!S.cu)return;S.cu.newsletterOptIn=!S.cu.newsletterOptIn;persist();renderProf();toast(S.cu.newsletterOptIn?'✅ Newsletter zapnut':'Newsletter vypnut');}
+function toggleNewsletter(){
+  if(!S.cu)return;S.cu.newsletterOptIn=!S.cu.newsletterOptIn;renderProf();
+  toast(S.cu.newsletterOptIn?'✅ Newsletter zapnut':'Newsletter vypnut');
+  if(sb)sb.from('profiles').update({newsletter_opt_in:S.cu.newsletterOptIn}).eq('id',S.cu.id).then(({error})=>{if(error)console.warn('Newsletter sync selhal',sbErrMsg(error));});
+}
 
 // ══ BACKUP / RESTORE ════════════════════════════════════
 // Zálohuje veškerý herní obsah (uživatele, mise, kódy, stránky, odznaky, hlášení, e-mail nastavení).
 // Záměrně NEzahrnuje API klíče pro AI generátor (q7_aikey_*) — ty zůstávají jen v tomto prohlížeči kvůli bezpečnosti.
 function exportBackup(){
-  const backup={version:1,exportedAt:new Date().toISOString(),
-    users:S.users,games:S.games,codes:S.codes,pages:S.pages,badges:S.badges,reports:S.reports,mailCfg:S.mailCfg};
+  const backup={version:2,exportedAt:new Date().toISOString(),
+    games:S.games,codes:S.codes,pages:S.pages,badges:S.badges,reports:S.reports,mailCfg:S.mailCfg};
   const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -1472,17 +1526,13 @@ function importBackupFile(e){
     let data;
     try{data=JSON.parse(ev.target.result);}
     catch(err){toast('❌ Soubor nejde přečíst — není to platný JSON');e.target.value='';return;}
-    if(!Array.isArray(data.users)||!Array.isArray(data.games)){toast('❌ Tohle nevypadá jako záloha Questly');e.target.value='';return;}
+    if(!Array.isArray(data.games)){toast('❌ Tohle nevypadá jako záloha Questly');e.target.value='';return;}
     const when=data.exportedAt?new Date(data.exportedAt).toLocaleString('cs-CZ'):'neznámého data';
-    if(!confirm(`Obnovit zálohu z ${when}?\n\nPřepíše to VŠECHNA aktuální data v tomto prohlížeči (mise, uživatele, stránky, odznaky) — tuto akci nelze vrátit zpět.`)){e.target.value='';return;}
-    S.users=data.users;S.games=data.games;S.codes=data.codes||[];
+    if(!confirm(`Obnovit zálohu z ${when}?\n\nPřepíše to VŠECHNA aktuální data mise, stránky a odznaky v tomto prohlížeči (a při připojení k Supabase i tam) — tuto akci nelze vrátit zpět. Uživatelské účty záloha neobsahuje, ty zůstávají v Supabase beze změny.`)){e.target.value='';return;}
+    S.games=data.games;S.codes=data.codes||[];
     S.pages=data.pages||DEFAULT_PAGES;S.badges=data.badges||DEFAULT_BADGES;S.reports=data.reports||[];
     S.mailCfg=data.mailCfg||{serviceId:'',publicKey:'',templateWelcome:'',templateReset:'',templateNewsletter:''};
     persist();
-    if(S.cu){
-      const fresh=S.users.find(u=>u.id===S.cu.id)||S.users.find(u=>u.email===S.cu.email);
-      if(fresh)S.cu=fresh;else{S.cu=null;localStorage.removeItem('q7_sess');}
-    }
     toast('✅ Záloha obnovena');
     e.target.value='';
     renderProf();
@@ -1516,7 +1566,8 @@ function saveProfile(){
   if(S.pendingAvatar)S.cu.avatar=S.pendingAvatar;
   else if(S.pendingAvatarRemoved)S.cu.avatar=null;
   S.pendingAvatar=null;S.pendingAvatarRemoved=false;
-  persist();toast('✅ Profil uložen');nav('v-prof');
+  toast('✅ Profil uložen');nav('v-prof');
+  if(sb)sb.from('profiles').update({name:S.cu.name,avatar:S.cu.avatar,updated_at:new Date().toISOString()}).eq('id',S.cu.id).then(({error})=>{if(error){console.warn('Profil sync selhal',sbErrMsg(error));toast('⚠️ Profil se nepodařilo uložit do databáze, zkuste to znovu');}});
 }
 function renderProf(){
   updateAuthBtns();
@@ -1556,29 +1607,30 @@ function renderProf(){
 // ══ PREP ══════════════════════════════════════════════
 function openPrep(gid){
   const g=S.games.find(g=>g.id===gid);if(!g)return;
-  const sess=getSession(S.cu?.id,gid);if(sess?.status==='completed'){toast('✅ Tuto misi jste již dokončili');return;}
+  const sess=getSession(gid);if(sess?.status==='completed'){toast('✅ Tuto misi jste již dokončili');return;}
   if(g.status!=='active'){toast('⚠️ Mise zatím není aktivní');return;}
   S.cg=g;S.prevView='v-disc';
-  if(sess?.status==='in_progress'&&sess.playerState&&sess.resumeView){resumeMission(g,sess);return;}
+  if(sess?.status==='in_progress'&&sess.progress&&sess.progress.resumeView){resumeMission(g,sess);return;}
   document.getElementById('prep-ti').textContent=g.name;
   document.getElementById('prep-start-name').textContent=g.startPointName||'—';
   document.getElementById('prep-start-instr').textContent=g.startInstructions||'Přesuňte se na startovní pozici.';
   nav('v-prep');
 }
 function resumeMission(g,sess){
-  S.pl={...sess.playerState,ti:null,ts:null,countdownTi:null,showMap:false};
+  S.pl={...sess.progress,ti:null,ts:null,countdownTi:null,showMap:false};
   if(!S.pl.usedHints)S.pl.usedHints={};
   if(!S.pl.answers)S.pl.answers=[];
   if(!S.pl.inventory)S.pl.inventory=[];
   if(!S.pl.visitedStations)S.pl.visitedStations=[];
   toast('▶ Pokračujete v rozehrané misi');
-  if(sess.resumeView==='v-game')nav('v-game');else startTravel();
+  if(sess.progress.resumeView==='v-game')nav('v-game');else startTravel();
 }
 function restartMission(gid){
   if(!confirm('Opravdu začít misi od začátku? Rozehraný postup se smaže.'))return;
-  const sess=(S.cu?.sessions||[]).find(s=>s.gameId===gid);
-  if(sess){sess.status='unlocked';sess.playerState=null;sess.resumeView=null;sess.startedAt=null;sess.doneTasks=0;}
-  persist();openPrep(gid);
+  const ent=(S.entitlements||[]).find(e=>e.game_id===gid);
+  if(ent){ent.status='unlocked';ent.progress=null;}
+  if(sb&&S.cu){sb.from('entitlements').upsert({user_id:S.cu.id,game_id:gid,status:'unlocked',progress:null,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'}).then(({error})=>{if(error)console.warn('Restart sync selhal',sbErrMsg(error));});}
+  openPrep(gid);
 }
 function openInMaps(){const g=S.cg;if(!g?.startPointLat)return;window.open(`https://maps.google.com/?q=${g.startPointLat},${g.startPointLng}`,'_blank');}
 function goToStart(){
@@ -1590,6 +1642,9 @@ function goToStart(){
   const g=S.cg;
   nav('v-cinematic');
   const cin=document.getElementById('cin-img');if(g.coverImage)cin.src=g.coverImage;else cin.src='';
+  const vidWrap=document.getElementById('cin-video-wrap'),embed=toEmbedUrl(g.videoUrl);
+  if(embed){document.getElementById('cin-video-iframe').src=embed+(embed.includes('?')?'&':'?')+'autoplay=1&mute=1';vidWrap.style.display='block';}
+  else{document.getElementById('cin-video-iframe').src='';vidWrap.style.display='none';}
   document.getElementById('cin-btn-wrap').style.display='none';
   const txt=g.fullDesc||'Vaše mise začíná. Připravte se na dobrodružství, které nezapomenete.';
   typewriter(txt,'cin-text',28,()=>{document.getElementById('cin-btn-wrap').style.display='block';});
@@ -1645,18 +1700,17 @@ function closeStartOv(){document.getElementById('start-ov').classList.remove('sh
 function manualArriveStart(){openStartOv();}
 function saveProgress(view){
   if(!S.cu||!S.cg)return;
-  const u=S.cu;if(!u.sessions)u.sessions=[];
-  let sess=u.sessions.find(s=>s.gameId===S.cg.id);
-  if(!sess){sess={gameId:S.cg.id,status:'in_progress',startedAt:Date.now(),completedAt:null};u.sessions.push(sess);}
-  sess.status='in_progress';
-  sess.resumeView=view;
-  sess.doneTasks=(S.pl.answers||[]).length;
-  sess.playerState=JSON.parse(JSON.stringify({teamName:S.pl.teamName,teamSize:S.pl.teamSize,geo:S.pl.geo,answers:S.pl.answers,totalSecs:S.pl.totalSecs,si:S.pl.si,ti2:S.pl.ti2,usedHints:S.pl.usedHints,inventory:S.pl.inventory,visitedStations:S.pl.visitedStations,xpEarned:S.pl.xpEarned}));
-  persist();
+  let ent=(S.entitlements||[]).find(e=>e.game_id===S.cg.id);
+  if(!ent){ent={user_id:S.cu.id,game_id:S.cg.id,status:'in_progress',progress:null};S.entitlements.push(ent);}
+  ent.status='in_progress';
+  ent.progress=JSON.parse(JSON.stringify({resumeView:view,doneTasks:(S.pl.answers||[]).length,
+    teamName:S.pl.teamName,teamSize:S.pl.teamSize,geo:S.pl.geo,answers:S.pl.answers,totalSecs:S.pl.totalSecs,
+    si:S.pl.si,ti2:S.pl.ti2,usedHints:S.pl.usedHints,inventory:S.pl.inventory,visitedStations:S.pl.visitedStations,xpEarned:S.pl.xpEarned}));
+  scheduleProgressSync(S.cg.id);
 }
 function confirmStart(){
   closeStartOv();startConfirmShown=false;stopWatchStart();
-  setSession(S.cu.id,S.cg.id,'in_progress');
+  setSession(S.cg.id,'in_progress');
   S.pl.si=0;S.pl.visitedStations=[];
   startTravel();
 }
@@ -1767,8 +1821,17 @@ function closeInv(){document.getElementById('inv-ov').classList.remove('show');}
 function renderInv(){
   const c=document.getElementById('inv-list');const inv=S.pl.inventory||[];
   if(!inv.length){c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--txt2);font-size:14px;">Inventář je prázdný.<br>Sbírejte předměty plněním úkolů.</div>`;return;}
-  c.innerHTML=inv.map(item=>`<div class="inv-item"><div class="inv-icon">${item.icon||'📦'}</div><div><div style="font-size:14px;font-weight:700;">${item.name}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${item.desc||''}</div></div></div>`).join('');
+  c.innerHTML=inv.map(item=>{const label=`${item.icon} ${item.name}`;return`<div class="inv-item"><div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer;" onclick="showItemDetail('${label.replace(/'/g,"\\'")}')"><div class="inv-icon">${item.icon||'📦'}</div><div style="min-width:0;"><div style="font-size:14px;font-weight:700;">${item.name}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${item.desc||''}</div></div></div><button class="btn btn-teal btn-xs" onclick="event.stopPropagation();useInventoryItem('${label.replace(/'/g,"\\'")}')" style="flex-shrink:0;">Použít</button></div>`;}).join('');
 }
+function showItemDetail(label){
+  const item=(S.pl.inventory||[]).find(it=>`${it.icon} ${it.name}`===label);if(!item)return;
+  document.getElementById('item-detail-icon').textContent=item.icon||'📦';
+  document.getElementById('item-detail-name').textContent=item.name;
+  document.getElementById('item-detail-desc').textContent=item.desc||'Nalezeno během mise.';
+  document.getElementById('item-detail-use').onclick=()=>{closeItemDetail();useInventoryItem(label);};
+  document.getElementById('item-detail-ov').classList.add('show');
+}
+function closeItemDetail(){document.getElementById('item-detail-ov').classList.remove('show');}
 // ══ SUPPORT: REPORT ISSUE (player side) ════════════════
 function openReportIssue(){document.getElementById('report-text').value='';document.getElementById('report-ov').classList.add('show');}
 function closeReportIssue(){document.getElementById('report-ov').classList.remove('show');}
@@ -1800,18 +1863,24 @@ function openAnsGame(){
   const tyLbl={mc:'🔘 Výběr z možností',tx:'✏️ Textová odpověď',nm:'🔢 Číselná odpověď',cd:'🔑 Kód',photo:'📷 Fotodůkaz',order:'🔀 Seřadit stopy',inventory:'🎒 Inventář',gps:'📍 GPS zóna'};
   document.getElementById('ans-ov-type').textContent=tyLbl[task.type]||task.type;
   document.getElementById('ans-ov-q').textContent=task.q;
+  const qimgWrap=document.getElementById('ans-ov-qimg-wrap');
+  if(task.qImg){document.getElementById('ans-ov-qimg').src=task.qImg;qimgWrap.style.display='block';}else qimgWrap.style.display='none';
   document.getElementById('ans-ov-cx').textContent=task.cx||'';
   document.getElementById('ans-ov-fb').style.display='none';
-  const sub=document.getElementById('ans-ov-submit');sub.textContent='Potvrdit odpověď';sub.onclick=submitAns;sub.style.display='block';
+  const sub=document.getElementById('ans-ov-submit');sub.textContent='Potvrdit odpověď';sub.onclick=submitAns;sub.style.display=task.type==='inventory'?'none':'block';
   const area=document.getElementById('ans-ov-area');
-  if(task.type==='mc')area.innerHTML=(task.opts||[]).map((o,i)=>`<div class="ao" onclick="pickOpt(this,${i})" id="ao-${i}"><div class="aol">${'ABCD'[i]}</div><div style="flex:1;font-size:15px;">${o}</div></div>`).join('');
+  if(task.type==='mc'){
+    const hasImgs=(task.optImgs||[]).some(Boolean);
+    if(hasImgs)area.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">${(task.opts||[]).map((o,i)=>`<div class="ao" onclick="pickOpt(this,${i})" id="ao-${i}" style="flex-direction:column;padding:8px;text-align:center;">${task.optImgs[i]?`<img src="${task.optImgs[i]}" style="width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:6px;" alt=""/>`:`<div style="width:100%;height:90px;border-radius:8px;background:rgba(245,240,232,.06);margin-bottom:6px;display:flex;align-items:center;justify-content:center;font-size:24px;">${'ABCD'[i]}</div>`}<div style="font-size:13px;">${o||''}</div></div>`).join('')}</div>`;
+    else area.innerHTML=(task.opts||[]).map((o,i)=>`<div class="ao" onclick="pickOpt(this,${i})" id="ao-${i}"><div class="aol">${'ABCD'[i]}</div><div style="flex:1;font-size:15px;">${o}</div></div>`).join('');
+  }
   else if(task.type==='tx')area.innerHTML=`<input class="inp" id="p-a" type="text" placeholder="Vaše odpověď…" style="font-size:17px;padding:15px;"/>`;
   else if(task.type==='nm')area.innerHTML=`<input class="inp" id="p-a" type="number" placeholder="Číslo…" style="font-size:28px;text-align:center;padding:16px;"/>`;
   else if(task.type==='cd')area.innerHTML=`<input class="inp" id="p-a" type="text" placeholder="Kód…" style="font-size:28px;text-align:center;padding:16px;letter-spacing:8px;font-weight:800;" maxlength="8"/>`;
   else if(task.type==='photo')area.innerHTML=`<div class="photo-drop" onclick="document.getElementById('photo-in').click()"><div style="font-size:40px;margin-bottom:10px;">📷</div><div style="font-size:14px;font-weight:600;margin-bottom:4px;">Vyfotit nebo nahrát</div><div style="font-size:12px;color:var(--txt2);">JPG, PNG · max. 5 MB</div></div><input type="file" id="photo-in" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoTask(event)"/><img id="photo-prev" style="width:100%;border-radius:12px;object-fit:cover;max-height:200px;display:none;margin-top:12px;" alt=""/>`;
   else if(task.type==='gps')area.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">📍</div><div style="font-size:14px;color:var(--txt2);">Potvrďte, že jste na správném místě</div></div>`;
   else if(task.type==='order')renderOrderTask(area,task);
-  else if(task.type==='inventory'){const need=task.ca||'';const has=(p.inventory||[]).some(it=>`${it.icon} ${it.name}`===need);area.innerHTML=has?`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">${need.split(' ')[0]||'🎒'}</div><div style="font-size:14px;color:var(--txt2);">Máte potřebný předmět:<br><b style="color:var(--txt);">${need}</b></div></div>`:`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">🔒</div><div style="font-size:14px;color:var(--txt2);">Potřebujete předmět:<br><b style="color:var(--txt);">${need||'?'}</b><br>Ještě ho nemáte — najděte ho jinde na trase.</div></div>`;}
+  else if(task.type==='inventory')area.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">🎒</div><div style="font-size:14px;color:var(--txt2);">Možná máte v inventáři něco, co by tady pomohlo.<br>Otevřete inventář a zkuste to použít.</div><button class="btn btn-ghost btn-sm" onclick="closeAns();openInvGame();" style="margin-top:14px;">🎒 Otevřít inventář</button></div>`;
   document.getElementById('ans-ov').classList.add('show');
   document.getElementById('gbb-ans').classList.add('active-tab');
 }
@@ -1853,8 +1922,12 @@ function submitAns(){
   if(task.type==='photo'){const prev=document.getElementById('photo-prev');if(!prev||prev.style.display==='none'){toast('⚠️ Nejprve nahrajte fotku');return;}ok=true;toast('📷 Fotka nahrána');}
   else if(task.type==='mc'){if(selOpt===-1){toast('⚠️ Vyberte odpověď');return;}ok=selOpt===task.ci;document.getElementById(`ao-${task.ci}`)?.classList.add('ok');if(!ok&&selOpt>=0)document.getElementById(`ao-${selOpt}`)?.classList.add('no');}
   else if(task.type==='gps'){ok=true;toast('📍 Poloha potvrzena');}
-  else if(task.type==='inventory'){const need=task.ca||'';const has=(p.inventory||[]).some(it=>`${it.icon} ${it.name}`===need);if(!has){toast('🔒 Tento předmět ještě nemáte. Najděte ho jinde na trase.');return;}ok=true;}
+  else if(task.type==='inventory'){toast('🎒 Otevřete inventář a zkuste tam vhodný předmět „Použít".');return;}
   else{const inp=document.getElementById('p-a');if(!inp?.value.trim()){toast('⚠️ Zadejte odpověď');return;}ok=inp.value.trim().toLowerCase()===(task.ca||'').toLowerCase();}
+  finalizeAnswer(ok);
+}
+function finalizeAnswer(ok){
+  const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];
   stopTimer();
   const key=`${p.si}-${p.ti2}`;const hLvl=p.usedHints[key]||0;const hPen=hLvl===0?0:hLvl===4?50:[0,10,20,30][hLvl]||0;
   const pen=ok?hPen:(task.pen||0)+hPen;const pts=ok?Math.max(0,task.pts-hPen):0;
@@ -1865,7 +1938,20 @@ function submitAns(){
   // Show feedback
   const fb=document.getElementById('ans-ov-fb');fb.style.display='block';
   fb.innerHTML=`<div style="background:${ok?'rgba(16,185,129,.12)':'rgba(239,68,68,.12)'};border:1.5px solid ${ok?'var(--good)':'var(--bad)'};border-radius:14px;padding:16px;margin-top:12px;text-align:center;"><div style="font-size:32px;margin-bottom:5px;">${ok?'✅':'❌'}</div><div style="font-weight:800;font-size:15px;">${ok?`Správně! +${pts} bodů`:'Špatně'}</div>${!ok&&task.type!=='photo'&&task.type!=='gps'&&task.type!=='inventory'?`<div style="font-size:13px;color:var(--txt2);margin-top:4px;">Správně: ${task.type==='mc'?task.opts[task.ci]:task.ca}</div>`:''} ${pen>0?`<div style="font-size:12px;color:#FCA5A5;margin-top:4px;">Penalizace: −${pen} bodů</div>`:''}</div>`;
-  const sub=document.getElementById('ans-ov-submit');sub.textContent='Pokračovat →';sub.onclick=()=>{closeAns();nextTask();};
+  const sub=document.getElementById('ans-ov-submit');sub.style.display='block';sub.textContent='Pokračovat →';sub.onclick=()=>{closeAns();nextTask();};
+}
+function useInventoryItem(itemLabel){
+  const{cg:g,pl:p}=S;
+  if(!g||!p||S.pl.ti2==null){toast('⚠️ Nejste v aktivní misi.');return;}
+  const task=g.stations?.[p.si]?.tasks?.[p.ti2];
+  if(!task||task.type!=='inventory'||task.ca!==itemLabel){
+    toast('🤔 Teď není vhodný čas toto použít.');
+    return;
+  }
+  closeInv();
+  if(!document.getElementById('ans-ov').classList.contains('show'))openAnsGame();
+  toast('✨ Použito!');
+  finalizeAnswer(true);
 }
 function nextTask(){
   const{cg:g,pl:p}=S;
@@ -1882,7 +1968,7 @@ function autoFail(){
 }
 
 // ══ FINISH ════════════════════════════════════════════
-function finishGame(){
+async function finishGame(){
   stopTimer();stopWatch();stopCountdown();
   const{cg:g,pl:p,cu:u}=S;
   const rawPts=p.answers.reduce((s,a)=>s+(a.pts||0),0);
@@ -1890,30 +1976,41 @@ function finishGame(){
   const ok=p.answers.filter(a=>a.ok).length;
   const tot=g.stations.reduce((s,st)=>s+st.tasks.length,0);
   const finalPts=Math.max(0,rawPts-totalPen);
-  // XP
   const xpGained=Math.round((g.xpReward||500)*(ok/Math.max(tot,1)));
   p.xpEarned=xpGained;
-  if(u){u.xp=(u.xp||0)+xpGained;u.completedMissions=(u.completedMissions||0)+1;if(!u.badges)u.badges=[];
-    var badgesBefore=u.badges.length;
+  let newBadge=null;
+  if(u){
+    u.xp=(u.xp||0)+xpGained;u.completedMissions=(u.completedMissions||0)+1;if(!u.badges)u.badges=[];
+    const badgesBefore=u.badges.length;
     evaluateBadges(u,p,g,ok,tot);
+    const newlyEarned=u.badges.slice(badgesBefore);
+    newBadge=S.badges.find(b=>newlyEarned.includes(b.id))||null;
+    if(sb){
+      try{
+        const{error}=await sb.from('profiles').update({xp:u.xp,completed_missions:u.completedMissions,badges:u.badges,updated_at:new Date().toISOString()}).eq('id',u.id);
+        if(error)throw error;
+      }catch(e){console.warn('Nepodařilo se uložit XP/odznaky',sbErrMsg(e));}
+    }
   }
-  // Rank
-  if(!g.results)g.results=[];
-  g.results.push({userId:u?.id,team:p.teamName,size:p.teamSize,taskTime:p.totalSecs,tasksOk:ok,totalTasks:tot,pts:finalPts,pen:totalPen,xp:xpGained,completedAt:Date.now()});
-  setSession(u?.id,g.id,'completed');
-  const sess=(u?.sessions||[]).find(s=>s.gameId===g.id);if(sess){sess.playerState=null;sess.resumeView=null;}
-  persist();
-  // Render completion
+  await setSession(g.id,'completed');
+  const ent=(S.entitlements||[]).find(e=>e.game_id===g.id);if(ent)ent.progress=null;
+  let rank=1,totalResults=1;
+  if(sb){
+    try{
+      const{error:insErr}=await sb.from('results').insert({user_id:u?.id,game_id:g.id,team_name:p.teamName,team_size:p.teamSize,task_time:p.totalSecs,points:finalPts,penalty:totalPen,xp:xpGained});
+      if(insErr)throw insErr;
+      const{data:allRes,error:selErr}=await sb.from('results').select('task_time').eq('game_id',g.id).order('task_time',{ascending:true});
+      if(selErr)throw selErr;
+      totalResults=allRes?.length||1;
+      rank=(allRes||[]).findIndex(r=>r.task_time>=p.totalSecs)+1||totalResults;
+    }catch(e){console.warn('Nepodařilo se uložit výsledek',sbErrMsg(e));}
+  }
   document.getElementById('comp-name').textContent=g.name;
   document.getElementById('comp-xp').textContent=`+${xpGained} XP`;
   document.getElementById('comp-time').textContent=fmt(p.totalSecs);
   document.getElementById('comp-tasks').textContent=`${ok} / ${tot}`;
   document.getElementById('comp-pts').textContent=`${finalPts} bodů`;
-  const rank=[...g.results].sort((a,b)=>a.taskTime-b.taskTime).findIndex(r=>r.team===p.teamName)+1;
-  document.getElementById('comp-rank').textContent=rank===1?'🥇 1. místo':`#${rank} z ${g.results.length}`;
-  // New badge check
-  const newlyEarned=(u?.badges||[]).slice(badgesBefore||0);
-  const newBadge=S.badges.find(b=>newlyEarned.includes(b.id));
+  document.getElementById('comp-rank').textContent=rank===1?'🥇 1. místo':`#${rank} z ${totalResults}`;
   if(newBadge){document.getElementById('comp-badge').style.display='block';document.getElementById('comp-badge-icon').textContent=newBadge.icon;document.getElementById('comp-badge-name').textContent=newBadge.name;}
   else document.getElementById('comp-badge').style.display='none';
   nav('v-completion');
@@ -1921,7 +2018,13 @@ function finishGame(){
 function shareResult(){
   const text=`Dokončil jsem misi "${S.cg?.name}" na Questly! ⏱ ${fmt(S.pl.totalSecs)} +${S.pl.xpEarned} XP 🗺️`;
   if(navigator.share)navigator.share({text,url:'https://questly.cz'}).catch(()=>{});
-  else{navigator.clipboard?.writeText(text).then(()=>toast('📋 Zkopírováno!'));if(S.cu&&!S.cu.badges?.includes('social')){S.cu.badges.push('social');persist();}}
+  else{
+    navigator.clipboard?.writeText(text).then(()=>toast('📋 Zkopírováno!'));
+    if(S.cu&&!S.cu.badges?.includes('social')){
+      S.cu.badges.push('social');
+      if(sb)sb.from('profiles').update({badges:S.cu.badges}).eq('id',S.cu.id).then(({error})=>{if(error)console.warn('Badge sync selhal',sbErrMsg(error));});
+    }
+  }
 }
 
 // ══ TIMER ════════════════════════════════════════════
@@ -1932,11 +2035,12 @@ function stopCountdown(){if(S.pl.countdownTi){clearInterval(S.pl.countdownTi);S.
 // ══ ACTIVATE ══════════════════════════════════════════
 function activateGame(){
   const code=document.getElementById('act-inp').value.trim().toUpperCase();if(!code){toast('⚠️ Zadejte kód');return;}
+  if(!S.cu){toast('⚠️ Nejprve se přihlaste');return;}
   const co=S.codes.find(c=>c.code===code);if(!co){toast('❌ Neplatný kód');return;}if(co.activatedBy&&co.activatedBy!==S.cu?.id){toast('❌ Kód aktivoval jiný hráč');return;}
   const g=S.games.find(g=>g.id===co.gameId);if(!g){toast('❌ Mise neexistuje');return;}
-  if((S.cu?.games||[]).includes(g.id)){toast('ℹ️ Misi již máte');navMain('v-miss');return;}
-  co.activatedBy=S.cu.id;co.activatedAt=Date.now();if(!S.cu.games)S.cu.games=[];S.cu.games.push(g.id);
-  setSession(S.cu.id,g.id,'unlocked');persist();toast('✅ Mise odemčena!');navMain('v-miss');
+  if((S.entitlements||[]).some(e=>e.game_id===g.id)){toast('ℹ️ Misi již máte');navMain('v-miss');return;}
+  co.activatedBy=S.cu.id;co.activatedAt=Date.now();
+  setSession(g.id,'unlocked');persist();toast('✅ Mise odemčena!');navMain('v-miss');
 }
 
 // ══ LOCATION PICKER ═══════════════════════════════════
@@ -1975,12 +2079,38 @@ function openPickerFor_st(){
 }
 function closePicker(){document.getElementById('picker-ov').style.display='none';}
 function pickerLocate(){if(!navigator.geolocation||!S.maps.picker)return;navigator.geolocation.getCurrentPosition(p=>{S.maps.picker.setView([p.coords.latitude,p.coords.longitude],17);toast('📍 Poloha nalezena');});}
+// ══ AUTO-DETEKCE MĚSTA PODLE TRASY ══════════════════════
+// Používá bezplatnou Nominatim (OpenStreetMap) reverse-geocoding službu — stejný zdroj map,
+// jaký appka už používá. Volá se jen při uložení polohy stanoviště, ne opakovaně.
+async function reverseGeocodeCity(lat,lng){
+  try{
+    const resp=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=10&accept-language=cs`);
+    if(!resp.ok)return null;
+    const data=await resp.json();
+    const a=data.address||{};
+    return a.city||a.town||a.village||a.municipality||a.county||null;
+  }catch(e){console.warn('Automatická detekce města selhala',e);return null;}
+}
+async function updateGameCityFromStations(){
+  if(!S.cg)return;
+  const st=S.cg.stations.find(s=>s.lat&&s.lng);
+  if(!st)return;
+  const city=await reverseGeocodeCity(st.lat,st.lng);
+  if(!city)return;
+  S.cg.city=city;S.cg.cityLat=st.lat;S.cg.cityLng=st.lng;
+  persist();
+  const sbEl=document.getElementById('cgd-sb');if(sbEl)sbEl.textContent=`${city} · ${S.cg.difficulty||''}`;
+  if(document.getElementById('v-cr').classList.contains('act'))renderCrList();
+  toast(`📍 Město mise nastaveno na ${city}`);
+}
+
 function confirmPicker(){
   if(!S.maps.picker)return;const c=S.maps.picker.getCenter();
   if(pickerTargetLat==='__st_lat'){
     if(S.csi===null)return;const st=S.cg.stations[S.csi];st.lat=parseFloat(c.lat.toFixed(6));st.lng=parseFloat(c.lng.toFixed(6));
     const lt=document.getElementById('cse-loc-txt');const lc=document.getElementById('cse-loc-coords');
     if(lt)lt.textContent='📍 Poloha nastavena';if(lc)lc.textContent=`${st.lat.toFixed(5)}, ${st.lng.toFixed(5)}`;persist();
+    updateGameCityFromStations();
   } else {
     const li=document.getElementById(pickerTargetLat);const ln=document.getElementById(pickerTargetLng);
     if(li)li.value=c.lat.toFixed(6);if(ln)ln.value=c.lng.toFixed(6);
@@ -2007,7 +2137,11 @@ function deleteGame(id){
   if(!confirm(`Opravdu smazat misi „${g.name}"? Smažou se i všechny aktivační kódy a výsledky. Tuto akci nelze vrátit zpět.`))return;
   S.games=S.games.filter(g=>g.id!==id);
   S.codes=S.codes.filter(c=>c.gameId!==id);
-  S.users.forEach(u=>{u.games=(u.games||[]).filter(gid=>gid!==id);u.sessions=(u.sessions||[]).filter(s=>s.gameId!==id);});
+  S.entitlements=(S.entitlements||[]).filter(e=>e.game_id!==id);
+  if(sb){
+    sb.from('entitlements').delete().eq('game_id',id).then(({error})=>{if(error)console.warn('Úklid entitlements selhal',sbErrMsg(error));});
+    sb.from('results').delete().eq('game_id',id).then(({error})=>{if(error)console.warn('Úklid results selhal',sbErrMsg(error));});
+  }
   if(S.cg?.id===id)S.cg=null;
   persist();toast('🗑️ Mise smazána');
   if(document.getElementById('v-cr-gd').classList.contains('act'))nav('v-cr');else renderCrList();
@@ -2033,9 +2167,9 @@ function createGame(){
     shortDesc:document.getElementById('ng-ds').value.trim(),
     fullDesc:document.getElementById('ng-fdesc').value.trim(),
     videoUrl:document.getElementById('ng-video').value.trim()||null,
+    trailerUrl:document.getElementById('ng-trailer').value.trim()||null,
     city:document.getElementById('ng-city').value.trim(),
-    cityLat:parseFloat(document.getElementById('ng-clat').value)||0,
-    cityLng:parseFloat(document.getElementById('ng-clng').value)||0,
+    cityLat:null,cityLng:null,
     startPointLat:parseFloat(document.getElementById('ng-lat').value)||0,
     startPointLng:parseFloat(document.getElementById('ng-lng').value)||0,
     startRadius:50,
@@ -2075,10 +2209,18 @@ function createGame(){
 function editGameVideo(){
   if(!S.cg)return;
   const cur=S.cg.videoUrl||'';
-  const url=prompt('Vložte odkaz na video (YouTube nebo Vimeo). Nechte prázdné pro odebrání videa:',cur);
+  const url=prompt('Vložte odkaz na intro video, které se pustí hráči po spuštění mise (YouTube nebo Vimeo). Nechte prázdné pro odebrání:',cur);
   if(url===null)return;
   S.cg.videoUrl=url.trim()||null;
-  persist();toast(S.cg.videoUrl?'✅ Video přidáno':'🗑️ Video odebráno');
+  persist();toast(S.cg.videoUrl?'✅ Intro video přidáno':'🗑️ Intro video odebráno');
+}
+function editGameTrailer(){
+  if(!S.cg)return;
+  const cur=S.cg.trailerUrl||'';
+  const url=prompt('Vložte odkaz na trailer, který uvidí hráči PŘED koupením v náhledu mise (YouTube nebo Vimeo). Nechte prázdné pro odebrání:',cur);
+  if(url===null)return;
+  S.cg.trailerUrl=url.trim()||null;
+  persist();toast(S.cg.trailerUrl?'✅ Trailer přidán':'🗑️ Trailer odebrán');
 }
 function toggleGameStatus(){
   if(!S.cg)return;
@@ -2151,14 +2293,44 @@ function saveSt(){
   st.name=document.getElementById('cse-nm').value||`Stan. ${S.csi+1}`;st.hint=document.getElementById('cse-ht').value;st.radius=parseInt(document.getElementById('cse-rd').value)||20;
   persist();toast('✅ Uloženo');nav('v-cr-sts');
 }
-function addTask(){S.etask=-1;['cte-q','cte-cx','cte-h1','cte-h2','cte-h3'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('cte-tp').value='mc';document.getElementById('cte-pt').value='10';document.getElementById('cte-pen').value='0';document.getElementById('cte-timer').value='0';renderCteItemSelect('');renderTF();nav('v-cr-te');}
+function addTask(){
+  S.etask=-1;['cte-q','cte-cx','cte-h1','cte-h2','cte-h3'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('cte-tp').value='mc';document.getElementById('cte-pt').value='10';document.getElementById('cte-pen').value='0';document.getElementById('cte-timer').value='0';
+  S.pendingTaskQImg=null;S.pendingTaskOptImgs=[null,null,null,null];
+  resetTaskImgPreview('cte-qimg-prev','cte-qimg-ph');
+  renderCteItemSelect('');renderTF();nav('v-cr-te');
+}
 function editTask(i){
   S.etask=i;const t=S.cg.stations[S.csi].tasks[i];
   document.getElementById('cte-tp').value=t.type;document.getElementById('cte-q').value=t.q||'';document.getElementById('cte-cx').value=t.cx||'';
   document.getElementById('cte-pt').value=t.pts||10;document.getElementById('cte-pen').value=t.pen||0;document.getElementById('cte-timer').value=t.timer||0;
   document.getElementById('cte-h1').value=t.hints?.[0]||'';document.getElementById('cte-h2').value=t.hints?.[1]||'';document.getElementById('cte-h3').value=t.hints?.[2]||'';
   renderCteItemSelect(t.givesItem||'');
+  S.pendingTaskQImg=t.qImg||null;S.pendingTaskOptImgs=t.optImgs?[...t.optImgs]:[null,null,null,null];
+  setTaskImgPreview('cte-qimg-prev','cte-qimg-ph',S.pendingTaskQImg);
   renderTF(t);nav('v-cr-te');
+}
+function resetTaskImgPreview(prevId,phId){setTaskImgPreview(prevId,phId,null);}
+function setTaskImgPreview(prevId,phId,src){
+  const img=document.getElementById(prevId),ph=document.getElementById(phId);if(!img)return;
+  if(src){img.src=src;img.style.display='block';if(ph)ph.style.display='none';}
+  else{img.style.display='none';img.removeAttribute('src');if(ph)ph.style.display='block';}
+}
+function handleTaskImg(e,prevId,phId,target){
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>2000000){toast('⚠️ Max. 2 MB');return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    setTaskImgPreview(prevId,phId,ev.target.result);
+    if(target==='q')S.pendingTaskQImg=ev.target.result;
+    else{const idx=parseInt(target);if(!S.pendingTaskOptImgs)S.pendingTaskOptImgs=[null,null,null,null];S.pendingTaskOptImgs[idx]=ev.target.result;}
+  };
+  r.readAsDataURL(file);
+}
+function removeTaskImg(prevId,phId,target){
+  setTaskImgPreview(prevId,phId,null);
+  if(target==='q')S.pendingTaskQImg=null;
+  else{const idx=parseInt(target);if(S.pendingTaskOptImgs)S.pendingTaskOptImgs[idx]=null;}
 }
 // ── Game item bank (inventory items available for this mission) ──
 function gameItemLabel(it){return `${it.icon} ${it.name}`;}
@@ -2195,7 +2367,7 @@ function renderInvItemSelect(selected){
 }
 function renderTF(t=null){
   const tp=document.getElementById('cte-tp').value;const c=document.getElementById('cte-tf');
-  if(tp==='mc'){const opts=t?.opts||['','','',''];const ci=t?.ci??0;c.innerHTML=`<div style="font-size:12px;color:var(--txt2);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Možnosti — označte správnou</div>${['A','B','C','D'].map((l,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;"><input type="radio" name="ci" value="${i}" ${ci===i?'checked':''} style="accent-color:var(--teal);width:17px;height:17px;flex-shrink:0;cursor:pointer;"/><div style="width:28px;height:28px;border-radius:50%;background:rgba(245,240,232,.08);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">${l}</div><input class="inp" id="op-${i}" placeholder="Možnost ${l}…" value="${opts[i]||''}"/></div>`).join('')}<div style="margin-bottom:4px;"></div>`;}
+  if(tp==='mc'){const opts=t?.opts||['','','',''];const ci=t?.ci??0;const oimgs=S.pendingTaskOptImgs||t?.optImgs||[null,null,null,null];c.innerHTML=`<div style="font-size:12px;color:var(--txt2);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">Možnosti — označte správnou</div>${['A','B','C','D'].map((l,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;"><input type="radio" name="ci" value="${i}" ${ci===i?'checked':''} style="accent-color:var(--teal);width:17px;height:17px;flex-shrink:0;cursor:pointer;"/><div style="width:28px;height:28px;border-radius:50%;background:rgba(245,240,232,.08);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${l}</div><input class="inp" id="op-${i}" placeholder="Možnost ${l}… (nebo jen obrázek)" value="${opts[i]||''}" style="flex:1;"/><div id="op-img-preview-${i}" onclick="document.getElementById('op-img-in-${i}').click()" style="width:38px;height:38px;border-radius:8px;background:var(--navy3);border:1.5px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;font-size:14px;">${oimgs[i]?`<img src="${oimgs[i]}" style="width:100%;height:100%;object-fit:cover;"/>`:'📷'}</div><input type="file" id="op-img-in-${i}" accept="image/*" style="display:none;" onchange="handleOptImg(event,${i})"/></div>`).join('')}<div style="margin-bottom:4px;"></div>`;}
   else if(tp==='tx'){c.innerHTML=`<div class="ig"><label class="lb">Správná odpověď</label><input class="inp" id="ca" type="text" value="${t?.ca||''}" placeholder="Text…"/></div>`;}
   else if(tp==='nm'){c.innerHTML=`<div class="ig"><label class="lb">Správná číselná odpověď</label><input class="inp" id="ca" type="number" value="${t?.ca||''}"/></div>`;}
   else if(tp==='cd'){c.innerHTML=`<div class="ig"><label class="lb">Správný kód</label><input class="inp" id="ca" type="text" style="font-size:26px;text-align:center;letter-spacing:6px;font-weight:700;" value="${t?.ca||''}"/></div>`;}
@@ -2203,14 +2375,34 @@ function renderTF(t=null){
   else if(tp==='order'){c.innerHTML=`<div class="ig"><label class="lb">Položky k seřazení (každá na řádku)</label><textarea class="inp" id="ca" placeholder="Položka 1\nPoložka 2\nPoložka 3" style="min-height:100px;">${(t?.opts||[]).join('\n')}</textarea></div>`;}
   else if(tp==='inventory'){const items=S.cg?.items||[];c.innerHTML=`<div class="ig"><label class="lb">Potřebný předmět z inventáře</label><select class="inp" id="ca"></select>${!items.length?`<div style="font-size:12px;color:var(--txt2);margin-top:6px;">Zatím nemáte žádné předměty. Přidejte jeden pomocí tlačítka ➕ u pole „Předmět do inventáře" výše.</div>`:''}</div>`;renderInvItemSelect(t?.ca||'');}
 }
+function handleOptImg(e,idx){
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>2000000){toast('⚠️ Max. 2 MB');return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    if(!S.pendingTaskOptImgs)S.pendingTaskOptImgs=[null,null,null,null];
+    S.pendingTaskOptImgs[idx]=ev.target.result;
+    const prev=document.getElementById(`op-img-preview-${idx}`);
+    if(prev)prev.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;"/>`;
+  };
+  r.readAsDataURL(file);
+}
 function saveTask(){
   const si=S.csi;if(si===null){nav('v-cr-se');return;}
   const tp=document.getElementById('cte-tp').value;const q=document.getElementById('cte-q').value.trim();if(!q){toast('⚠️ Zadejte otázku');return;}
   const task={type:tp,q,cx:document.getElementById('cte-cx').value.trim(),pts:parseInt(document.getElementById('cte-pt').value)||10,
     pen:parseInt(document.getElementById('cte-pen').value)||0,timer:parseInt(document.getElementById('cte-timer').value)||0,
     hints:[document.getElementById('cte-h1').value.trim(),document.getElementById('cte-h2').value.trim(),document.getElementById('cte-h3').value.trim()],
-    givesItem:document.getElementById('cte-item').value.trim()||null};
-  if(tp==='mc'){task.opts=[0,1,2,3].map(i=>document.getElementById(`op-${i}`)?.value.trim()||'').filter(Boolean);task.ci=parseInt(document.querySelector('input[name="ci"]:checked')?.value??0);if(task.opts.length<2){toast('⚠️ Min. 2 možnosti');return;}}
+    givesItem:document.getElementById('cte-item').value.trim()||null,
+    qImg:S.pendingTaskQImg||null};
+  if(tp==='mc'){
+    const rawOpts=[0,1,2,3].map(i=>document.getElementById(`op-${i}`)?.value.trim()||'');
+    const rawImgs=(S.pendingTaskOptImgs||[null,null,null,null]).slice(0,4);
+    let lastUsed=-1;for(let i=0;i<4;i++){if(rawOpts[i]||rawImgs[i])lastUsed=i;}
+    task.opts=rawOpts.slice(0,lastUsed+1);task.optImgs=rawImgs.slice(0,lastUsed+1);
+    task.ci=parseInt(document.querySelector('input[name="ci"]:checked')?.value??0);
+    if(task.opts.length<2){toast('⚠️ Min. 2 možnosti (text nebo obrázek)');return;}
+  }
   else if(tp==='order'){task.opts=(document.getElementById('ca')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean);}
   else if(tp==='inventory'){task.ca=document.getElementById('ca')?.value.trim()||'';if(!task.ca){toast('⚠️ Vyberte potřebný předmět');return;}}
   else if(tp!=='photo'&&tp!=='gps'){task.ca=document.getElementById('ca')?.value.trim()||'';}
@@ -2289,41 +2481,62 @@ function renderReportsList(){
 function toggleReportResolved(id){const r=(S.reports||[]).find(r=>r.id===id);if(r){r.resolved=!r.resolved;persist();renderReportsList();}}
 function deleteReport(id){if(!confirm('Smazat hlášení?'))return;S.reports=(S.reports||[]).filter(r=>r.id!==id);persist();renderReportsList();}
 function lookupPlayer(){lookupPlayerByEmail(document.getElementById('sup-search').value.trim().toLowerCase());}
-function lookupPlayerByEmail(em){
-  const u=S.users.find(u=>u.email===em);const c=document.getElementById('sup-player-detail');
+async function lookupPlayerByEmail(em){
+  const c=document.getElementById('sup-player-detail');
   if(!em){c.innerHTML='';return;}
   document.getElementById('sup-search').value=em;
-  if(!u){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:16px 0;">Hráč s tímto e-mailem nenalezen</div>`;return;}
-  const sessions=u.sessions||[];
-  c.innerHTML=`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:16px;">
-    <div style="font-size:15px;font-weight:700;margin-bottom:2px;">${u.name}</div>
-    <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${u.email} · ${u.xp||0} XP · ${u.completedMissions||0} dokončených misí</div>
-    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt2);margin-bottom:4px;">Mise a postup</div>
-    ${!sessions.length?`<div style="font-size:13px;color:var(--txt2);padding:8px 0;">Žádné odemčené ani rozehrané mise.</div>`:sessions.map(s=>{
-      const g=S.games.find(g=>g.id===s.gameId);
-      return`<div style="border-top:1px solid var(--bdr);padding:10px 0;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
-          <div style="font-size:13px;font-weight:700;">${g?.name||s.gameId}</div>
-          <span class="pill ${s.status==='completed'?'pill-cream':s.status==='in_progress'?'pill-teal':'pill-amber'}" style="font-size:10px;flex-shrink:0;">${s.status==='completed'?'✓ Dokončeno':s.status==='in_progress'?'▶ Rozehráno':'● Odemčeno'}</span>
-        </div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:8px;">${s.doneTasks?`${s.doneTasks} odpovědí uloženo`:'zatím bez odpovědí'}${s.playerState?.inventory?.length?` · 🎒 ${s.playerState.inventory.length} předmětů`:''}${s.resumeView?` · naposledy: ${s.resumeView}`:''}</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          ${s.status==='in_progress'?`<button class="btn btn-ghost btn-xs" onclick="supportResetSession('${u.id}','${s.gameId}')" style="color:#FCA5A5;">↺ Resetovat postup</button>`:''}
-          ${s.status!=='completed'?`<button class="btn btn-ghost btn-xs" onclick="supportUnlockGame('${u.id}','${s.gameId}')">🔓 Znovu odemknout</button>`:''}
-        </div>
-      </div>`;
-    }).join('')}
-  </div>`;
+  if(!sb){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:16px 0;">Supabase není připojené</div>`;return;}
+  c.innerHTML=`<div style="text-align:center;padding:16px;color:var(--txt2);font-size:13px;">Hledám…</div>`;
+  try{
+    const{data:profile,error:pErr}=await sb.from('profiles').select('*').eq('email',em).maybeSingle();
+    if(pErr)throw pErr;
+    if(!profile){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:16px 0;">Hráč s tímto e-mailem nenalezen</div>`;return;}
+    await showPlayerSupportDetail(profile.id);
+  }catch(e){c.innerHTML=`<div style="font-size:13px;color:#FCA5A5;text-align:center;padding:16px 0;">Chyba: ${sbErrMsg(e)}</div>`;}
 }
-function supportResetSession(uid,gid){
+async function showPlayerSupportDetail(userId){
+  const c=document.getElementById('sup-player-detail');
+  try{
+    const[{data:profile,error:pErr},{data:ents,error:eErr}]=await Promise.all([
+      sb.from('profiles').select('*').eq('id',userId).single(),
+      sb.from('entitlements').select('*').eq('user_id',userId)
+    ]);
+    if(pErr)throw pErr;if(eErr)throw eErr;
+    c.innerHTML=`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:16px;">
+      <div style="font-size:15px;font-weight:700;margin-bottom:2px;">${profile.name||'(bez jména)'}</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${profile.email||''} · ${profile.xp||0} XP · ${profile.completed_missions||0} dokončených misí</div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt2);margin-bottom:4px;">Mise a postup</div>
+      ${!ents?.length?`<div style="font-size:13px;color:var(--txt2);padding:8px 0;">Žádné odemčené ani rozehrané mise.</div>`:ents.map(en=>{
+        const g=S.games.find(g=>g.id===en.game_id);
+        return`<div style="border-top:1px solid var(--bdr);padding:10px 0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
+            <div style="font-size:13px;font-weight:700;">${g?.name||en.game_id}</div>
+            <span class="pill ${en.status==='completed'?'pill-cream':en.status==='in_progress'?'pill-teal':'pill-amber'}" style="font-size:10px;flex-shrink:0;">${en.status==='completed'?'✓ Dokončeno':en.status==='in_progress'?'▶ Rozehráno':'● Odemčeno'}</span>
+          </div>
+          <div style="font-size:11px;color:var(--txt2);margin-bottom:8px;">${en.progress?.doneTasks?`${en.progress.doneTasks} odpovědí uloženo`:'zatím bez odpovědí'}${en.progress?.inventory?.length?` · 🎒 ${en.progress.inventory.length} předmětů`:''}${en.progress?.resumeView?` · naposledy: ${en.progress.resumeView}`:''}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${en.status==='in_progress'?`<button class="btn btn-ghost btn-xs" onclick="supportResetSession('${userId}','${en.game_id}')" style="color:#FCA5A5;">↺ Resetovat postup</button>`:''}
+            ${en.status!=='completed'?`<button class="btn btn-ghost btn-xs" onclick="supportUnlockGame('${userId}','${en.game_id}')">🔓 Znovu odemknout</button>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }catch(e){c.innerHTML=`<div style="font-size:13px;color:#FCA5A5;text-align:center;padding:16px 0;">Chyba: ${sbErrMsg(e)}</div>`;}
+}
+async function supportResetSession(userId,gid){
   if(!confirm('Resetovat rozehraný postup tohoto hráče v této misi? Bude moci začít znovu od začátku.'))return;
-  const u=S.users.find(u=>u.id===uid);const s=(u?.sessions||[]).find(s=>s.gameId===gid);
-  if(s){s.status='unlocked';s.playerState=null;s.resumeView=null;s.doneTasks=0;persist();lookupPlayerByEmail(u.email);toast('✅ Postup resetován');}
+  try{
+    const{error}=await sb.from('entitlements').update({status:'unlocked',progress:null,updated_at:new Date().toISOString()}).eq('user_id',userId).eq('game_id',gid);
+    if(error)throw error;
+    toast('✅ Postup resetován');showPlayerSupportDetail(userId);
+  }catch(e){toast('❌ '+sbErrMsg(e));}
 }
-function supportUnlockGame(uid,gid){
-  const u=S.users.find(u=>u.id===uid);if(!u)return;
-  if(!u.games)u.games=[];if(!u.games.includes(gid))u.games.push(gid);
-  setSession(uid,gid,'unlocked');persist();lookupPlayerByEmail(u.email);toast('✅ Mise znovu odemčena');
+async function supportUnlockGame(userId,gid){
+  try{
+    const{error}=await sb.from('entitlements').upsert({user_id:userId,game_id:gid,status:'unlocked',progress:null,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
+    if(error)throw error;
+    toast('✅ Mise znovu odemčena');showPlayerSupportDetail(userId);
+  }catch(e){toast('❌ '+sbErrMsg(e));}
 }
 
 // ══ CREATOR: FOOTER PAGES EDITOR ═══════════════════════
@@ -2346,7 +2559,7 @@ function savePageEdit(){
 }
 
 // ══ CREATOR: MAIL CONFIG + NEWSLETTER ══════════════════
-function renderMailCfg(){
+async function renderMailCfg(){
   const cfg=S.mailCfg||{};
   document.getElementById('mc-sid').value=cfg.serviceId||'';
   document.getElementById('mc-pk').value=cfg.publicKey||'';
@@ -2354,8 +2567,14 @@ function renderMailCfg(){
   document.getElementById('mc-tr').value=cfg.templateReset||'';
   document.getElementById('mc-tn').value=cfg.templateNewsletter||'';
   document.getElementById('mc-status').textContent=mailReady()?'✅ EmailJS je nakonfigurován':'⚠️ EmailJS zatím není nastaven — e-maily se neodesílají';
-  const subs=S.users.filter(u=>u.newsletterOptIn&&u.email);
-  document.getElementById('nl-sub-count').textContent=`👥 ${subs.length} odběratelů se souhlasem`;
+  document.getElementById('nl-sub-count').textContent='👥 Načítám počet odběratelů…';
+  if(sb){
+    try{
+      const{count,error}=await sb.from('profiles').select('id',{count:'exact',head:true}).eq('newsletter_opt_in',true);
+      if(error)throw error;
+      document.getElementById('nl-sub-count').textContent=`👥 ${count??0} odběratelů se souhlasem`;
+    }catch(e){document.getElementById('nl-sub-count').textContent='👥 Nepodařilo se načíst počet odběratelů';}
+  }else document.getElementById('nl-sub-count').textContent='👥 Supabase není připojené';
 }
 function saveMailCfg(){
   S.mailCfg={
@@ -2371,7 +2590,13 @@ async function sendNewsletter(){
   if(!mailReady()||!S.mailCfg.templateNewsletter){toast('⚠️ Nejprve nastavte a uložte EmailJS výše');return;}
   const subject=document.getElementById('nl-subj').value.trim(),body=document.getElementById('nl-body').value.trim();
   if(!subject||!body){toast('⚠️ Vyplňte předmět i text zprávy');return;}
-  const subs=S.users.filter(u=>u.newsletterOptIn&&u.email);
+  if(!sb){toast('⚠️ Supabase není připojené');return;}
+  let subs=[];
+  try{
+    const{data,error}=await sb.from('profiles').select('email,name').eq('newsletter_opt_in',true);
+    if(error)throw error;
+    subs=(data||[]).filter(u=>u.email);
+  }catch(e){toast('❌ Nepodařilo se načíst odběratele: '+sbErrMsg(e));return;}
   if(!subs.length){toast('⚠️ Žádní odběratelé s aktivním souhlasem');return;}
   if(!confirm(`Odeslat newsletter ${subs.length} odběratelům? Toto se odešle skutečně a nelze to vzít zpět.`))return;
   const btn=document.getElementById('nl-send-btn');btn.disabled=true;let ok=0;
@@ -2388,28 +2613,67 @@ async function sendNewsletter(){
 // TODO(backend): once a real database exists, replace the body of this function with
 // e.g. `return (await fetch('/api/leaderboard')).json();` — the render call site (renderGlobalLB)
 // already awaits it, so swapping local aggregation for a real API call needs no other changes.
+async function openPlayerProfile(userId){
+  if(!sb||!userId)return;
+  S.prevView=document.querySelector('.main-view.act,.flow-view.act')?.id||'v-prof';
+  nav('v-player-profile');
+  const c=document.getElementById('pp-content');
+  c.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--txt2);font-size:13px;">Načítám…</div>`;
+  try{
+    const{data:profile,error}=await sb.from('profiles').select('*').eq('id',userId).single();
+    if(error)throw error;
+    const lvl=getLvl(profile.xp||0);
+    const earnedBadges=profile.badges||[];
+    c.innerHTML=`
+      <div style="text-align:center;padding:20px 0 24px;">
+        ${profile.avatar?`<img src="${profile.avatar}" style="width:84px;height:84px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:3px solid rgba(245,240,232,.2);display:block;" alt=""/>`:`<div style="width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--amber));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;margin:0 auto 12px;border:3px solid rgba(245,240,232,.2);">${(profile.name||'?')[0].toUpperCase()}</div>`}
+        <div style="font-size:20px;font-weight:800;">${profile.name||'Hráč'}${S.cu&&profile.id===S.cu.id?' <span style="color:var(--teal);font-size:14px;">(vy)</span>':''}</div>
+        <div style="font-size:13px;color:var(--txt2);margin-top:2px;">Úroveň ${lvl} · ${profile.xp||0} XP</div>
+        <div style="font-size:13px;color:var(--txt2);margin-top:8px;">🏁 ${profile.completed_missions||0} dokončených misí</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px;">Odznaky</div>
+      <div class="badge-grid">
+        ${S.badges.map(b=>`<div class="badge-item ${earnedBadges.includes(b.id)?'earned':''}"><div class="badge-icon">${b.icon}</div><div class="badge-lbl">${b.name}</div></div>`).join('')}
+      </div>`;
+  }catch(e){c.innerHTML=`<div style="text-align:center;padding:40px 20px;color:#FCA5A5;font-size:13px;">Chyba: ${sbErrMsg(e)}</div>`;}
+}
 async function getGlobalLeaderboard(limit=50){
-  return[...S.users]
-    .filter(u=>(u.completedMissions||0)>0)
-    .sort((a,b)=>(b.xp||0)-(a.xp||0))
-    .slice(0,limit);
+  if(!sb)return[];
+  try{
+    const{data,error}=await sb.from('profiles').select('*').gt('completed_missions',0).order('xp',{ascending:false}).limit(limit);
+    if(error)throw error;
+    return data||[];
+  }catch(e){console.warn('Nepodařilo se načíst žebříček',sbErrMsg(e));return[];}
 }
 async function renderGlobalLB(){
   const c=document.getElementById('global-lb-li');
+  c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--txt2);font-size:13px;">Načítám…</div>`;
   const top=await getGlobalLeaderboard();
   if(!top.length){c.innerHTML=`<div class="emp"><div class="emp-i">🏆</div><div class="emp-t">Zatím žádní hráči</div></div>`;return;}
   const med=['🥇','🥈','🥉'];
-  c.innerHTML=top.map((u,i)=>`<div class="lbrow"><div style="font-size:16px;font-weight:800;width:28px;text-align:center;color:${i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--txt2)'};">${med[i]||`${i+1}.`}</div>${u.avatar?`<img src="${u.avatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;" alt=""/>`:`<div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--amber));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">${(u.name||'?')[0].toUpperCase()}</div>`}<div style="flex:1;"><div style="font-size:14px;font-weight:700;">${u.name}${S.cu&&u.id===S.cu.id?' <span style="color:var(--teal);">(vy)</span>':''}</div><div style="font-size:12px;color:var(--txt2);">${u.completedMissions||0} misí · Úr. ${getLvl(u.xp||0)}</div></div><div style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;">${u.xp||0} XP</div></div>`).join('');
+  c.innerHTML=top.map((u,i)=>`<div class="lbrow" style="cursor:pointer;" onclick="openPlayerProfile('${u.id}')"><div style="font-size:16px;font-weight:800;width:28px;text-align:center;color:${i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--txt2)'};">${med[i]||`${i+1}.`}</div>${u.avatar?`<img src="${u.avatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;" alt=""/>`:`<div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--amber));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;">${(u.name||'?')[0].toUpperCase()}</div>`}<div style="flex:1;"><div style="font-size:14px;font-weight:700;">${u.name}${S.cu&&u.id===S.cu.id?' <span style="color:var(--teal);">(vy)</span>':''}</div><div style="font-size:12px;color:var(--txt2);">${u.completed_missions||0} misí · Úr. ${getLvl(u.xp||0)}</div></div><div style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;">${u.xp||0} XP</div></div>`).join('');
 }
-function renderLB(){const g=S.cg;const sb=document.getElementById('clb-sb');if(sb&&g)sb.textContent=g.name;const c=document.getElementById('clb-li');const res=g?.results?.filter(r=>r.completedAt)||[];if(!res.length){c.innerHTML=`<div class="emp"><div class="emp-i">🏆</div><div class="emp-t">Žádné výsledky</div></div>`;return;}const sorted=[...res].sort((a,b)=>a.taskTime-b.taskTime);const med=['🥇','🥈','🥉'];c.innerHTML=sorted.map((r,i)=>`<div class="lbrow"><div style="font-size:16px;font-weight:800;width:28px;text-align:center;color:${i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--txt2)'};">${med[i]||`${i+1}.`}</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;">${r.team}</div><div style="font-size:12px;color:var(--txt2);">${r.size} čl. · ${r.pts} b. · +${r.xp||0} XP</div></div><div style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;">${fmt(r.taskTime)}</div></div>`).join('');}
+async function renderLB(){
+  const g=S.cg;const sbEl=document.getElementById('clb-sb');if(sbEl&&g)sbEl.textContent=g.name;
+  const c=document.getElementById('clb-li');
+  if(!g){c.innerHTML='';return;}
+  c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--txt2);font-size:13px;">Načítám…</div>`;
+  if(!sb){c.innerHTML=`<div class="emp"><div class="emp-i">🏆</div><div class="emp-t">Supabase není připojené</div></div>`;return;}
+  try{
+    const{data,error}=await sb.from('results').select('*').eq('game_id',g.id).order('task_time',{ascending:true});
+    if(error)throw error;
+    const res=data||[];
+    if(!res.length){c.innerHTML=`<div class="emp"><div class="emp-i">🏆</div><div class="emp-t">Žádné výsledky</div></div>`;return;}
+    const med=['🥇','🥈','🥉'];
+    c.innerHTML=res.map((r,i)=>`<div class="lbrow" ${r.user_id?`style="cursor:pointer;" onclick="openPlayerProfile('${r.user_id}')"`:''}><div style="font-size:16px;font-weight:800;width:28px;text-align:center;color:${i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'var(--txt2)'};">${med[i]||`${i+1}.`}</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;">${r.team_name||'—'}</div><div style="font-size:12px;color:var(--txt2);">${r.team_size||1} čl. · ${r.points||0} b. · +${r.xp||0} XP</div></div><div style="font-size:16px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;">${fmt(r.task_time||0)}</div></div>`).join('');
+  }catch(e){c.innerHTML=`<div class="emp"><div class="emp-i">⚠️</div><div class="emp-t">Chyba: ${sbErrMsg(e)}</div></div>`;}
+}
 
 // ══ AI GENERATOR ══════════════════════════════════════
 function setAiProvider(p){
   localStorage.setItem('q7_aiprovider',p);
-  document.getElementById('ai-prov-anthropic').classList.toggle('a',p==='anthropic');
   document.getElementById('ai-prov-gemini').classList.toggle('a',p==='gemini');
   document.getElementById('ai-prov-paste').classList.toggle('a',p==='paste');
-  document.getElementById('ai-key-wrap-anthropic').style.display=p==='anthropic'?'block':'none';
   document.getElementById('ai-key-wrap-gemini').style.display=p==='gemini'?'block':'none';
   document.getElementById('ai-paste-wrap').style.display=p==='paste'?'block':'none';
   document.getElementById('ai-key-warning').style.display=p==='paste'?'none':'block';
@@ -2418,13 +2682,11 @@ function setAiProvider(p){
   document.getElementById('ai-status').style.display='none';
 }
 function saveAiKey(){
-  localStorage.setItem('q7_aikey_anthropic',(document.getElementById('ai-key-anthropic').value||'').trim());
   localStorage.setItem('q7_aikey_gemini',(document.getElementById('ai-key-gemini').value||'').trim());
 }
 function loadAiKey(){
-  document.getElementById('ai-key-anthropic').value=localStorage.getItem('q7_aikey_anthropic')||'';
   document.getElementById('ai-key-gemini').value=localStorage.getItem('q7_aikey_gemini')||'';
-  setAiProvider(localStorage.getItem('q7_aiprovider')||'anthropic');
+  setAiProvider(localStorage.getItem('q7_aiprovider')==='paste'?'paste':'gemini');
 }
 function buildMissionPrompt(prompt){
   return`Jsi asistent pro tvorbu městských únikových her (Questly). Vygeneruj misi na základě tohoto zadání: "${prompt}"\n\nPoužij různé typy úkolů podle situace na stanovišti — ne jen výběr z možností. Dostupné typy úkolu (pole "type"):\n- "mc" – výběr z možností: potřebuje "opts" (2–4 řetězce) a "ci" (index správné odpovědi od 0)\n- "tx" – volná textová odpověď: potřebuje "ca" (správná odpověď jako text)\n- "nm" – číselná odpověď: "ca" jako číslo v uvozovkách\n- "cd" – zadání kódu/hesla nalezeného na místě: "ca" jako text kódu\n- "order" – seřazení nápověd/stop: "opts" jako pole položek ve SPRÁVNÉM pořadí\n- "inventory" – vyžaduje předmět z inventáře: "ca" musí přesně odpovídat "givesItem" nějakého dřívějšího úkolu (emoji+mezera+název)\n- "photo" – hráč nahraje fotodůkaz, žádné další pole netřeba\n- "gps" – hráč jen potvrdí, že je na místě, žádné další pole netřeba\n\nKterýkoliv úkol může navíc udělit předmět do inventáře polem "givesItem" (emoji+mezera+název, např. "🗝️ Starý klíč") — hráč ho pak může použít v pozdějším "inventory" úkolu.\n\nPokud znáte reálné a ověřené GPS souřadnice místa, přidejte je do stanoviště jako "lat" a "lng" (desetinná čísla). Pokud si nejste jistí přesnou polohou, pole "lat"/"lng" vynechte — tvůrce je pak doplní ručně v appce.\n\nVracej POUZE JSON v tomto formátu (bez markdown, bez uvozujícího textu):\n{"name":"Název mise","shortDesc":"Krátký popis (1 věta)","fullDesc":"Plný příběhový popis (3-4 věty, atmosférický)","city":"Město","difficulty":"lehká nebo střední nebo těžká","duration":90,"xpReward":500,"stations":[{"name":"Název stanoviště (konkrétní reálné místo)","hint":"Navigační nápověda k nalezení místa","lat":null,"lng":null,"tasks":[{"type":"mc","q":"Otázka","opts":["A","B","C","D"],"ci":0,"pts":10,"hints":["nápověda1","nápověda2","nápověda3"],"givesItem":null}]}]}`;
@@ -2433,17 +2695,6 @@ function copyClaudeTemplate(){
   const tpl=buildMissionPrompt('[SEM NAPIŠTE SVŮJ NÁPAD NA MISI — téma, město, délka, obtížnost…]');
   navigator.clipboard?.writeText(tpl).then(()=>toast('📋 Šablona zkopírována — vložte ji do Claude'))
     .catch(()=>toast('⚠️ Kopírování se nezdařilo, zkuste to prosím ručně'));
-}
-async function callAnthropic(apiKey,prompt){
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{
-    'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'
-  },body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1500,messages:[{role:'user',content:buildMissionPrompt(prompt)}]})});
-  const data=await resp.json();
-  if(data.type==='error'||!resp.ok){
-    const msg=data.error?.message||`HTTP ${resp.status}`;
-    throw new Error(msg.includes('browser-access')?'API klíč byl odmítnut kvůli nastavení prohlížeče (zkuste klíč zkontrolovat na console.anthropic.com).':msg);
-  }
-  return data.content?.[0]?.text||'';
 }
 async function callGemini(apiKey,prompt){
   const resp=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent`,{method:'POST',headers:{
@@ -2483,24 +2734,24 @@ function importPastedMission(){
   }
 }
 async function aiGenerate(){
-  const provider=localStorage.getItem('q7_aiprovider')||'anthropic';
+  const provider=localStorage.getItem('q7_aiprovider')==='paste'?'paste':'gemini';
   if(provider==='paste'){importPastedMission();return;}
   const prompt=document.getElementById('ai-prompt').value.trim();if(!prompt){toast('⚠️ Popište misi');return;}
-  const apiKey=(document.getElementById(provider==='gemini'?'ai-key-gemini':'ai-key-anthropic').value||'').trim();
+  const apiKey=(document.getElementById('ai-key-gemini').value||'').trim();
   const status=document.getElementById('ai-status');status.style.display='block';
-  if(!apiKey){status.innerHTML=`<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;font-size:13px;color:#FCA5A5;">❌ Nejprve vložte svůj ${provider==='gemini'?'Gemini':'Anthropic'} API klíč výše (odkaz „Získat klíč").</div>`;return;}
+  if(!apiKey){status.innerHTML=`<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;font-size:13px;color:#FCA5A5;">❌ Nejprve vložte svůj Gemini API klíč výše (odkaz „Získat klíč").</div>`;return;}
   const btn=document.getElementById('ai-gen-btn');btn.disabled=true;btn.textContent='⏳ Generuji…';
   status.innerHTML=`<div class="ai-thinking"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><div style="font-size:13px;color:var(--txt2);margin-left:4px;">AI tvoří vaši misi…</div></div>`;
   try{
-    const text=provider==='gemini'?await callGemini(apiKey,prompt):await callAnthropic(apiKey,prompt);
+    const text=await callGemini(apiKey,prompt);
     if(!text)throw new Error('Model nevrátil žádný text — zkuste popis mise zkrátit nebo zadání upřesnit.');
     const stations=applyGeneratedMissionText(text);
     status.innerHTML=`<div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:12px;font-size:13px;color:var(--good);">✅ Mise vygenerována! Zkontrolujte pole níže${stations?` — ${stations.length} navržených stanovišť se přidá po vytvoření mise.`:', doplňte GPS souřadnice.'}</div>`;
     toast('✨ AI vygenerovala misi!',3000);
   }catch(e){
     let msg=e.message||String(e);
-    if(provider==='gemini'&&(e instanceof TypeError||/Failed to fetch|NetworkError|load failed/i.test(msg))){
-      msg='Prohlížeč požadavek na Gemini zablokoval (CORS) — Google přímé volání z prohlížeče takhle nepodporuje. U Gemini to bez vlastního serveru bohužel nepůjde, přepněte prosím zpět na Anthropic.';
+    if(e instanceof TypeError||/Failed to fetch|NetworkError|load failed/i.test(msg)){
+      msg='Prohlížeč požadavek na Gemini zablokoval (CORS). Zkuste to prosím přes záložku „📋 Vložit z Claude" místo toho — funguje to spolehlivě vždy.';
     }
     status.innerHTML=`<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px;font-size:13px;color:#FCA5A5;">❌ Chyba: ${msg}</div>`;
   }
@@ -2525,15 +2776,12 @@ function migrateData(){
 async function init(){
   migrateData();
   initMail();
-  if(!S.users.length){
-    S.users.push(
-      {id:'admin',name:'Organizátor',email:'admin@test.cz',pw:btoa('admin123'),role:'creator',games:[],sessions:[],xp:850,badges:['first','explorer'],totalKm:0,completedMissions:3,newsletterOptIn:false,createdAt:Date.now()},
-      {id:'player1',name:'Demo Hráč',email:'hrac@test.cz',pw:btoa('hrac123'),role:'player',games:[],sessions:[],xp:340,badges:['first'],totalKm:0,completedMissions:1,newsletterOptIn:false,createdAt:Date.now()}
-    );persist();
-  }
   await loadGamesFromSupabase();
-  const sid=localStorage.getItem('q7_sess');
-  if(sid){const u=S.users.find(u=>u.id===sid);if(u){S.cu=u;updateAuthBtns();if(u.role==='creator'){setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');nav('v-cr');},900);return;}}  }
+  await restoreSession();
+  if(S.cu){
+    updateAuthBtns();
+    if(S.cu.role==='creator'){setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');nav('v-cr');},900);return;}
+  }
   setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');navMain('v-disc');},900);
 }
 setTimeout(init,850);
