@@ -241,6 +241,54 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .wm .q{color:var(--teal);}
 .wm-sub{font-size:10px;color:var(--txt2);letter-spacing:.7px;margin-top:1px;}
 .hide-scroll::-webkit-scrollbar{display:none;}
+
+/* ══ DESKTOP (≥ 900 px) ══════════════════════════════════════
+   Mobilní verze zůstává beze změny — tady se jen na velkých obrazovkách
+   appka roztáhne do webové podoby: navigace nahoře, e-shop v mřížce,
+   herní a tvůrčí obrazovky jako centrovaný sloupec. */
+@media (min-width:900px){
+  /* Rám aplikace přes celou šířku */
+  #app{max-width:none;}
+  /* Spodní lišta → horní navigace s logem */
+  #bot-nav{top:0;bottom:auto;height:64px;padding:0 max(24px,calc((100vw - 1160px)/2));justify-content:flex-end;gap:4px;border-top:none;border-bottom:1px solid var(--bdr2);}
+  #nav-brand{display:flex!important;}
+  .bn-btn{flex:0 0 auto;flex-direction:row;gap:8px;padding:0 18px;border-radius:12px;}
+  .bn-btn .bn-icon{font-size:18px;}
+  .bn-btn .bn-lbl{font-size:13px;}
+  .bn-btn.act::before{top:auto;bottom:0;width:60%;border-radius:4px 4px 0 0;}
+  .main-view{top:64px;bottom:0;}
+  /* Testovací banner pod horní lištou */
+  #test-banner{top:74px;}
+  /* E-shop (Objevovat): obsah centrovaný, karty misí v mřížce */
+  #v-disc>div:nth-child(1),#v-disc>div:nth-child(2),#disc-city-filter{padding-left:max(24px,calc((100vw - 1160px)/2));padding-right:max(24px,calc((100vw - 1160px)/2));}
+  #disc-list-view{padding:10px max(24px,calc((100vw - 1160px)/2)) 40px;}
+  #disc-hero-section [style*="font-size:26px"]{font-size:38px!important;}
+  #disc-game-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px;align-items:start;}
+  #disc-game-list>.card{margin-bottom:0!important;}
+  /* Panel mise: centrovaný, ne přes celou šířku */
+  #disc-sheet{max-width:520px;left:0;right:0;margin:0 auto;}
+  /* Moje mise + Profil: centrovaný obsah, mise v mřížce */
+  #v-miss .scr,#v-prof .scr{padding:24px max(24px,calc((100vw - 900px)/2));}
+  #miss-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;align-items:start;}
+  #miss-list>.card{margin-bottom:0!important;}
+  #miss-list>.emp,#miss-list>button{grid-column:1/-1;}
+  #prof-content{max-width:640px;margin:0 auto;}
+  /* Herní, nákupní a tvůrčí obrazovky: centrovaný sloupec */
+  .flow-view{max-width:560px;margin:0 auto;border-left:1px solid var(--bdr);border-right:1px solid var(--bdr);box-shadow:0 0 80px rgba(0,0,0,.35);}
+  #v-detail{max-width:860px;}
+  #v-detail>div:first-child{height:340px;}
+  #v-splash{max-width:none;border:none;box-shadow:none;}
+  /* Tvůrčí obrazovky snesou víc místa */
+  #v-cr,#v-cr-new,#v-cr-gd,#v-cr-map,#v-cr-sts,#v-cr-se,#v-cr-te,#v-cr-codes,#v-cr-gifts,#v-cr-badges,#v-cr-badge-edit,#v-cr-support,#v-cr-pages,#v-cr-page-edit,#v-cr-mail,#v-cr-lb,#v-gift,#v-gift-success,#v-gift-redeem{max-width:720px;}
+  /* Overlaye (odpovědi, nápovědy, přihlášení…): centrovaný panel místo plného sheetu */
+  .ov{justify-content:center;align-items:center;}
+  .ov-tap{position:absolute;inset:0;flex:none;}
+  .ov-sheet{position:relative;z-index:1;max-width:520px;width:100%;border-radius:24px;border:1px solid var(--bdr2);max-height:86vh;}
+  /* Jemný scrollbar na desktopu */
+  .scr::-webkit-scrollbar{display:block;width:8px;}
+  .scr::-webkit-scrollbar-thumb{background:rgba(245,240,232,.12);border-radius:8px;}
+  .scr::-webkit-scrollbar-track{background:transparent;}
+}
 </style>
 </head>
 <body>
@@ -379,7 +427,12 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 </div>
 
 <!-- ══ BOTTOM NAV ══════════════════════════════════════════ -->
+<div id="test-banner" style="display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:900;background:rgba(245,158,11,.92);color:#0E1C35;font-size:11px;font-weight:800;letter-spacing:.8px;padding:5px 14px;border-radius:100px;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none;">🧪 TESTOVACÍ REŽIM</div>
 <div id="bot-nav">
+  <div id="nav-brand" onclick="navMain('v-disc')" style="display:none;align-items:center;gap:9px;cursor:pointer;padding:0 6px;margin-right:auto;">
+    <svg width="20" height="26" viewBox="0 0 48 62" fill="none"><defs><linearGradient id="nbg" x1="0" y1="0" x2="48" y2="62" gradientUnits="userSpaceOnUse"><stop stop-color="#2DD4BF"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs><path d="M24 3C12 3 3 12 3 24c0 11 7 20 17 23l4 12 4-12c10-3 17-12 17-23C45 12 36 3 24 3Z" fill="url(#nbg)"/><circle cx="24" cy="22" r="11" fill="rgba(245,240,232,.9)"/><circle cx="24" cy="22" r="6.5" fill="#0E1C35"/></svg>
+    <span style="font-size:16px;font-weight:800;letter-spacing:-.4px;font-family:'Space Grotesk',sans-serif;"><span style="color:var(--teal);">Q</span>uestly</span>
+  </div>
   <button class="bn-btn act" id="bn-disc" onclick="navMain('v-disc')"><span class="bn-icon">🧭</span><span class="bn-lbl">Objevovat</span></button>
   <button class="bn-btn" id="bn-miss" onclick="navMain('v-miss')"><span class="bn-icon">🎒</span><span class="bn-lbl">Mise</span></button>
   <button class="bn-btn" id="bn-prof" onclick="navMain('v-prof')"><span class="bn-icon">🏆</span><span class="bn-lbl">Profil</span></button>
@@ -624,9 +677,9 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     </div>
     <div style="display:flex;gap:10px;width:100%;margin-bottom:10px;">
       <button class="btn btn-ghost btn-f" onclick="shareResult()" style="flex:1;">🔗 Sdílet</button>
-      <button class="btn btn-teal btn-f" onclick="navMain('v-disc')" style="flex:1;">Mapu misí</button>
+      <button class="btn btn-teal btn-f" onclick="compExit('v-disc')" style="flex:1;">Mapu misí</button>
     </div>
-    <button class="btn btn-ghost btn-f" onclick="navMain('v-miss')">Moje mise</button>
+    <button class="btn btn-ghost btn-f" onclick="compExit('v-miss')">Moje mise</button>
   </div>
 </div>
 
@@ -660,9 +713,74 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <div class="flow-view" id="v-activate">
   <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti">Aktivační kód</div></div></div>
   <div class="scr" style="padding:16px;">
-    <div style="text-align:center;padding:24px 0 20px;"><div style="font-size:52px;margin-bottom:10px;">🔑</div><div style="font-size:14px;color:var(--txt2);line-height:1.6;">Kód je jedinečný a vázaný na váš účet.<br>Nelze ho sdílet.</div></div>
-    <div class="ig"><label class="lb">Aktivační kód</label><input class="inp" id="act-inp" type="text" placeholder="ESC-XXXX-XXXXXXXX" style="text-transform:uppercase;letter-spacing:2px;font-size:16px;font-weight:700;text-align:center;" autocomplete="off"/></div>
-    <button class="btn btn-teal btn-f" onclick="activateGame()">Aktivovat →</button>
+    <div style="text-align:center;padding:24px 0 20px;"><div style="font-size:52px;margin-bottom:10px;">🔑</div><div style="font-size:14px;color:var(--txt2);line-height:1.6;">Kód z voucheru, dárkového poukazu<br>nebo slevového portálu.</div></div>
+    <div class="ig"><label class="lb">Aktivační kód</label><input class="inp" id="act-inp" type="text" placeholder="QST-DAR-XXXXXXXX" style="text-transform:uppercase;letter-spacing:2px;font-size:16px;font-weight:700;text-align:center;" autocomplete="off"/></div>
+    <button class="btn btn-teal btn-f" id="act-btn" onclick="activateGame()">Aktivovat →</button>
+    <div style="font-size:12px;color:var(--txt2);text-align:center;margin-top:14px;line-height:1.6;">Univerzální dárkový kód (QST-DAR-…) vám po zadání<br>nabídne výběr libovolné mise z nabídky.</div>
+  </div>
+</div>
+
+<!-- ══ GIFT VOUCHER: PURCHASE (bez účtu) ═════════════════════ -->
+<div class="flow-view" id="v-gift">
+  <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti">🎁 Dárkový poukaz</div><div class="hdr-sub">Bez registrace — stačí e-mail</div></div></div>
+  <div class="scr" style="padding:16px;">
+    <div class="card" style="padding:18px;margin-bottom:16px;background:linear-gradient(135deg,rgba(20,184,166,.12),rgba(245,158,11,.10));border-color:rgba(245,158,11,.25);">
+      <div style="font-size:15px;font-weight:800;margin-bottom:6px;">Univerzální poukaz na 1 misi</div>
+      <div style="font-size:13px;color:var(--txt2);line-height:1.6;">Obdarovaný si sám vybere <b style="color:var(--txt);">libovolnou misi</b> z celé nabídky. Poukaz platí <b style="color:var(--txt);">12 měsíců</b> od zakoupení a přijde vám e-mailem — hned k vytištění nebo přeposlání.</div>
+    </div>
+    <div style="background:var(--amber3);border:1.5px solid rgba(245,158,11,.3);border-radius:var(--r);padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <div><div style="font-size:11px;color:var(--txt2);margin-bottom:2px;">Cena poukazu</div><div style="font-size:28px;font-weight:800;color:var(--amber);" id="gift-price"></div></div>
+      <div style="font-size:12px;color:var(--txt2);text-align:right;line-height:1.6;">1 poukaz = 1 mise<br>pro celý tým</div>
+    </div>
+    <div class="ig"><label class="lb">Váš e-mail (sem pošleme poukaz)</label><input class="inp" id="gift-email" type="email" placeholder="jmeno@email.cz" autocomplete="email"/></div>
+    <div class="ig"><label class="lb">Věnování / přání (nepovinné, objeví se na poukazu)</label><textarea class="inp" id="gift-msg" maxlength="220" placeholder="Všechno nejlepší! Užijte si dobrodružství…" style="min-height:80px;"></textarea><div style="font-size:11px;color:var(--txt3);margin-top:4px;text-align:right;"><span id="gift-msg-count">0</span>/220</div></div>
+    <div style="background:rgba(245,158,11,.12);border:1.5px solid rgba(245,158,11,.4);border-radius:var(--rs);padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--amber2);line-height:1.55;"><b>🧪 Testovací režim.</b> Platby zatím nejsou napojené na banku — <b>nezadávejte skutečné údaje karty</b>.</div>
+    <div style="font-size:13px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;">Platební karta</div>
+    <div class="ig"><label class="lb">Číslo karty</label><div style="position:relative;"><input class="inp" id="gift-pay-num" type="tel" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" autocomplete="off"/><span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.5;">💳</span></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="ig">
+      <div><label class="lb">Platnost</label><input class="inp" id="gift-pay-exp" type="tel" placeholder="MM/RR" maxlength="5" inputmode="numeric" autocomplete="off"/></div>
+      <div><label class="lb">CVV</label><input class="inp" id="gift-pay-cvv" type="tel" placeholder="123" maxlength="3" inputmode="numeric" autocomplete="off"/></div>
+    </div>
+    <div class="ig"><label class="lb">Jméno na kartě</label><input class="inp" id="gift-pay-name" type="text" placeholder="JAN NOVÁK"/></div>
+    <button class="btn btn-amber btn-f" id="gift-pay-btn" onclick="processGiftPayment()" style="font-size:16px;padding:16px;">🎁 Koupit poukaz</button>
+    <div style="font-size:11px;color:var(--txt2);text-align:center;margin-top:12px;line-height:1.6;">Zadaný e-mail použijeme jen k doručení poukazu a případné reklamaci.<br>Testovací režim — žádné peníze se nestrhávají.</div>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+
+<!-- ══ GIFT VOUCHER: SUCCESS + DOWNLOAD ══════════════════════ -->
+<div class="flow-view" id="v-gift-success">
+  <div class="hdr"><button class="hdr-bk" onclick="navMain('v-disc')">←</button><div><div class="hdr-ti">🎉 Poukaz vytvořen</div></div></div>
+  <div class="scr" style="padding:16px;">
+    <div style="text-align:center;padding:10px 0 16px;"><div style="font-size:52px;filter:drop-shadow(0 0 20px rgba(245,158,11,.5));">🎁</div></div>
+    <img id="gift-voucher-img" alt="Dárkový poukaz Questly" style="width:100%;border-radius:14px;border:1px solid var(--bdr2);box-shadow:0 10px 40px rgba(0,0,0,.45);margin-bottom:14px;"/>
+    <div id="gift-mail-status" style="font-size:13px;color:var(--txt2);text-align:center;line-height:1.6;margin-bottom:16px;"></div>
+    <button class="btn btn-teal btn-f" onclick="downloadVoucher()" style="margin-bottom:10px;">⬇️ Stáhnout poukaz (PNG)</button>
+    <button class="btn btn-ghost btn-f" onclick="copyVoucherCode()" style="margin-bottom:10px;">📋 Zkopírovat kód</button>
+    <button class="btn btn-ghost btn-f btn-sm" onclick="navMain('v-disc')">Zpět na mise</button>
+    <div style="height:16px;"></div>
+  </div>
+</div>
+
+<!-- ══ GIFT VOUCHER: REDEEM (výběr hry) ═══════════════════════ -->
+<div class="flow-view" id="v-gift-redeem">
+  <div class="hdr"><button class="hdr-bk" onclick="nav('v-activate')">←</button><div><div class="hdr-ti">🎁 Vyberte si misi</div><div class="hdr-sub" id="gift-redeem-sub"></div></div></div>
+  <div class="scr" style="padding:16px;">
+    <div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:16px;">Váš dárkový poukaz je platný. Vyberte misi, kterou odemkne — <b style="color:var(--txt);">volbu už nelze změnit</b>, tak vybírejte s rozmyslem.</div>
+    <div id="gift-redeem-list"></div>
+  </div>
+</div>
+
+<!-- ══ CREATOR: GIFT VOUCHERS ADMIN ═══════════════════════════ -->
+<div class="flow-view" id="v-cr-gifts">
+  <div class="hdr"><button class="hdr-bk" onclick="nav('v-prof')">←</button><div><div class="hdr-ti">🎁 Dárkové poukazy</div><div class="hdr-sub" id="crg-sb"></div></div><button class="btn btn-ghost btn-sm" onclick="renderCrGifts()" style="font-size:12px;padding:8px 12px;">↻</button></div>
+  <div class="scr" style="padding:16px;">
+    <div class="card card-p" style="margin-bottom:16px;">
+      <div class="ig" style="margin-bottom:10px;"><label class="lb">Cena univerzálního poukazu (Kč)</label><input class="inp" id="crg-price" type="number" min="1"/></div>
+      <button class="btn btn-teal btn-f btn-sm" onclick="saveGiftCfg()">💾 Uložit cenu</button>
+      <div style="font-size:11px;color:var(--txt2);margin-top:10px;line-height:1.5;">💡 Poukaz odemkne libovolnou misi bez ohledu na její cenu — nastavte ji proto na úroveň nejdražší mise, jinak si kupující poukazem „zlevní" dražší hry.</div>
+    </div>
+    <div id="crg-list"></div>
   </div>
 </div>
 
@@ -749,6 +867,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <button class="btn btn-ghost btn-sm" onclick="editGameMeta()" style="grid-column:1/-1;">⚙️ Upravit info mise (název, cena, popis, start…)</button>
     </div>
     <div class="dv"></div>
+    <button class="btn btn-ghost btn-f" onclick="startTestPlay()" style="font-size:14px;padding:14px;margin-bottom:10px;border-color:rgba(245,158,11,.35);color:var(--amber2);">🧪 Testovat hru (hrací mód, nic se neukládá)</button>
     <button class="btn btn-teal btn-f" id="cgd-start" onclick="toggleGameStatus()" style="font-size:15px;padding:15px;">▶ Spustit misi</button>
     <button class="btn btn-danger btn-f" id="cgd-stop" onclick="toggleGameStatus()" style="display:none;margin-top:8px;font-size:15px;padding:15px;">■ Zastavit misi</button>
     <button class="btn btn-ghost btn-f" onclick="deleteGame(S.cg?.id)" style="margin-top:16px;font-size:13px;color:#FCA5A5;">🗑️ Smazat misi natrvalo</button>
@@ -803,6 +922,10 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <input type="checkbox" id="cse-pin" checked style="width:22px;height:22px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;"/>
       </div>
     </div>
+    <div class="ig"><label class="lb">⑂ Po dokončení stanoviště pokračovat na</label>
+      <select class="inp" id="cse-next"></select>
+      <div style="font-size:11px;color:var(--txt2);margin-top:6px;line-height:1.5;">Výchozí je další stanoviště v pořadí. Změňte, pokud tvoříte větvené dějové linie — sem se větve „slévají" zpět, nebo tu můžete danou linii ukončit.</div>
+    </div>
     <div class="dv"></div>
     <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Úkoly</div>
     <div id="cse-tli"></div>
@@ -824,6 +947,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <option value="order">Seřadit stopy (puzzle)</option>
         <option value="inventory">Inventářový úkol</option>
         <option value="gps">GPS zóna (přijdi na místo)</option>
+        <option value="branch">⑂ Rozhodnutí — větvení příběhu</option>
       </select>
     </div>
     <div class="ig"><label class="lb">Otázka / Zadání</label><textarea class="inp" id="cte-q" placeholder="Co hráč uvidí nebo přečte…"></textarea></div>
@@ -957,13 +1081,16 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <div class="flow-view" id="v-cr-mail">
   <div class="hdr"><button class="hdr-bk" onclick="nav('v-prof')">←</button><div><div class="hdr-ti">✉️ E-maily a newsletter</div></div></div>
   <div class="scr" style="padding:16px;">
-    <div style="background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:16px;">Questly nemá vlastní e-mailový server — pro odesílání skutečných e-mailů (uvítací zprávy, kód pro reset hesla, newsletter) používá <b style="color:var(--txt);">EmailJS</b> (zdarma do ~200 e-mailů/měsíc). Založte si účet na emailjs.com, propojte svou e-mailovou schránku, vytvořte šablony a vložte ID sem. Bez vyplnění se e-maily neodešlou.</div>
+    <div style="background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:16px;">E-maily se přednostně odesílají přes <b style="color:var(--txt);">Resend</b> (Supabase Edge Function „send-email" — lepší doručitelnost, vlastní doména). Když funkce není nasazená, použije se jako záloha <b style="color:var(--txt);">EmailJS</b> podle nastavení níže. Bez alespoň jedné nastavené cesty se e-maily neodešlou.</div>
     <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Nastavení EmailJS</div>
     <div class="ig"><label class="lb">Service ID</label><input class="inp" id="mc-sid" type="text" placeholder="service_xxxxxxx"/></div>
     <div class="ig"><label class="lb">Public Key</label><input class="inp" id="mc-pk" type="text" placeholder="a1B2c3D4..."/></div>
     <div class="ig"><label class="lb">Šablona — uvítací e-mail</label><input class="inp" id="mc-tw" type="text" placeholder="template_welcome"/></div>
     <div class="ig"><label class="lb">Šablona — reset hesla</label><input class="inp" id="mc-tr" type="text" placeholder="template_reset"/></div>
     <div class="ig"><label class="lb">Šablona — newsletter</label><input class="inp" id="mc-tn" type="text" placeholder="template_newsletter"/></div>
+    <div class="ig"><label class="lb">Šablona — upozornění na podporu</label><input class="inp" id="mc-ts" type="text" placeholder="template_support"/></div>
+    <div class="ig"><label class="lb">Šablona — dárkový poukaz</label><input class="inp" id="mc-tv" type="text" placeholder="template_voucher"/></div>
+    <div class="ig"><label class="lb">E-mail pro upozornění podpory</label><input class="inp" id="mc-se" type="email" placeholder="info@questly.cz"/></div>
     <button class="btn btn-teal btn-f" onclick="saveMailCfg()" style="margin-bottom:10px;">Uložit nastavení</button>
     <div id="mc-status" style="font-size:12px;color:var(--txt2);text-align:center;margin-bottom:20px;"></div>
     <div class="dv"></div>
@@ -1028,6 +1155,10 @@ const S={
   rm:[],rp:null,ar:false,pm:null,pmStart:null,wid:null,widStart:null,
   newGameImg:null,stPickerLat:null,stPickerLng:null,
   missTab:'active',
+  testMode:false,               // tvůrce hraje vlastní misi nanečisto — nic se neukládá
+  giftCfg:DB.get('giftCfg',{price:349}),  // cena univerzálního dárkového poukazu
+  pendingVoucher:null,          // ověřený dárkový kód čekající na výběr hry
+  lastVoucher:null,             // poslední zakoupený poukaz (pro náhled/stažení)
 };
 let selOpt=-1,startConfirmShown=false,cinTimerId=null;
 
@@ -1044,6 +1175,55 @@ function sbErrMsg(e){
   const parts=[e.message,e.details,e.hint,e.code].filter(Boolean);
   if(parts.length)return parts.join(' — ');
   try{const s=JSON.stringify(e);return s==='{}'?String(e):s;}catch(_){return String(e);}
+}
+
+// ══ MONITORING & ANALYTIKA (Sentry + PostHog) ══════════
+// Vyplňte klíče níže — dokud jsou prázdné, nic se nenačítá ani neodesílá.
+// Sentry DSN: sentry.io → projekt (JavaScript/Browser) → Client Keys (DSN)
+// PostHog key: eu.posthog.com → Project settings → Project API key (phc_…)
+const SENTRY_DSN='';
+const POSTHOG_KEY='';
+const POSTHOG_HOST='https://eu.i.posthog.com'; // EU cloud kvůli GDPR
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.crossOrigin='anonymous';s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+async function initMonitoring(){
+  if(SENTRY_DSN){
+    try{
+      await loadScript('https://browser.sentry-cdn.com/8.55.0/bundle.tracing.min.js');
+      if(window.Sentry)Sentry.init({dsn:SENTRY_DSN,release:'questly@web',environment:location.hostname==='questly.cz'?'production':'development',tracesSampleRate:0.2});
+    }catch(e){console.warn('Sentry se nepodařilo načíst',e);}
+  }
+  if(POSTHOG_KEY){
+    try{
+      await loadScript('https://eu-assets.i.posthog.com/static/array.js');
+      if(window.posthog?.init)posthog.init(POSTHOG_KEY,{api_host:POSTHOG_HOST,person_profiles:'identified_only',capture_pageview:true,autocapture:false});
+    }catch(e){console.warn('PostHog se nepodařilo načíst',e);}
+  }
+}
+// Bezpečný wrapper na produktové události — funguje i bez načteného PostHogu
+function track(event,props={}){
+  try{if(window.posthog?.capture)posthog.capture(event,props);}catch(e){}
+}
+function monitorIdentify(u){
+  try{if(window.posthog?.identify&&u)posthog.identify(u.id,{role:u.role});}catch(e){}
+  try{if(window.Sentry&&u)Sentry.setUser({id:u.id});}catch(e){}
+}
+function monitorReset(){
+  try{if(window.posthog?.reset)posthog.reset();}catch(e){}
+  try{if(window.Sentry)Sentry.setUser(null);}catch(e){}
+}
+
+// ══ TRANSAKČNÍ E-MAILY (Resend přes Supabase Edge Function) ══
+// Preferovaná cesta doručování — spolehlivější než EmailJS z prohlížeče.
+// Vyžaduje nasazenou Edge Function „send-email" (viz soubor supabase/functions/send-email/index.ts)
+// a secret RESEND_API_KEY v Supabase. Když funkce neexistuje, appka tiše
+// spadne zpět na EmailJS (pokud je nastavený).
+async function sendEdgeMail(to,subject,html){
+  if(!sb)return false;
+  try{
+    const{data,error}=await sb.functions.invoke('send-email',{body:{to,subject,html}});
+    if(error)throw error;
+    return!!data?.ok;
+  }catch(e){console.warn('Edge e-mail selhal (zkusí se EmailJS):',sbErrMsg(e));return false;}
 }
 
 let sbSyncTimer=null;
@@ -1072,6 +1252,38 @@ async function syncGamesToSupabase(){
     setSbStatus('ok');
   }catch(e){const msg=sbErrMsg(e);console.warn('Supabase sync selhal (data zůstávají bezpečně uložená lokálně):',msg);setSbStatus('error',msg);}
 }
+// ══ SDÍLENÁ KONFIGURACE (app_config) ═══════════════════
+// mailCfg, stránky a odznaky dřív žily jen v localStorage tvůrce — hráči je neviděli
+// a hlášení problémů se k tvůrci nikdy nedostala. Teď se sdílí přes Supabase.
+let cfgSyncTimer=null;
+function scheduleConfigSync(){
+  if(!sb||S.cu?.role!=='creator')return;
+  clearTimeout(cfgSyncTimer);
+  cfgSyncTimer=setTimeout(syncConfigToSupabase,1000);
+}
+async function syncConfigToSupabase(){
+  if(!sb)return;
+  try{
+    const rows=[{key:'mailCfg',value:S.mailCfg},{key:'pages',value:S.pages},{key:'badges',value:S.badges},{key:'giftCfg',value:S.giftCfg}]
+      .map(r=>({...r,updated_at:new Date().toISOString()}));
+    const{error}=await sb.from('app_config').upsert(rows);
+    if(error)throw error;
+  }catch(e){console.warn('Sync konfigurace selhal (tabulka app_config možná ještě neexistuje):',sbErrMsg(e));}
+}
+async function loadConfigFromSupabase(){
+  if(!sb)return;
+  try{
+    const{data,error}=await withTimeout(sb.from('app_config').select('*'),8000);
+    if(error)throw error;
+    (data||[]).forEach(row=>{
+      if(row.key==='mailCfg'&&row.value)S.mailCfg=row.value;
+      if(row.key==='pages'&&row.value)S.pages=row.value;
+      if(row.key==='badges'&&row.value)S.badges=row.value;
+      if(row.key==='giftCfg'&&row.value)S.giftCfg=row.value;
+    });
+    DB.set('mailCfg',S.mailCfg);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('giftCfg',S.giftCfg);
+  }catch(e){console.warn('Načtení konfigurace selhalo (tabulka app_config možná ještě neexistuje):',sbErrMsg(e));}
+}
 function withTimeout(promise,ms){
   return Promise.race([promise,new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),ms))]);
 }
@@ -1097,7 +1309,7 @@ function setSbStatus(status,detail){
   else el.innerHTML=`⚠️ Jen lokálně — ${detail||S.sbLastError||'Supabase nedostupné'}`;
 }
 
-function persist(){DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);scheduleSbSync();}
+function persist(){DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);DB.set('giftCfg',S.giftCfg);scheduleSbSync();scheduleConfigSync();}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function fmt(s){s=Math.max(0,Math.floor(s));return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
 function toast(msg,ms=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),ms);}
@@ -1117,7 +1329,7 @@ async function loadEntitlements(){
 }
 function getSession(gid){return(S.entitlements||[]).find(e=>e.game_id===gid)||null;}
 async function setSession(gid,status){
-  if(!S.cu)return;
+  if(!S.cu||S.testMode)return;
   let ent=(S.entitlements||[]).find(e=>e.game_id===gid);
   if(!ent){ent={user_id:S.cu.id,game_id:gid,status,progress:null};S.entitlements.push(ent);}
   else ent.status=status;
@@ -1166,10 +1378,33 @@ function evaluateBadges(u,p,g,ok,tot){
 // welcome mail / reset codes / newsletter simply don't send (reset falls back to on-screen code).
 function initMail(){if(window.emailjs&&S.mailCfg?.publicKey){try{emailjs.init({publicKey:S.mailCfg.publicKey});}catch(e){console.warn('EmailJS init failed',e);}}}
 function mailReady(){return!!(window.emailjs&&S.mailCfg?.serviceId&&S.mailCfg?.publicKey);}
-function sendMail(type,user,extra={}){
-  const tplMap={welcome:S.mailCfg?.templateWelcome,reset:S.mailCfg?.templateReset,newsletter:S.mailCfg?.templateNewsletter};
+// Obálka + obsahy transakčních e-mailů pro cestu přes Resend (Edge Function).
+// EmailJS šablony zůstávají jako záloha — obsah si tam definujete v jejich editoru.
+function nl2br(s){return esc(s).replace(/\n/g,'<br>');}
+function mailShell(inner){
+  return`<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;background:#0E1C35;border-radius:18px;overflow:hidden;color:#F0EBE0;">
+    <div style="padding:26px 32px 18px;"><div style="font-size:22px;font-weight:800;"><span style="color:#14B8A6;">Q</span>uestly</div><div style="font-size:11px;letter-spacing:1.5px;color:#8BA3C4;">TVOJE MĚSTO. TVOJE MISE.</div></div>
+    <div style="padding:6px 32px 26px;font-size:14px;line-height:1.7;color:#E8E0D0;">${inner}</div>
+    <div style="padding:14px 32px;border-top:1px solid rgba(245,240,232,.1);font-size:11px;color:#4E6E8A;">Questly · questly.cz · info@questly.cz</div>
+  </div>`;
+}
+function buildMailContent(type,user,extra){
+  if(type==='welcome')return{subject:'Vítejte v Questly! 🗺️',html:mailShell(`<div style="font-size:18px;font-weight:800;margin-bottom:10px;">Vítejte na palubě${user.name?', '+esc(user.name):''}!</div>Váš účet je připravený. Otevřete <a href="https://questly.cz" style="color:#2DD4BF;">questly.cz</a>, vyberte si misi ve svém městě a vyrazte do ulic — dobrodružství čeká.`)};
+  if(type==='newsletter')return{subject:extra.subject||'Novinky z Questly',html:mailShell(`<div style="font-size:18px;font-weight:800;margin-bottom:10px;">${esc(extra.subject||'')}</div>${nl2br(extra.message||'')}<div style="margin-top:16px;font-size:12px;color:#8BA3C4;">Odběr novinek můžete kdykoli vypnout ve svém profilu na questly.cz.</div>`)};
+  if(type==='support')return{subject:`🆘 Hlášení problému — ${extra.game_name||'?'}`,html:mailShell(`<div style="font-size:16px;font-weight:800;margin-bottom:10px;">Nové hlášení od hráče</div><b>Hráč:</b> ${esc(extra.player_name||'')} (${esc(extra.player_email||'')})<br><b>Mise:</b> ${esc(extra.game_name||'')}<br><b>Stanoviště:</b> ${esc(extra.station_name||'—')} · úkol ${esc(extra.task_number||'—')}<br><b>Kdy:</b> ${esc(extra.when||'')}<br><br><div style="background:rgba(245,240,232,.06);border-radius:10px;padding:12px 14px;">${nl2br(extra.message||'')}</div><div style="margin-top:14px;font-size:12px;color:#8BA3C4;">Vyřešíte v appce: Profil → Podpora hráčů.</div>`)};
+  if(type==='voucher')return{subject:'🎁 Váš dárkový poukaz Questly',html:buildVoucherEmailHtml({code:extra.code,message:extra.message,expiresAt:extra.expiresAtIso||extra.expires,price:extra.price})};
+  if(type==='reset')return{subject:'Obnova hesla Questly',html:mailShell(`Váš kód pro obnovu hesla: <b style="font-size:20px;font-family:monospace;color:#2DD4BF;">${esc(extra.code||extra.reset_code||'')}</b>`)};
+  return null;
+}
+async function sendMail(type,user,extra={}){
+  if(!user?.email)return false;
+  // 1) Resend přes Supabase Edge Function (preferováno — lepší doručitelnost)
+  const built=buildMailContent(type,user,extra);
+  if(built&&await sendEdgeMail(user.email,built.subject,built.html))return true;
+  // 2) Záloha: EmailJS šablona z prohlížeče
+  const tplMap={welcome:S.mailCfg?.templateWelcome,reset:S.mailCfg?.templateReset,newsletter:S.mailCfg?.templateNewsletter,support:S.mailCfg?.templateSupport,voucher:S.mailCfg?.templateVoucher};
   const tpl=tplMap[type];
-  if(!mailReady()||!tpl)return Promise.resolve(false);
+  if(!mailReady()||!tpl)return false;
   const params={to_email:user.email,to_name:user.name||'',...extra};
   return emailjs.send(S.mailCfg.serviceId,tpl,params).then(()=>true).catch(err=>{console.warn('Mail send failed',err);return false;});
 }
@@ -1195,6 +1430,7 @@ function nav(id){
   if(id==='v-cr-mail')renderMailCfg();
   if(id==='v-cr-badges')renderCrBadgesList();
   if(id==='v-cr-support')renderCrSupport();
+  if(id==='v-cr-gifts')renderCrGifts();
   if(id==='v-global-lb')renderGlobalLB();
   if(id==='v-game'){setTimeout(renderGameTask,50);setTimeout(()=>{try{initGameMap();}catch(e){console.warn('Mapa se nepodařila načíst',e);}},80);}
   if(id==='v-travel')setTimeout(()=>{try{initPMap();}catch(e){console.warn('Mapa se nepodařila načíst',e);}},100);
@@ -1261,6 +1497,7 @@ async function login(){
     const profile=await fetchProfile(data.user.id);
     S.cu=profileToUser(data.user,profile);
     await loadEntitlements();
+    monitorIdentify(S.cu);track('login');
     closeAuth();afterLogin();
   }catch(e){
     let msg=sbErrMsg(e);
@@ -1288,6 +1525,7 @@ async function register(){
     const profile=await fetchProfile(data.user.id);
     S.cu=profileToUser(data.user,profile);
     await loadEntitlements();
+    monitorIdentify(S.cu);track('sign_up');
     closeAuth();toast(S.cu.role==='creator'?'✅ Tvůrčí účet vytvořen!':'✅ Vítejte!');
     sendMail('welcome',S.cu,{});
     afterLogin();
@@ -1302,6 +1540,7 @@ async function logout(){
   stopTimer();stopWatch();stopWatchStart();stopCountdown();
   if(sb){try{await sb.auth.signOut();}catch(e){console.warn('Odhlášení selhalo',sbErrMsg(e));}}
   S.cu=null;S.cg=null;S.entitlements=[];
+  monitorReset();
   updateAuthBtns();navMain('v-disc');
 }
 async function restoreSession(){
@@ -1312,6 +1551,7 @@ async function restoreSession(){
       const profile=await fetchProfile(session.user.id);
       S.cu=profileToUser(session.user,profile);
       await loadEntitlements();
+      monitorIdentify(S.cu);
     }
   }catch(e){console.warn('Obnovení přihlášení selhalo',sbErrMsg(e));}
 }
@@ -1354,20 +1594,36 @@ function discTab(mode){
   document.getElementById('disc-city-filter').style.display=isList?'flex':'none';
   if(!isList)setTimeout(()=>{try{initDiscMap();}catch(e){console.warn('Mapa se nepodařila načíst',e);}},80);
 }
+// Souřadnice mise pro mapu: cityLat → první stanoviště s polohou → startovní bod
+function gameCityCoords(g){
+  if(g.cityLat&&g.cityLng)return{lat:g.cityLat,lng:g.cityLng};
+  const st=(g.stations||[]).find(s=>s.lat&&s.lng);
+  if(st)return{lat:st.lat,lng:st.lng};
+  if(g.startPointLat&&g.startPointLng)return{lat:g.startPointLat,lng:g.startPointLng};
+  return null;
+}
 function initDiscMap(){
-  if(S.maps.disc){S.maps.disc.invalidateSize();return;}
-  const map=L.map('disc-map',{center:[49.8,15.5],zoom:7,zoomControl:false});
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
-  S.maps.disc=map;
+  // Mapa se vytvoří jednou, ale markery se přegenerují při každém otevření —
+  // dřív se nové/upravené mise do už inicializované mapy nikdy nepropsaly.
+  if(!S.maps.disc){
+    const map=L.map('disc-map',{center:[49.8,15.5],zoom:7,zoomControl:false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
+    S.maps.disc=map;S.discLayer=L.layerGroup().addTo(map);
+  }
+  const map=S.maps.disc;
+  if(!S.discLayer)S.discLayer=L.layerGroup().addTo(map);
+  S.discLayer.clearLayers();
   // Group by city, show count markers
   const cities={};
-  S.games.filter(g=>g.status==='active'&&g.cityLat).forEach(g=>{
-    if(!cities[g.city])cities[g.city]={lat:g.cityLat,lng:g.cityLng,count:0};
-    cities[g.city].count++;
+  S.games.filter(g=>g.status==='active').forEach(g=>{
+    const co=gameCityCoords(g);if(!co)return;
+    const key=g.city||'Další mise';
+    if(!cities[key])cities[key]={lat:co.lat,lng:co.lng,count:0};
+    cities[key].count++;
   });
   Object.entries(cities).forEach(([city,{lat,lng,count}])=>{
     const ico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#F59E0B);color:#fff;border-radius:50%;width:46px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;box-shadow:0 4px 18px rgba(20,184,166,.45);border:2px solid rgba(255,255,255,.5);line-height:1;"><span style="font-size:18px;">${count}</span><span style="font-size:9px;letter-spacing:.5px;opacity:.85;">MIS${count===1?'E':'Í'}</span></div>`,iconSize:[46,46],iconAnchor:[23,23],className:''});
-    L.marker([lat,lng],{icon:ico}).addTo(map).bindPopup(`<b style="color:#14B8A6">${city}</b><br><small>${count} mis${count===1?'e':'í'}</small>`).on('click',()=>{
+    L.marker([lat,lng],{icon:ico}).addTo(S.discLayer).bindPopup(`<b style="color:#14B8A6">${esc(city)}</b><br><small>${count} mis${count===1?'e':'í'}</small>`).on('click',()=>{
       discSelectedCity=city;discTab('list');renderDiscList(city);renderDiscCityChips(city);
     });
   });
@@ -1383,7 +1639,17 @@ function renderDiscList(filterCity){
     ?`<div style="padding:14px 0 8px;display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">📍</span><div><div style="font-size:18px;font-weight:800;">${filterCity}</div><div style="font-size:13px;color:var(--txt2);">${games.length} mis${games.length===1?'e':games.length<5?'e':'í'}</div></div></div>`
     :`<div style="padding:18px 0 10px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px;">⚡ Nová dobrodružství</div><div style="font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1.2;">Tvoje město.<br><span style="background:linear-gradient(135deg,var(--teal),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Tvoje mise.</span></div></div>`;
   const c=document.getElementById('disc-game-list');
-  if(!games.length){c.innerHTML=`<div class="emp"><div class="emp-i">🗺️</div><div class="emp-t">Žádné mise${filterCity?' v '+filterCity:''}</div><div class="emp-d">Zkuste jiné město nebo zobrazte vše.</div></div>`;return;}
+  const giftCard=`<div class="card" style="margin-bottom:16px;cursor:pointer;overflow:hidden;border-color:rgba(245,158,11,.3);" onclick="openGift()">
+    <div style="padding:18px;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(20,184,166,.08));">
+      <div style="font-size:40px;flex-shrink:0;">🎁</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:16px;font-weight:800;margin-bottom:3px;">Dárkový poukaz</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">Darujte dobrodružství — obdarovaný si vybere libovolnou misi. Bez registrace, platí 12 měsíců.</div>
+      </div>
+      <span style="color:var(--amber);font-weight:800;flex-shrink:0;">›</span>
+    </div>
+  </div>`;
+  if(!games.length){c.innerHTML=`<div class="emp"><div class="emp-i">🗺️</div><div class="emp-t">Žádné mise${filterCity?' v '+filterCity:''}</div><div class="emp-d">Zkuste jiné město nebo zobrazte vše.</div></div>${filterCity?'':giftCard}`;return;}
   c.innerHTML=games.map(g=>{
     const imgHtml=g.coverImage?`<img src="${g.coverImage}" style="width:100%;height:100%;object-fit:cover;" alt=""/>`:
       `<div class="mission-hero-ph" style="height:100%;">🗺️</div>`;
@@ -1401,7 +1667,7 @@ function renderDiscList(filterCity){
         </div>
       </div>
     </div>`;
-  }).join('');
+  }).join('')+giftCard;
 }
 function renderDiscCityChips(sel){
   const cities=[...new Set(S.games.filter(g=>g.status==='active').map(g=>g.city).filter(Boolean))];
@@ -1490,7 +1756,7 @@ function processPayment(){
     setSession(g.id,'unlocked');
     const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r8=()=>Array.from({length:8},()=>ch[Math.random()*ch.length|0]).join('');
     S.codes.push({code:`ESC-${g.id.slice(-4).toUpperCase()}-${r8()}`,gameId:g.id,activatedBy:S.cu.id,activatedAt:Date.now()});
-    persist();btn.textContent='✅ Zaplaceno!';btn.disabled=false;toast('🎉 Mise zakoupena!',3000);
+    persist();track('purchase_completed',{game_id:g.id,price:g.price});btn.textContent='✅ Zaplaceno!';btn.disabled=false;toast('🎉 Mise zakoupena!',3000);
     setTimeout(()=>openPrep(g.id),1000);
   },1800);
 }
@@ -1634,21 +1900,28 @@ function renderProf(){
     <div class="badge-grid" style="margin-bottom:24px;">
       ${S.badges.map(b=>`<div class="badge-item ${earnedBadges.includes(b.id)?'earned':''}"><div class="badge-icon">${b.icon}</div><div class="badge-lbl">${b.name}</div></div>`).join('')}
     </div>
-    ${u.role==='creator'?`<div class="dv"></div><button class="btn btn-ghost btn-f" onclick="nav('v-cr')" style="margin-bottom:10px;">🛠 Tvorba misí</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-pages')" style="margin-bottom:10px;">📄 Stránky webu</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-mail')" style="margin-bottom:10px;">✉️ E-maily a newsletter</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-badges')" style="margin-bottom:10px;">🏅 Odznaky</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-support')" style="margin-bottom:10px;">🔧 Podpora hráčů</button><div class="dv"></div><button class="btn btn-ghost btn-f" onclick="exportBackup()" style="margin-bottom:10px;">💾 Zálohovat data</button><button class="btn btn-ghost btn-f" onclick="document.getElementById('backup-file-input').click()" style="margin-bottom:10px;">📥 Obnovit ze zálohy</button><input type="file" id="backup-file-input" accept="application/json" style="display:none;" onchange="importBackupFile(event)"/>`:''}
+    ${u.role==='creator'?`<div class="dv"></div><button class="btn btn-ghost btn-f" onclick="nav('v-cr')" style="margin-bottom:10px;">🛠 Tvorba misí</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-gifts')" style="margin-bottom:10px;">🎁 Dárkové poukazy (správa)</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-pages')" style="margin-bottom:10px;">📄 Stránky webu</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-mail')" style="margin-bottom:10px;">✉️ E-maily a newsletter</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-badges')" style="margin-bottom:10px;">🏅 Odznaky</button><button class="btn btn-ghost btn-f" onclick="nav('v-cr-support')" style="margin-bottom:10px;">🔧 Podpora hráčů</button><div class="dv"></div><button class="btn btn-ghost btn-f" onclick="exportBackup()" style="margin-bottom:10px;">💾 Zálohovat data</button><button class="btn btn-ghost btn-f" onclick="document.getElementById('backup-file-input').click()" style="margin-bottom:10px;">📥 Obnovit ze zálohy</button><input type="file" id="backup-file-input" accept="application/json" style="display:none;" onchange="importBackupFile(event)"/>`:''}
     <button class="btn btn-ghost btn-f btn-sm" onclick="S.prevView='v-prof';nav('v-global-lb')" style="margin-bottom:10px;">🏆 Žebříček hráčů</button>
     <button class="btn btn-ghost btn-f btn-sm" onclick="nav('v-activate')" style="margin-bottom:10px;">🔑 Zadat aktivační kód</button>
+    <button class="btn btn-ghost btn-f btn-sm" onclick="openGift()" style="margin-bottom:10px;">🎁 Koupit dárkový poukaz</button>
     <button class="btn btn-ghost btn-f btn-sm" onclick="toggleNewsletter()" style="margin-bottom:10px;">${u.newsletterOptIn?'✅ Newsletter zapnutý (klik pro vypnutí)':'✉️ Zapnout odběr novinek'}</button>
     ${footerPagesHTML()}
   `;
 }
 
 // ══ PREP ══════════════════════════════════════════════
-function openPrep(gid){
+async function openPrep(gid){
   const g=S.games.find(g=>g.id===gid);if(!g)return;
-  const sess=getSession(gid);if(sess?.status==='completed'){toast('✅ Tuto misi jste již dokončili');return;}
-  if(g.status!=='active'){toast('⚠️ Mise zatím není aktivní');return;}
-  S.cg=g;S.prevView='v-disc';
-  if(sess?.status==='in_progress'&&sess.progress&&sess.progress.resumeView){resumeMission(g,sess);return;}
+  if(!S.testMode){
+    // Čerstvý stav ze Supabase — kdyby mezitím podpora hráče posunula nebo resetovala
+    if(sb&&S.cu){try{await withTimeout(loadEntitlements(),5000);}catch(e){console.warn('Refresh oprávnění selhal',e);}}
+    const sess=getSession(gid);if(sess?.status==='completed'){toast('✅ Tuto misi jste již dokončili');return;}
+    if(g.status!=='active'){toast('⚠️ Mise zatím není aktivní');return;}
+    S.cg=g;S.prevView='v-disc';
+    if(sess?.status==='in_progress'&&sess.progress&&sess.progress.resumeView){resumeMission(g,sess);return;}
+  }else{
+    S.cg=g;S.prevView='v-cr-gd';
+  }
   document.getElementById('prep-ti').textContent=g.name;
   document.getElementById('prep-start-name').textContent=g.startPointName||'—';
   document.getElementById('prep-start-instr').textContent=g.startInstructions||'Přesuňte se na startovní pozici.';
@@ -1737,7 +2010,7 @@ function openStartOv(){document.getElementById('start-ov').classList.add('show')
 function closeStartOv(){document.getElementById('start-ov').classList.remove('show');}
 function manualArriveStart(){openStartOv();}
 function saveProgress(view){
-  if(!S.cu||!S.cg)return;
+  if(!S.cu||!S.cg||S.testMode)return;
   let ent=(S.entitlements||[]).find(e=>e.game_id===S.cg.id);
   if(!ent){ent={user_id:S.cu.id,game_id:S.cg.id,status:'in_progress',progress:null};S.entitlements.push(ent);}
   ent.status='in_progress';
@@ -1748,6 +2021,7 @@ function saveProgress(view){
 }
 function confirmStart(){
   closeStartOv();startConfirmShown=false;stopWatchStart();
+  if(!S.testMode)track('mission_started',{game_id:S.cg.id});
   setSession(S.cg.id,'in_progress');
   S.pl.si=0;S.pl.visitedStations=[];
   startTravel();
@@ -1867,7 +2141,7 @@ function renderGameTask(){
   document.getElementById('g-task-num').textContent=`${p.ti2+1} / ${st.tasks.length}`;
   const pct=Math.round(((p.si*100/g.stations.length)+(p.ti2*100/(st.tasks.length*g.stations.length))));
   document.getElementById('g-prog').style.width=`${Math.min(99,pct)}%`;
-  const tyLbl={mc:'Výběr z možností',tx:'Textová odpověď',nm:'Číselná odpověď',cd:'Kód',photo:'Fotodůkaz',order:'Seřadit stopy',inventory:'Inventářový úkol',gps:'GPS zóna'};
+  const tyLbl={mc:'Výběr z možností',tx:'Textová odpověď',nm:'Číselná odpověď',cd:'Kód',photo:'Fotodůkaz',order:'Seřadit stopy',inventory:'Inventářový úkol',gps:'GPS zóna',branch:'⑂ Rozhodnutí'};
   document.getElementById('g-type-lbl').textContent=tyLbl[task.type]||task.type;
   document.getElementById('g-q').textContent=task.q;
   document.getElementById('g-cx').textContent=task.cx||'';
@@ -1875,6 +2149,7 @@ function renderGameTask(){
   // Inline answer for GPS type only (others go through overlay)
   const ia=document.getElementById('g-inline-ans');
   if(task.type==='gps'){ia.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;animation:pulse 2s infinite;">📍</div><div style="font-size:14px;color:var(--txt2);margin-bottom:16px;">Přejděte na stanoviště</div><button class="btn btn-teal btn-f" onclick="openAnsGame()">Potvrzuji příchod</button></div>`;}
+  else if(task.type==='branch'){ia.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">⑂</div><div style="font-size:14px;color:var(--txt2);margin-bottom:16px;">Příběh se větví — je čas se rozhodnout.</div><button class="btn btn-amber btn-f" onclick="openAnsGame()">Rozhodnout se →</button></div>`;}
   else{ia.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:20px 0;">Stiskněte <b style="color:var(--txt);">✍️ Odpovědět</b> níže</div>`;}
   document.getElementById('g-map-view').style.display='none';
   document.getElementById('g-task-wrap').style.display='flex';
@@ -1949,28 +2224,64 @@ function submitReport(){
     view:document.querySelector('.flow-view.act')?.id||'?',text};
   if(!S.reports)S.reports=[];
   S.reports.unshift(report);persist();
+  // Hlášení do Supabase — jinak by se k tvůrci na jiném zařízení nikdy nedostalo
+  if(sb&&S.cu){
+    sb.from('reports').insert({id:report.id,user_id:S.cu.id,user_email:report.userEmail,user_name:report.userName,
+      game_id:report.gameId,game_name:report.gameName,station_name:report.stationName,task_index:report.taskIndex,
+      view:report.view,text:report.text,resolved:false,created_at:new Date(report.createdAt).toISOString()})
+      .then(({error})=>{if(error)console.warn('Uložení hlášení do Supabase selhalo:',sbErrMsg(error));});
+  }
+  // E-mailové upozornění tvůrci (fire-and-forget, hráče nezdržuje)
+  const supEmail=S.mailCfg?.supportEmail||'info@questly.cz';
+  sendMail('support',{email:supEmail,name:'Questly podpora'},{
+    player_name:report.userName,player_email:report.userEmail,
+    game_name:report.gameName,station_name:report.stationName||'—',
+    task_number:report.taskIndex!=null?String(report.taskIndex+1):'—',
+    message:report.text,when:new Date(report.createdAt).toLocaleString('cs-CZ')
+  });
   closeReportIssue();closeHint();
   toast('✅ Hlášení odesláno, děkujeme');
 }
 function quitGame(){
+  if(S.testMode){
+    if(!confirm('Ukončit testování mise? Testovací postup se neukládá.'))return;
+    stopTimer();stopCountdown();stopWatch();stopWatchStart();stopCompass();
+    endTestMode();
+    return;
+  }
   if(!confirm('Opustit misi? Postup bude uložen a budete moci pokračovat později.'))return;
   const activeView=document.querySelector('.flow-view.act')?.id;
   if(S.cu&&S.cg&&(activeView==='v-travel'||activeView==='v-game'))saveProgress(activeView);
   stopTimer();stopCountdown();stopWatch();stopWatchStart();stopCompass();navMain('v-miss');
+}
+// ══ TESTOVACÍ REŽIM TVŮRCE ═════════════════════════════
+function startTestPlay(){
+  if(!S.cg)return;
+  if(!S.cg.stations?.length){toast('⚠️ Mise nemá žádná stanoviště');return;}
+  S.testMode=true;
+  document.getElementById('test-banner').style.display='flex';
+  track('mission_test_started',{game_id:S.cg.id});
+  toast('🧪 Testovací režim — postup ani výsledky se neukládají',3500);
+  openPrep(S.cg.id);
+}
+function endTestMode(){
+  S.testMode=false;
+  document.getElementById('test-banner').style.display='none';
+  if(S.cg)openCrDetail(S.cg.id);else nav('v-cr');
 }
 
 // ══ ANSWER OVERLAY ════════════════════════════════════
 let currentAnswerTask=null;
 function openAnsGame(){
   const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];currentAnswerTask=task;selOpt=-1;
-  const tyLbl={mc:'🔘 Výběr z možností',tx:'✏️ Textová odpověď',nm:'🔢 Číselná odpověď',cd:'🔑 Kód',photo:'📷 Fotodůkaz',order:'🔀 Seřadit stopy',inventory:'🎒 Inventář',gps:'📍 GPS zóna'};
+  const tyLbl={mc:'🔘 Výběr z možností',tx:'✏️ Textová odpověď',nm:'🔢 Číselná odpověď',cd:'🔑 Kód',photo:'📷 Fotodůkaz',order:'🔀 Seřadit stopy',inventory:'🎒 Inventář',gps:'📍 GPS zóna',branch:'⑂ Rozhodnutí'};
   document.getElementById('ans-ov-type').textContent=tyLbl[task.type]||task.type;
   document.getElementById('ans-ov-q').textContent=task.q;
   const qimgWrap=document.getElementById('ans-ov-qimg-wrap');
   if(task.qImg){document.getElementById('ans-ov-qimg').src=task.qImg;qimgWrap.style.display='block';}else qimgWrap.style.display='none';
   document.getElementById('ans-ov-cx').textContent=task.cx||'';
   document.getElementById('ans-ov-fb').style.display='none';
-  const sub=document.getElementById('ans-ov-submit');sub.textContent='Potvrdit odpověď';sub.onclick=submitAns;sub.style.display=task.type==='inventory'?'none':'block';
+  const sub=document.getElementById('ans-ov-submit');sub.textContent='Potvrdit odpověď';sub.onclick=submitAns;sub.style.display=(task.type==='inventory'||task.type==='branch')?'none':'block';
   const area=document.getElementById('ans-ov-area');
   if(task.type==='mc'){
     const hasImgs=(task.optImgs||[]).some(Boolean);
@@ -1983,20 +2294,73 @@ function openAnsGame(){
   else if(task.type==='photo')area.innerHTML=`<div class="photo-drop" onclick="document.getElementById('photo-in').click()"><div style="font-size:40px;margin-bottom:10px;">📷</div><div style="font-size:14px;font-weight:600;margin-bottom:4px;">Vyfotit nebo nahrát</div><div style="font-size:12px;color:var(--txt2);">JPG, PNG · max. 5 MB</div></div><input type="file" id="photo-in" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoTask(event)"/><img id="photo-prev" style="width:100%;border-radius:12px;object-fit:cover;max-height:200px;display:none;margin-top:12px;" alt=""/>`;
   else if(task.type==='gps')area.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">📍</div><div style="font-size:14px;color:var(--txt2);">Potvrďte, že jste na správném místě</div></div>`;
   else if(task.type==='order')renderOrderTask(area,task);
+  else if(task.type==='branch')area.innerHTML=`<div style="font-size:12px;color:var(--txt2);margin-bottom:12px;text-align:center;">Vyberte, kudy se příběh vydá dál — rozhodnutí je na vás:</div>${(task.choices||[]).map((ch,i)=>`<div class="ao" onclick="answerBranch(${i})" style="border-color:rgba(245,158,11,.3);"><div class="aol" style="background:var(--amber3);color:var(--amber2);">⑂</div><div style="flex:1;font-size:15px;">${esc(ch.label)}</div></div>`).join('')}`;
   else if(task.type==='inventory')area.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;">🎒</div><div style="font-size:14px;color:var(--txt2);">Možná máte v inventáři něco, co by tady pomohlo.<br>Otevřete inventář a zkuste to použít.</div><button class="btn btn-ghost btn-sm" onclick="closeAns();openInvGame();" style="margin-top:14px;">🎒 Otevřít inventář</button></div>`;
   document.getElementById('ans-ov').classList.add('show');
   document.getElementById('gbb-ans').classList.add('active-tab');
 }
 function closeAns(){document.getElementById('ans-ov').classList.remove('show');document.getElementById('gbb-ans').classList.remove('active-tab');}
+// Pořadí drží stavové pole orderItems (ne DOM) — HTML5 drag&drop na dotykových
+// zařízeních vůbec nefunguje, proto ovládání šipkami + přetažení přes Pointer Events.
+let orderItems=[];
 function renderOrderTask(area,task){
-  const items=[...(task.opts||[])];
-  for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}
-  area.innerHTML=`<div style="font-size:12px;color:var(--txt2);margin-bottom:10px;">Přetáhněte položky do správného pořadí:</div><div id="order-list">${items.map((it,i)=>`<div class="order-item" data-idx="${i}" draggable="true" ondragstart="orderDragStart(event)" ondragover="orderDragOver(event)" ondrop="orderDrop(event)"><span style="font-size:16px;opacity:.5;">⠿</span><span style="flex:1;font-size:14px;">${it}</span></div>`).join('')}</div>`;
+  orderItems=[...(task.opts||[])];
+  // Zamíchat tak, aby výchozí stav nebyl náhodou rovnou správné řešení
+  const correct=JSON.stringify(task.opts||[]);
+  let guard=0;
+  do{
+    for(let i=orderItems.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[orderItems[i],orderItems[j]]=[orderItems[j],orderItems[i]];}
+    guard++;
+  }while(orderItems.length>1&&JSON.stringify(orderItems)===correct&&guard<10);
+  area.innerHTML=`<div style="font-size:12px;color:var(--txt2);margin-bottom:10px;">Seřaďte položky do správného pořadí — šipkami, nebo je přetáhněte za úchyt ⠿:</div><div id="order-list"></div>`;
+  renderOrderList();
 }
-let dragSrcIdx=null;
-function orderDragStart(e){dragSrcIdx=parseInt(e.target.dataset.idx);}
-function orderDragOver(e){e.preventDefault();}
-function orderDrop(e){e.preventDefault();const toIdx=parseInt(e.target.closest('.order-item').dataset.idx);const list=document.getElementById('order-list');const items=[...list.children];const fromEl=items.find(el=>parseInt(el.dataset.idx)===dragSrcIdx);if(toIdx>dragSrcIdx)e.target.closest('.order-item').after(fromEl);else e.target.closest('.order-item').before(fromEl);[...list.children].forEach((el,i)=>el.dataset.idx=i);}
+function renderOrderList(){
+  const list=document.getElementById('order-list');if(!list)return;
+  list.innerHTML=orderItems.map((it,i)=>`<div class="order-item" data-idx="${i}" style="touch-action:none;">
+    <span class="order-grip" onpointerdown="orderPointerDown(event,${i})" style="font-size:18px;opacity:.55;cursor:grab;padding:6px 8px;margin:-6px 0 -6px -6px;touch-action:none;user-select:none;-webkit-user-select:none;">⠿</span>
+    <span style="flex:1;font-size:14px;pointer-events:none;">${esc(it)}</span>
+    <span style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;">
+      <button onclick="moveOrderItem(${i},-1)" ${i===0?'disabled':''} style="background:rgba(245,240,232,.07);border:1px solid var(--bdr);border-radius:6px;color:${i===0?'var(--txt3)':'var(--txt)'};font-size:13px;cursor:pointer;padding:3px 10px;line-height:1;">▲</button>
+      <button onclick="moveOrderItem(${i},1)" ${i===orderItems.length-1?'disabled':''} style="background:rgba(245,240,232,.07);border:1px solid var(--bdr);border-radius:6px;color:${i===orderItems.length-1?'var(--txt3)':'var(--txt)'};font-size:13px;cursor:pointer;padding:3px 10px;line-height:1;">▼</button>
+    </span>
+  </div>`).join('');
+}
+function moveOrderItem(i,dir){
+  const j=i+dir;if(j<0||j>=orderItems.length)return;
+  [orderItems[i],orderItems[j]]=[orderItems[j],orderItems[i]];
+  renderOrderList();
+}
+// Přetažení prstem/myší: Pointer Events fungují i na dotykových zařízeních
+let orderDrag=null;
+function orderPointerDown(e,idx){
+  e.preventDefault();
+  const list=document.getElementById('order-list');if(!list)return;
+  const el=list.children[idx];if(!el)return;
+  orderDrag={idx,startY:e.clientY,el,h:el.offsetHeight+parseFloat(getComputedStyle(el).marginBottom||0)};
+  el.style.zIndex='10';el.style.position='relative';el.style.opacity='.85';el.style.borderColor='var(--teal)';
+  try{e.target.setPointerCapture(e.pointerId);}catch(_){}
+  e.target.onpointermove=orderPointerMove;
+  e.target.onpointerup=e.target.onpointercancel=orderPointerUp;
+}
+function orderPointerMove(e){
+  if(!orderDrag)return;
+  orderDrag.el.style.transform=`translateY(${e.clientY-orderDrag.startY}px)`;
+}
+function orderPointerUp(e){
+  if(!orderDrag)return;
+  const{idx,startY,el,h}=orderDrag;
+  el.style.transform='';el.style.zIndex='';el.style.position='';el.style.opacity='';el.style.borderColor='';
+  e.target.onpointermove=e.target.onpointerup=e.target.onpointercancel=null;
+  orderDrag=null;
+  const shift=Math.round((e.clientY-startY)/Math.max(h,1));
+  if(!shift)return;
+  const to=Math.max(0,Math.min(orderItems.length-1,idx+shift));
+  if(to===idx)return;
+  const[moved]=orderItems.splice(idx,1);
+  orderItems.splice(to,0,moved);
+  renderOrderList();
+}
 function pickOpt(el,i){document.querySelectorAll('.ao').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');selOpt=i;}
 function handlePhotoTask(e){const file=e.target.files[0];if(!file)return;if(file.size>5000000){toast('⚠️ Max. 5 MB');return;}const r=new FileReader();r.onload=ev=>{const img=document.getElementById('photo-prev');img.src=ev.target.result;img.style.display='block';};r.readAsDataURL(file);}
 function openHintGame(){
@@ -2016,7 +2380,15 @@ function useHint(level){
 }
 function showHintTxt(task,level){
   const el=document.getElementById('hint-txt');el.style.display='block';
-  if(level===0){const ans=task.type==='mc'?`${['A','B','C','D'][task.ci]}: ${task.opts[task.ci]}`:task.ca;el.innerHTML=`<b>Správná odpověď:</b> ${ans}`;el.style.borderColor='rgba(239,68,68,.4)';el.style.color='#FCA5A5';}
+  if(level===0){
+    let ans;
+    if(task.type==='mc')ans=`${['A','B','C','D'][task.ci]}: ${task.opts[task.ci]}`;
+    else if(task.type==='order')ans=(task.opts||[]).join(' → ');
+    else if(task.type==='branch')ans='Rozhodnutí — žádná volba není špatně, vyberte podle sebe.';
+    else if(task.type==='photo')ans='Nahrajte libovolnou fotku a potvrďte.';
+    else if(task.type==='gps')ans='Stačí potvrdit příchod na místo.';
+    else ans=task.ca||'—';
+    el.innerHTML=`<b>Správná odpověď:</b> ${esc(ans)}`;el.style.borderColor='rgba(239,68,68,.4)';el.style.color='#FCA5A5';}
   else{const h=task.hints?.[level-1]||'Nápověda není dostupná.';el.innerHTML=`<b>Nápověda ${level}:</b> ${h}`;el.style.borderColor='rgba(245,158,11,.3)';el.style.color='var(--amber2)';}
 }
 
@@ -2027,10 +2399,27 @@ function submitAns(){
   if(task.type==='photo'){const prev=document.getElementById('photo-prev');if(!prev||prev.style.display==='none'){toast('⚠️ Nejprve nahrajte fotku');return;}ok=true;toast('📷 Fotka nahrána');}
   else if(task.type==='mc'){if(selOpt===-1){toast('⚠️ Vyberte odpověď');return;}ok=selOpt===task.ci;document.getElementById(`ao-${task.ci}`)?.classList.add('ok');if(!ok&&selOpt>=0)document.getElementById(`ao-${selOpt}`)?.classList.add('no');}
   else if(task.type==='gps'){ok=true;toast('📍 Poloha potvrzena');}
-  else if(task.type==='order'){const list=document.getElementById('order-list');if(!list){toast('⚠️ Chyba načtení úkolu');return;}const current=[...list.children].map(el=>el.querySelector('span:last-child')?.textContent||'');ok=JSON.stringify(current)===JSON.stringify(task.opts||[]);}
+  else if(task.type==='order'){ok=JSON.stringify(orderItems)===JSON.stringify(task.opts||[]);}
   else if(task.type==='inventory'){toast('🎒 Otevřete inventář a zkuste tam vhodný předmět „Použít".');return;}
+  else if(task.type==='branch'){toast('⑂ Vyberte jednu z cest výše.');return;}
   else{const inp=document.getElementById('p-a');if(!inp?.value.trim()){toast('⚠️ Zadejte odpověď');return;}ok=inp.value.trim().toLowerCase()===(task.ca||'').toLowerCase();}
   finalizeAnswer(ok);
+}
+// ⑂ Rozhodnutí hráče — přesměruje příběh na zvolené stanoviště
+function answerBranch(i){
+  const{cg:g,pl:p}=S;const task=g.stations[p.si]?.tasks[p.ti2];
+  const ch=(task?.choices||[])[i];if(!ch)return;
+  stopTimer();stopCountdown();document.getElementById('g-countdown').style.display='none';
+  p.answers.push({si:p.si,ti:p.ti2,ok:true,pts:0,pen:0,branch:ch.label});
+  if(task.givesItem){const parts=task.givesItem.split(' ');const icon=parts[0],name=parts.slice(1).join(' ');p.inventory.push({icon,name,desc:'Nalezeno během mise'});document.getElementById('g-inv-count').textContent=p.inventory.length;toast(`🎒 Získáno: ${task.givesItem}`);}
+  closeAns();
+  toast(`⑂ ${ch.label}`,3000);
+  if(ch.target){
+    const idx=g.stations.findIndex(s=>s.id===ch.target);
+    if(idx>=0){p.si=idx;startTravel();return;}
+  }
+  saveProgress('v-game');
+  nextTask();
 }
 function finalizeAnswer(ok){
   const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];
@@ -2066,7 +2455,15 @@ function nextTask(){
   else nextStation();
 }
 function nextStation(){
-  const{cg:g,pl:p}=S;if(p.si+1>=g.stations.length)finishGame();else{p.si++;startTravel();}
+  const{cg:g,pl:p}=S;
+  const cur=g.stations[p.si];
+  const nid=cur?.nextId;
+  if(nid==='END'){finishGame();return;}
+  if(nid){
+    const idx=g.stations.findIndex(s=>s.id===nid);
+    if(idx>=0){p.si=idx;startTravel();return;}
+  }
+  if(p.si+1>=g.stations.length)finishGame();else{p.si++;startTravel();}
 }
 function autoFail(){
   stopTimer();const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];
@@ -2075,16 +2472,35 @@ function autoFail(){
 }
 
 // ══ FINISH ════════════════════════════════════════════
+// Má hra větvení? Pak hráč z principu neprojde všechna stanoviště —
+// úspěšnost se počítá jen z úkolů, které na své cestě skutečně potkal.
+function gameHasBranching(g){
+  return(g.stations||[]).some(st=>st.nextId||(st.tasks||[]).some(t=>t.type==='branch'));
+}
 async function finishGame(){
   stopTimer();stopWatch();stopCountdown();
   const{cg:g,pl:p,cu:u}=S;
   const rawPts=p.answers.reduce((s,a)=>s+(a.pts||0),0);
   const totalPen=p.answers.reduce((s,a)=>s+(a.pen||0),0);
   const ok=p.answers.filter(a=>a.ok).length;
-  const tot=g.stations.reduce((s,st)=>s+st.tasks.length,0);
+  const tot=gameHasBranching(g)?Math.max(p.answers.length,1):g.stations.reduce((s,st)=>s+st.tasks.length,0);
   const finalPts=Math.max(0,rawPts-totalPen);
   const xpGained=Math.round((g.xpReward||500)*(ok/Math.max(tot,1)));
   p.xpEarned=xpGained;
+  // Testovací režim tvůrce: ukázat výsledky, ale nic nezapisovat (XP, výsledky, entitlements)
+  if(S.testMode){
+    document.getElementById('comp-name').textContent=g.name;
+    document.getElementById('comp-xp').textContent=`+${xpGained} XP`;
+    document.getElementById('comp-time').textContent=fmt(p.totalSecs);
+    document.getElementById('comp-tasks').textContent=`${ok} / ${tot}`;
+    document.getElementById('comp-pts').textContent=`${finalPts} bodů`;
+    document.getElementById('comp-rank').textContent='🧪 test — neukládá se';
+    document.getElementById('comp-badge').style.display='none';
+    nav('v-completion');
+    toast('🧪 Test dokončen — nic se neuložilo',3500);
+    return;
+  }
+  track('mission_completed',{game_id:g.id,points:finalPts,time_secs:p.totalSecs});
   let newBadge=null;
   if(u){
     u.xp=(u.xp||0)+xpGained;u.completedMissions=(u.completedMissions||0)+1;if(!u.badges)u.badges=[];
@@ -2122,6 +2538,10 @@ async function finishGame(){
   else document.getElementById('comp-badge').style.display='none';
   nav('v-completion');
 }
+function compExit(target){
+  if(S.testMode){endTestMode();return;}
+  navMain(target);
+}
 function shareResult(){
   const text=`Dokončil jsem misi "${S.cg?.name}" na Questly! ⏱ ${fmt(S.pl.totalSecs)} +${S.pl.xpEarned} XP 🗺️`;
   if(navigator.share)navigator.share({text,url:'https://questly.cz'}).catch(()=>{});
@@ -2140,27 +2560,305 @@ function stopTimer(){if(S.pl.ti){S.pl.totalSecs+=Math.floor((Date.now()-S.pl.ts)
 function stopCountdown(){if(S.pl.countdownTi){clearInterval(S.pl.countdownTi);S.pl.countdownTi=null;}}
 
 // ══ ACTIVATE ══════════════════════════════════════════
-function activateGame(){
-  const code=document.getElementById('act-inp').value.trim().toUpperCase();if(!code){toast('⚠️ Zadejte kód');return;}
+async function activateGame(){
+  const inp=document.getElementById('act-inp');
+  const code=inp.value.trim().toUpperCase();if(!code){toast('⚠️ Zadejte kód');return;}
   if(!S.cu){toast('⚠️ Nejprve se přihlaste');return;}
-  const co=S.codes.find(c=>c.code===code);if(!co){toast('❌ Neplatný kód');return;}if(co.activatedBy&&co.activatedBy!==S.cu?.id){toast('❌ Kód aktivoval jiný hráč');return;}
-  const g=S.games.find(g=>g.id===co.gameId);if(!g){toast('❌ Mise neexistuje');return;}
-  if((S.entitlements||[]).some(e=>e.game_id===g.id)){toast('ℹ️ Misi již máte');navMain('v-miss');return;}
-  co.activatedBy=S.cu.id;co.activatedAt=Date.now();
-  setSession(g.id,'unlocked');persist();toast('✅ Mise odemčena!');navMain('v-miss');
+  // 1) Starší lokální kódy (ESC-…) vázané na konkrétní misi
+  const co=S.codes.find(c=>c.code===code);
+  if(co){
+    if(co.activatedBy&&co.activatedBy!==S.cu?.id){toast('❌ Kód aktivoval jiný hráč');return;}
+    const g=S.games.find(g=>g.id===co.gameId);if(!g){toast('❌ Mise neexistuje');return;}
+    if((S.entitlements||[]).some(e=>e.game_id===g.id)){toast('ℹ️ Misi již máte');navMain('v-miss');return;}
+    co.activatedBy=S.cu.id;co.activatedAt=Date.now();
+    setSession(g.id,'unlocked');persist();toast('✅ Mise odemčena!');navMain('v-miss');
+    return;
+  }
+  // 2) Dárkové poukazy uložené centrálně v Supabase (fungují napříč zařízeními)
+  if(!sb){toast('❌ Neplatný kód');return;}
+  const btn=document.getElementById('act-btn');if(btn){btn.disabled=true;btn.textContent='⏳ Ověřuji…';}
+  try{
+    const{data,error}=await sb.rpc('check_voucher',{p_code:code});
+    if(error)throw error;
+    const v=Array.isArray(data)?data[0]:data;
+    if(!v||!v.valid){
+      const reasons={not_found:'❌ Neplatný kód',expired:'⌛ Platnost poukazu vypršela',used:'❌ Poukaz už byl uplatněn'};
+      toast(reasons[v?.reason]||'❌ Neplatný kód',4000);
+      return;
+    }
+    if(v.kind==='gift'){
+      // Univerzální poukaz → hráč si vybere libovolnou misi
+      S.pendingVoucher={code,expiresAt:v.expires_at};
+      openGiftRedeem();
+    }else{
+      // Poukaz vázaný na konkrétní misi
+      await redeemVoucherRemote(code,v.game_id);
+    }
+  }catch(e){
+    const msg=sbErrMsg(e);
+    if(/check_voucher|does not exist|PGRST202/i.test(msg))toast('⚠️ Systém poukazů ještě není v databázi — spusťte migraci supabase-migrace-vouchery.sql',7000);
+    else toast('❌ Ověření kódu selhalo: '+msg,5000);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Aktivovat →';}
+  }
+}
+function openGiftRedeem(){
+  const active=S.games.filter(g=>g.status==='active');
+  document.getElementById('gift-redeem-sub').textContent=`Kód ${S.pendingVoucher?.code||''}`;
+  const c=document.getElementById('gift-redeem-list');
+  if(!active.length){c.innerHTML=`<div class="emp"><div class="emp-i">🗺️</div><div class="emp-t">Žádné aktivní mise</div><div class="emp-d">Poukaz zůstává platný — zkuste to prosím později.</div></div>`;}
+  else c.innerHTML=active.map(g=>`<div class="card" style="margin-bottom:12px;overflow:hidden;">
+    ${g.coverImage?`<img src="${g.coverImage}" style="width:100%;height:110px;object-fit:cover;" alt=""/>`:''}
+    <div style="padding:14px 16px;">
+      <div style="display:flex;gap:8px;margin-bottom:6px;"><span class="pill pill-teal">${esc(g.difficulty||'')}</span><span class="pill pill-cream">⏱ ${g.duration} min</span></div>
+      <div style="font-size:16px;font-weight:800;margin-bottom:3px;">${esc(g.name)}</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">📍 ${esc(g.city||'')} · ${esc(g.shortDesc||'')}</div>
+      <button class="btn btn-amber btn-f btn-sm" onclick="confirmGiftRedeem('${g.id}')">🎁 Uplatnit poukaz na tuto misi</button>
+    </div>
+  </div>`).join('');
+  nav('v-gift-redeem');
+}
+async function confirmGiftRedeem(gid){
+  const g=S.games.find(x=>x.id===gid);if(!g||!S.pendingVoucher)return;
+  if(!confirm(`Uplatnit dárkový poukaz na misi „${g.name}"? Volbu už nepůjde změnit.`))return;
+  await redeemVoucherRemote(S.pendingVoucher.code,gid);
+}
+async function redeemVoucherRemote(code,gid){
+  if(!sb||!S.cu){toast('⚠️ Nejprve se přihlaste');return;}
+  if((S.entitlements||[]).some(e=>e.game_id===gid)){toast('ℹ️ Tuto misi již máte — vyberte prosím jinou');return;}
+  try{
+    const{data,error}=await sb.rpc('redeem_voucher',{p_code:code,p_game_id:gid});
+    if(error)throw error;
+    const r=Array.isArray(data)?data[0]:data;
+    if(!r||!r.ok){
+      const reasons={not_found:'❌ Neplatný kód',expired:'⌛ Platnost poukazu vypršela',used:'❌ Poukaz už byl mezitím uplatněn',bad_game:'❌ Vybraná mise není dostupná'};
+      toast(reasons[r?.reason]||'❌ Uplatnění se nezdařilo',4500);return;
+    }
+    S.pendingVoucher=null;
+    await loadEntitlements();
+    track('voucher_redeemed',{game_id:gid});
+    toast('🎉 Poukaz uplatněn — mise odemčena!',3500);
+    navMain('v-miss');
+  }catch(e){toast('❌ Uplatnění selhalo: '+sbErrMsg(e),5000);}
+}
+
+// ══ GIFT VOUCHERS: NÁKUP BEZ ÚČTU ══════════════════════
+function fmtDate(d){const x=new Date(d);return isNaN(x)?'—':`${String(x.getDate()).padStart(2,'0')}.${String(x.getMonth()+1).padStart(2,'0')}.${x.getFullYear()}`;}
+function openGift(){
+  S.prevView=document.querySelector('.main-view.act')?.id||'v-disc';
+  document.getElementById('gift-price').textContent=`${S.giftCfg?.price||349} Kč`;
+  const msg=document.getElementById('gift-msg');
+  msg.oninput=()=>{document.getElementById('gift-msg-count').textContent=msg.value.length;};
+  setTimeout(()=>{
+    const ni=document.getElementById('gift-pay-num');if(ni)ni.oninput=e=>{let v=e.target.value.replace(/\D/g,'').slice(0,16);e.target.value=v.replace(/(.{4})/g,'$1 ').trim();};
+    const ei=document.getElementById('gift-pay-exp');if(ei)ei.oninput=e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);e.target.value=v;};
+  },50);
+  nav('v-gift');
+}
+async function processGiftPayment(){
+  const email=document.getElementById('gift-email').value.trim().toLowerCase();
+  const message=document.getElementById('gift-msg').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){toast('⚠️ Zadejte platný e-mail');return;}
+  const num=document.getElementById('gift-pay-num')?.value.replace(/\s/g,''),exp=document.getElementById('gift-pay-exp')?.value,cvv=document.getElementById('gift-pay-cvv')?.value,nm=document.getElementById('gift-pay-name')?.value.trim();
+  if(!num||num.length<12){toast('⚠️ Zadejte platné číslo karty');return;}if(!exp||exp.length<4){toast('⚠️ Platnost karty');return;}if(!cvv||cvv.length<3){toast('⚠️ CVV');return;}if(!nm){toast('⚠️ Jméno na kartě');return;}
+  if(!sb){toast('❌ Poukazy vyžadují připojení k databázi — zkuste to prosím později',5000);return;}
+  const btn=document.getElementById('gift-pay-btn');btn.disabled=true;btn.textContent='⏳ Zpracovávám…';
+  // Stripe integration point (gift voucher) — po napojení Stripe se poukaz vytvoří
+  // až ve webhooku na serveru, ne tady v prohlížeči.
+  try{
+    const{data,error}=await sb.rpc('purchase_gift_voucher',{p_email:email,p_message:message});
+    if(error)throw error;
+    const v=Array.isArray(data)?data[0]:data;
+    if(!v?.code)throw new Error('Databáze nevrátila kód poukazu');
+    S.lastVoucher={code:v.code,email,message,expiresAt:v.expires_at,price:S.giftCfg?.price||349};
+    track('gift_purchased',{price:S.lastVoucher.price});
+    btn.textContent='✅ Zaplaceno!';
+    showGiftSuccess();
+  }catch(e){
+    const msg=sbErrMsg(e);
+    if(/purchase_gift_voucher|does not exist|PGRST202/i.test(msg))toast('⚠️ Systém poukazů ještě není v databázi — spusťte migraci supabase-migrace-vouchery.sql',7000);
+    else toast('❌ Nákup se nezdařil: '+msg,5000);
+  }finally{
+    btn.disabled=false;btn.textContent='🎁 Koupit poukaz';
+  }
+}
+async function showGiftSuccess(){
+  const v=S.lastVoucher;if(!v)return;
+  document.getElementById('gift-voucher-img').src=renderVoucherPng(v);
+  nav('v-gift-success');
+  const st=document.getElementById('gift-mail-status');
+  st.textContent='📨 Odesílám poukaz na '+v.email+'…';
+  const sent=await sendVoucherEmail(v);
+  st.innerHTML=sent
+    ?`✅ Poukaz odeslán na <b>${esc(v.email)}</b>.<br>Zkontrolujte i složku spam/hromadné.`
+    :`⚠️ E-mail se nepodařilo odeslat — <b>stáhněte si poukaz tlačítkem níže</b>, kód zůstává platný do ${fmtDate(v.expiresAt)}.`;
+}
+function downloadVoucher(){
+  const v=S.lastVoucher;if(!v)return;
+  const a=document.createElement('a');
+  a.href=document.getElementById('gift-voucher-img').src;
+  a.download=`questly-poukaz-${v.code}.png`;
+  document.body.appendChild(a);a.click();a.remove();
+}
+function copyVoucherCode(){
+  const v=S.lastVoucher;if(!v)return;
+  navigator.clipboard?.writeText(v.code).then(()=>toast('📋 Kód zkopírován!')).catch(()=>toast(v.code,5000));
+}
+// Vykreslí dárkový poukaz do canvasu v brand designu appky → PNG data URL
+function renderVoucherPng(v){
+  const W=1200,H=675,cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const x=cv.getContext('2d');
+  // Pozadí: navy gradient
+  const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#1B2A4A');bg.addColorStop(.6,'#0E1C35');bg.addColorStop(1,'#0A1428');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+  // Jemné vrstevnice (motiv mapy)
+  x.strokeStyle='rgba(245,240,232,.05)';x.lineWidth=2;
+  for(let r=60;r<=420;r+=60){x.beginPath();x.arc(W-120,90,r,0,Math.PI*2);x.stroke();}
+  for(let r=50;r<=300;r+=50){x.beginPath();x.arc(90,H-70,r,0,Math.PI*2);x.stroke();}
+  // Rámeček
+  x.strokeStyle='rgba(245,240,232,.16)';x.lineWidth=2;
+  x.beginPath();x.roundRect(28,28,W-56,H-56,26);x.stroke();
+  // Logo pin (teal→amber gradient)
+  const pg=x.createLinearGradient(70,70,120,140);pg.addColorStop(0,'#2DD4BF');pg.addColorStop(1,'#F59E0B');
+  x.save();x.translate(72,64);x.scale(1.5,1.5);
+  x.fillStyle=pg;x.beginPath();
+  x.moveTo(24,3);x.bezierCurveTo(12,3,3,12,3,24);x.bezierCurveTo(3,35,10,44,20,47);x.lineTo(24,59);x.lineTo(28,47);x.bezierCurveTo(38,44,45,35,45,24);x.bezierCurveTo(45,12,36,3,24,3);x.closePath();x.fill();
+  x.fillStyle='rgba(245,240,232,.92)';x.beginPath();x.arc(24,22,11,0,Math.PI*2);x.fill();
+  x.fillStyle='#0E1C35';x.beginPath();x.arc(24,22,6.5,0,Math.PI*2);x.fill();
+  x.restore();
+  // Wordmark
+  x.textBaseline='alphabetic';
+  x.font='800 46px "Space Grotesk",system-ui,sans-serif';
+  x.fillStyle='#14B8A6';x.fillText('Q',162,112);
+  const qw=x.measureText('Q').width;
+  x.fillStyle='#F0EBE0';x.fillText('uestly',162+qw,112);
+  x.font='600 17px system-ui,sans-serif';x.fillStyle='#8BA3C4';
+  x.fillText('TVOJE MĚSTO. TVOJE MISE.',164,142);
+  // Titulek
+  x.font='700 22px system-ui,sans-serif';x.fillStyle='#F59E0B';
+  x.fillText('DÁRKOVÝ POUKAZ',72,225);
+  x.font='800 42px "Space Grotesk",system-ui,sans-serif';x.fillStyle='#F0EBE0';
+  x.fillText('Venkovní úniková hra dle vlastního výběru',72,272);
+  // Věnování (zalamované, kurzíva)
+  let msgBottom=300;
+  if(v.message){
+    x.font='italic 500 25px Georgia,serif';x.fillStyle='#E8E0D0';
+    const words=('„'+v.message+'“').split(' ');let line='',y=322;
+    for(const w of words){
+      const t=line?line+' '+w:w;
+      if(x.measureText(t).width>W-320&&line){x.fillText(line,72,y);line=w;y+=34;if(y>390)break;}
+      else line=t;
+    }
+    if(line&&msgBottom<=390){x.fillText(line,72,y);y+=34;}
+    msgBottom=y;
+  }
+  // Box s kódem
+  const by=430;
+  x.fillStyle='rgba(20,184,166,.10)';
+  x.beginPath();x.roundRect(72,by,620,120,18);x.fill();
+  x.setLineDash([10,8]);x.strokeStyle='rgba(20,184,166,.55)';x.lineWidth=2.5;
+  x.beginPath();x.roundRect(72,by,620,120,18);x.stroke();x.setLineDash([]);
+  x.font='600 16px system-ui,sans-serif';x.fillStyle='#8BA3C4';
+  x.fillText('AKTIVAČNÍ KÓD',100,by+38);
+  x.font='800 46px "Courier New",monospace';x.fillStyle='#2DD4BF';
+  x.fillText(v.code,100,by+92);
+  // Platnost + instrukce
+  x.font='700 20px system-ui,sans-serif';x.fillStyle='#FCD34D';
+  x.fillText(`Platí do ${fmtDate(v.expiresAt)}`,730,by+45);
+  x.font='500 16px system-ui,sans-serif';x.fillStyle='#8BA3C4';
+  x.fillText('Uplatnění: questly.cz',730,by+78);
+  x.fillText('→ Profil → Zadat aktivační kód',730,by+102);
+  x.font='500 15px system-ui,sans-serif';x.fillStyle='#4E6E8A';
+  x.fillText('Poukaz platí na jednu libovolnou misi pro celý tým. Jednorázový kód.',72,H-52);
+  return cv.toDataURL('image/png');
+}
+async function sendVoucherEmail(v){
+  // sendMail zkusí nejdřív Resend (Edge Function), pak EmailJS šablonu templateVoucher
+  return sendMail('voucher',{email:v.email,name:''},{code:v.code,message:v.message||'',expires:fmtDate(v.expiresAt),expiresAtIso:v.expiresAt,price:`${v.price} Kč`});
+}
+function buildVoucherEmailHtml(v){
+  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;background:#0E1C35;border-radius:18px;overflow:hidden;color:#F0EBE0;">
+    <div style="padding:28px 32px 20px;">
+      <div style="font-size:24px;font-weight:800;"><span style="color:#14B8A6;">Q</span>uestly</div>
+      <div style="font-size:11px;letter-spacing:1.5px;color:#8BA3C4;">TVOJE MĚSTO. TVOJE MISE.</div>
+    </div>
+    <div style="padding:8px 32px 28px;">
+      <div style="font-size:13px;font-weight:700;color:#F59E0B;letter-spacing:1px;margin-bottom:6px;">DÁRKOVÝ POUKAZ</div>
+      <div style="font-size:20px;font-weight:800;margin-bottom:14px;">Venkovní úniková hra dle vlastního výběru</div>
+      ${v.message?`<div style="font-style:italic;color:#E8E0D0;font-size:15px;line-height:1.6;margin-bottom:18px;">„${esc(v.message)}“</div>`:''}
+      <div style="border:2px dashed #14B8A6;border-radius:14px;padding:18px 22px;margin-bottom:18px;background:rgba(20,184,166,.08);">
+        <div style="font-size:11px;color:#8BA3C4;letter-spacing:1px;margin-bottom:6px;">AKTIVAČNÍ KÓD</div>
+        <div style="font-size:26px;font-weight:800;font-family:'Courier New',monospace;color:#2DD4BF;letter-spacing:2px;">${esc(v.code)}</div>
+      </div>
+      <div style="font-size:14px;line-height:1.7;color:#C8BFAD;">
+        <b style="color:#FCD34D;">Platí do ${fmtDate(v.expiresAt)}.</b><br>
+        Uplatnění: na <a href="https://questly.cz" style="color:#2DD4BF;">questly.cz</a> si vytvořte účet zdarma, otevřete Profil → Zadat aktivační kód, a vyberte si libovolnou misi z nabídky.<br><br>
+        Poukaz platí na jednu misi pro celý tým a je jednorázový.
+      </div>
+    </div>
+    <div style="padding:16px 32px;border-top:1px solid rgba(245,240,232,.1);font-size:11px;color:#4E6E8A;">Questly · questly.cz · info@questly.cz</div>
+  </div>`;
+}
+
+// ══ CREATOR: SPRÁVA DÁRKOVÝCH POUKAZŮ ══════════════════
+function saveGiftCfg(){
+  const price=parseInt(document.getElementById('crg-price').value)||349;
+  S.giftCfg={...(S.giftCfg||{}),price};
+  persist();toast('✅ Cena poukazu uložena');
+}
+async function renderCrGifts(){
+  document.getElementById('crg-price').value=S.giftCfg?.price||349;
+  const c=document.getElementById('crg-list');const sub=document.getElementById('crg-sb');
+  if(!sb){c.innerHTML=`<div class="emp"><div class="emp-i">☁️</div><div class="emp-t">Supabase není připojené</div></div>`;return;}
+  c.innerHTML=`<div style="color:var(--txt2);font-size:13px;padding:10px 0;">⏳ Načítám poukazy…</div>`;
+  try{
+    const{data,error}=await sb.from('vouchers').select('*').order('purchased_at',{ascending:false}).limit(200);
+    if(error)throw error;
+    const vs=data||[];
+    if(sub)sub.textContent=`${vs.length} poukazů`;
+    if(!vs.length){c.innerHTML=`<div class="emp"><div class="emp-i">🎁</div><div class="emp-t">Zatím žádné poukazy</div><div class="emp-d">Poukazy zakoupené hráči se objeví zde.</div></div>`;return;}
+    const now=Date.now();
+    c.innerHTML=vs.map(v=>{
+      const expired=v.expires_at&&new Date(v.expires_at).getTime()<now;
+      const used=!!v.activated_at;
+      const gm=v.activated_game_id?S.games.find(g=>g.id===v.activated_game_id):null;
+      const pill=used?`<span class="pill pill-teal">✓ Uplatněno${gm?` — ${esc(gm.name)}`:''}</span>`
+        :expired?`<span class="pill" style="background:var(--bad3);color:#FCA5A5;">⌛ Prošlé</span>`
+        :`<span class="pill pill-cream">● Volné</span>`;
+      return`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px 14px;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--teal);margin-bottom:4px;font-family:monospace;">${esc(v.code)}</div>
+        <div style="font-size:11px;color:var(--txt2);margin-bottom:6px;">📧 ${esc(v.buyer_email||'—')} · zakoupeno ${fmtDate(v.purchased_at)} · platí do ${fmtDate(v.expires_at)}</div>
+        ${v.message?`<div style="font-size:12px;color:var(--txt2);font-style:italic;margin-bottom:6px;">„${esc(v.message)}“</div>`:''}
+        <div style="display:flex;align-items:center;justify-content:space-between;">${pill}${!used&&!expired?`<button class="btn btn-ghost btn-xs" onclick="navigator.clipboard?.writeText('${esc(v.code)}').then(()=>toast('📋 Zkopírováno!'))">Kopírovat</button>`:''}</div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    const msg=sbErrMsg(e);
+    c.innerHTML=`<div class="emp"><div class="emp-i">⚠️</div><div class="emp-t">Nepodařilo se načíst</div><div class="emp-d">${/does not exist/i.test(msg)?'Tabulka vouchers ještě neexistuje — spusťte migraci supabase-migrace-vouchery.sql':esc(msg)}</div></div>`;
+  }
 }
 
 // ══ LOCATION PICKER ═══════════════════════════════════
 let pickerTargetLat='',pickerTargetLng='';
+// Chytrý výchozí střed mapy: poslední vybraný bod → stanoviště mise → start → město → Praha až jako poslední záchrana
+function defaultMapCenter(g){
+  if(S.lastPick)return{ll:[S.lastPick.lat,S.lastPick.lng],z:15};
+  const st=g?.stations?.find(s=>s.lat&&s.lng);
+  if(st)return{ll:[st.lat,st.lng],z:15};
+  if(g?.startPointLat&&g?.startPointLng)return{ll:[g.startPointLat,g.startPointLng],z:15};
+  if(g?.cityLat)return{ll:[g.cityLat,g.cityLng],z:13};
+  return{ll:[50.0755,14.4378],z:13};
+}
 function openPickerFor(latId,lngId){
   pickerTargetLat=latId;pickerTargetLng=lngId;
   const ov=document.getElementById('picker-ov');ov.style.display='flex';
   setTimeout(()=>{
     try{
     if(S.maps.picker){S.maps.picker.remove();S.maps.picker=null;}
-    const curLat=parseFloat(document.getElementById(latId)?.value)||50.0755;
-    const curLng=parseFloat(document.getElementById(lngId)?.value)||14.4378;
-    const map=L.map('picker-map',{center:[curLat,curLng],zoom:curLat!==50.0755?16:13,zoomControl:false});
+    const inLat=parseFloat(document.getElementById(latId)?.value),inLng=parseFloat(document.getElementById(lngId)?.value);
+    const dc=defaultMapCenter(S.cg);
+    const center=(inLat&&inLng)?[inLat,inLng]:dc.ll;
+    const map=L.map('picker-map',{center,zoom:(inLat&&inLng)?16:dc.z,zoomControl:false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
     S.maps.picker=map;
     const upd=()=>{const c=map.getCenter();const el=document.getElementById('picker-coords');if(el)el.textContent=`${c.lat.toFixed(5)}, ${c.lng.toFixed(5)}`;};
@@ -2175,8 +2873,9 @@ function openPickerFor_st(){
   setTimeout(()=>{
     try{
     if(S.maps.picker){S.maps.picker.remove();S.maps.picker=null;}
-    const center=st?.lat?[st.lat,st.lng]:[50.0755,14.4378];
-    const map=L.map('picker-map',{center,zoom:st?.lat?16:13,zoomControl:false});
+    const dc=defaultMapCenter(S.cg);
+    const center=st?.lat?[st.lat,st.lng]:dc.ll;
+    const map=L.map('picker-map',{center,zoom:st?.lat?16:dc.z,zoomControl:false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
     S.maps.picker=map;
     const upd=()=>{const c=map.getCenter();const el=document.getElementById('picker-coords');if(el)el.textContent=`${c.lat.toFixed(5)}, ${c.lng.toFixed(5)}`;};
@@ -2213,6 +2912,7 @@ async function updateGameCityFromStations(){
 
 function confirmPicker(){
   if(!S.maps.picker)return;const c=S.maps.picker.getCenter();
+  S.lastPick={lat:c.lat,lng:c.lng};
   if(pickerTargetLat==='__st_lat'){
     if(S.csi===null)return;const st=S.cg.stations[S.csi];st.lat=parseFloat(c.lat.toFixed(6));st.lng=parseFloat(c.lng.toFixed(6));
     const lt=document.getElementById('cse-loc-txt');const lc=document.getElementById('cse-loc-coords');
@@ -2268,10 +2968,19 @@ function renderCrChecklist(g){
   const el=document.getElementById('cgd-checklist');if(!el)return;
   const noPos=(g.stations||[]).filter(s=>!s.lat).length;
   const noTasks=(g.stations||[]).filter(s=>!s.tasks?.length).length;
+  // Větvení: cíle voleb i „pokračovat na" musí ukazovat na existující stanoviště
+  const stIds=new Set((g.stations||[]).map(s=>s.id));
+  let badTargets=0;
+  (g.stations||[]).forEach(s=>{
+    if(s.nextId&&s.nextId!=='END'&&!stIds.has(s.nextId))badTargets++;
+    (s.tasks||[]).forEach(t=>{if(t.type==='branch')(t.choices||[]).forEach(ch=>{if(ch.target&&ch.target!=='END'&&!stIds.has(ch.target))badTargets++;});});
+  });
+  const hasBranch=gameHasBranching(g);
   const items=[
     {ok:(g.stations||[]).length>0,lbl:(g.stations||[]).length?`${g.stations.length} stanovišť`:'Přidejte stanoviště',go:"nav('v-cr-sts')"},
     {ok:(g.stations||[]).length>0&&noPos===0,lbl:noPos?`${noPos} stanovišť bez polohy`:'Všechna stanoviště mají polohu',go:"nav('v-cr-sts')"},
     {ok:(g.stations||[]).length>0&&noTasks===0,lbl:noTasks?`${noTasks} stanovišť bez úkolů`:'Každé stanoviště má úkoly',go:"nav('v-cr-sts')"},
+    ...(hasBranch?[{ok:badTargets===0,lbl:badTargets?`${badTargets} větvení míří na smazané stanoviště`:'⑂ Větvení příběhu v pořádku',go:"nav('v-cr-sts')"}]:[]),
     {ok:!!(g.startPointLat&&g.startPointLng),lbl:g.startPointLat?'Startovní bod nastaven':'Nastavte startovní bod',go:'editGameMeta()'},
     {ok:!!g.coverImage,lbl:g.coverImage?'Cover fotka nahrána':'Nahrajte cover fotku (nepovinné, ale prodává)',go:'editGameMeta()'},
     {ok:!!(g.shortDesc&&g.fullDesc),lbl:(g.shortDesc&&g.fullDesc)?'Popisy vyplněny':'Doplňte krátký a plný popis',go:'editGameMeta()'},
@@ -2354,6 +3063,7 @@ function createGame(){
     g.timeLimit=g.duration;
     if(S.newGameImg)g.coverImage=S.newGameImg;
     persist();resetGameForm();toast('✅ Změny uloženy');openCrDetail(g.id);
+    if(!g.cityLat){S.cg=g;updateGameCityFromStations();}
     return;
   }
   const g={id:uid(),creatorId:S.cu.id,name:nm,code:cd,
@@ -2418,14 +3128,16 @@ function editGameTrailer(){
 function toggleGameStatus(){
   if(!S.cg)return;
   if(S.cg.status==='active'){S.cg.status='finished';document.getElementById('cgd-stop').style.display='none';document.getElementById('cgd-start').style.display='flex';document.getElementById('cgd-start').textContent='↺ Restartovat';document.getElementById('cgd-st').textContent='✓ Dokončeno';toast('■ Mise zastavena');}
-  else{if(!S.cg.stations.length){toast('⚠️ Přidejte alespoň jedno stanoviště');return;}S.cg.status='active';document.getElementById('cgd-start').style.display='none';document.getElementById('cgd-stop').style.display='flex';document.getElementById('cgd-st').textContent='▶ Aktivní';toast('▶ Mise spuštěna!');}
+  else{if(!S.cg.stations.length){toast('⚠️ Přidejte alespoň jedno stanoviště');return;}S.cg.status='active';document.getElementById('cgd-start').style.display='none';document.getElementById('cgd-stop').style.display='flex';document.getElementById('cgd-st').textContent='▶ Aktivní';toast('▶ Mise spuštěna!');
+    if(!S.cg.cityLat)updateGameCityFromStations();}
   persist();
 }
 
 // ══ CREATOR MAP ═══════════════════════════════════════
 function initCMap(){
   if(S.maps.cmap){S.maps.cmap.remove();S.maps.cmap=null;}
-  const map=L.map('cmap',{center:[50.0755,14.4378],zoom:14,zoomControl:false,preferCanvas:true});
+  const dc0=defaultMapCenter(S.cg);
+  const map=L.map('cmap',{center:dc0.ll,zoom:dc0.z,zoomControl:false,preferCanvas:true});
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
   S.maps.cmap=map;S.rm=[];S.rp=null;S.ar=false;
   if(S.cg?.stations.length)S.cg.stations.forEach((st,i)=>{if(st.lat)addRP(st.lat,st.lng,st.name||`Stan. ${i+1}`,false,st.id);});
@@ -2483,12 +3195,23 @@ function renderStList(){
   if(!S.cg)return;const sts=S.cg.stations;const sb=document.getElementById('cst-sb');if(sb)sb.textContent=`${sts.length} stanovišť`;
   const c=document.getElementById('cst-li');
   if(!sts.length){c.innerHTML=`<div class="emp"><div class="emp-i">📍</div><div class="emp-t">Žádná stanoviště</div><div class="emp-d">Vytvořte trasu na mapě nebo přidejte ručně.</div></div>`;return;}
-  c.innerHTML=sts.map((st,i)=>`<div class="sti"><div class="stn" onclick="editSt(${i})">${i+1}</div><div style="flex:1;cursor:pointer;" onclick="editSt(${i})"><div style="font-size:14px;font-weight:700;">${esc(st.name)||'Bez názvu'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${st.tasks.length} úkol${st.tasks.length===1?'':st.tasks.length<5?'y':'ů'}${st.lat?` · 📍`:' · ⚠️ Poloha nenastavena'}${st.showPin===false?' · 🙈 bez špendlíku':''}</div></div><div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;"><button onclick="event.stopPropagation();moveSt(${i},-1)" style="background:none;border:none;color:${i===0?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===0?'disabled':''}>▲</button><button onclick="event.stopPropagation();moveSt(${i},1)" style="background:none;border:none;color:${i===sts.length-1?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===sts.length-1?'disabled':''}>▼</button></div><span style="color:var(--txt2);cursor:pointer;" onclick="editSt(${i})">›</span></div>`).join('');
+  c.innerHTML=sts.map((st,i)=>`<div class="sti"><div class="stn" onclick="editSt(${i})">${i+1}</div><div style="flex:1;cursor:pointer;" onclick="editSt(${i})"><div style="font-size:14px;font-weight:700;">${esc(st.name)||'Bez názvu'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${st.tasks.length} úkol${st.tasks.length===1?'':st.tasks.length<5?'y':'ů'}${st.lat?` · 📍`:' · ⚠️ Poloha nenastavena'}${st.showPin===false?' · 🙈 bez špendlíku':''}${(st.nextId||(st.tasks||[]).some(t=>t.type==='branch'))?' · ⑂ větvení':''}</div></div><div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;"><button onclick="event.stopPropagation();moveSt(${i},-1)" style="background:none;border:none;color:${i===0?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===0?'disabled':''}>▲</button><button onclick="event.stopPropagation();moveSt(${i},1)" style="background:none;border:none;color:${i===sts.length-1?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===sts.length-1?'disabled':''}>▼</button></div><span style="color:var(--txt2);cursor:pointer;" onclick="editSt(${i})">›</span></div>`).join('');
 }
 function addSt(){if(!S.cg)return;S.cg.stations.push({id:uid(),name:`Stanoviště ${S.cg.stations.length+1}`,hint:'',lat:null,lng:null,radius:20,showPin:true,tasks:[]});editSt(S.cg.stations.length-1);}
 function moveSt(i,dir){
   const sts=S.cg?.stations;if(!sts)return;const j=i+dir;if(j<0||j>=sts.length)return;
   [sts[i],sts[j]]=[sts[j],sts[i]];persist();renderStList();
+}
+// Volby cílových stanovišť pro větvení (bez aktuálně editovaného stanoviště)
+function stationTargetOptions(selected,excludeIdx,allowEnd){
+  const sts=S.cg?.stations||[];
+  let html=`<option value="" ${!selected?'selected':''}>→ další v pořadí</option>`;
+  sts.forEach((s,i)=>{
+    if(i===excludeIdx)return;
+    html+=`<option value="${esc(s.id)}" ${selected===s.id?'selected':''}>${i+1}. ${esc(s.name||'Bez názvu')}</option>`;
+  });
+  if(allowEnd)html+=`<option value="END" ${selected==='END'?'selected':''}>🏁 Konec hry (dohrát misi)</option>`;
+  return html;
 }
 function editSt(i){
   S.csi=i;const st=S.cg.stations[i];
@@ -2497,10 +3220,11 @@ function editSt(i){
   const lt=document.getElementById('cse-loc-txt');const lc=document.getElementById('cse-loc-coords');
   if(lt)lt.textContent=st.lat?'📍 Poloha nastavena':'Poloha nenastavena';if(lc)lc.textContent=st.lat?`${st.lat.toFixed(5)}, ${st.lng.toFixed(5)}`:'';
   const pinCb=document.getElementById('cse-pin');if(pinCb)pinCb.checked=st.showPin!==false;
+  const nx=document.getElementById('cse-next');if(nx)nx.innerHTML=stationTargetOptions(st.nextId||'',i,true);
   renderTasks(st.tasks);nav('v-cr-se');
 }
 function renderTasks(tasks){
-  const ic={mc:'🔘',tx:'✏️',nm:'🔢',cd:'🔑',photo:'📷',order:'🔀',inventory:'🎒',gps:'📍'};
+  const ic={mc:'🔘',tx:'✏️',nm:'🔢',cd:'🔑',photo:'📷',order:'🔀',inventory:'🎒',gps:'📍',branch:'⑂'};
   const c=document.getElementById('cse-tli');
   c.innerHTML=tasks.length?tasks.map((t,i)=>`<div class="sti" onclick="editTask(${i})"><div class="stn" style="background:var(--navy3);color:var(--txt);font-size:16px;">${ic[t.type]||'❓'}</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;">${t.q||'Bez zadání'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${t.pts||10} b. · pen: ${t.pen||0} · ⏱ ${t.timer||0}s</div></div><span style="color:var(--txt2);">›</span></div>`).join(''):`<div style="color:var(--txt2);font-size:14px;margin-bottom:14px;">Žádné úkoly.</div>`;
 }
@@ -2508,6 +3232,7 @@ function saveSt(){
   if(S.csi===null)return;const st=S.cg.stations[S.csi];
   st.name=document.getElementById('cse-nm').value||`Stan. ${S.csi+1}`;st.hint=document.getElementById('cse-ht').value;st.radius=parseInt(document.getElementById('cse-rd').value)||20;
   st.showPin=document.getElementById('cse-pin')?document.getElementById('cse-pin').checked:true;
+  st.nextId=document.getElementById('cse-next')?.value||null;
   persist();toast('✅ Uloženo');nav('v-cr-sts');
 }
 function addTask(){
@@ -2591,6 +3316,26 @@ function renderTF(t=null){
   else if(tp==='photo'||tp==='gps'){c.innerHTML=`<div style="background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--txt2);">${tp==='photo'?'📷 Hráč nahraje fotodůkaz. Přijme se automaticky.':'📍 Hráč musí být na správném místě.'}</div>`;}
   else if(tp==='order'){c.innerHTML=`<div class="ig"><label class="lb">Položky k seřazení (každá na řádku)</label><textarea class="inp" id="ca" placeholder="Položka 1\nPoložka 2\nPoložka 3" style="min-height:100px;">${(t?.opts||[]).join('\n')}</textarea></div>`;}
   else if(tp==='inventory'){const items=S.cg?.items||[];c.innerHTML=`<div class="ig"><label class="lb">Potřebný předmět z inventáře</label><select class="inp" id="ca"></select>${!items.length?`<div style="font-size:12px;color:var(--txt2);margin-top:6px;">Zatím nemáte žádné předměty. Přidejte jeden pomocí tlačítka ➕ u pole „Předmět do inventáře" výše.</div>`:''}</div>`;renderInvItemSelect(t?.ca||'');}
+  else if(tp==='branch'){
+    const choices=(t?.choices&&t.choices.length?t.choices:[{label:'',target:''},{label:'',target:''}]).slice(0,4);
+    c.innerHTML=`<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--txt2);line-height:1.55;margin-bottom:12px;">⑂ Hráč si vybere jednu z cest a hra pokračuje na zvoleném stanovišti. Žádná volba není „špatně" — za rozhodnutí se nedávají body. Rozhodnutí přeskočí případné další úkoly na tomto stanovišti, dejte ho proto jako <b>poslední úkol</b>. Pozor na smyčky: větev nesmí vést zpět na stanoviště, kterým daná cesta už prošla.</div>
+      <div id="branch-choices">${choices.map((ch,i)=>branchChoiceRow(ch,i)).join('')}</div>
+      <button type="button" class="btn btn-ghost btn-xs" onclick="addBranchChoice()" id="branch-add-btn" style="margin-top:4px;${choices.length>=4?'display:none;':''}">➕ Přidat volbu (max. 4)</button>`;
+  }
+}
+function branchChoiceRow(ch,i){
+  return`<div class="branch-row" style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px;margin-bottom:8px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Volba ${i+1}</span>${i>=2?`<button type="button" onclick="this.closest('.branch-row').remove();document.getElementById('branch-add-btn').style.display='';" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button>`:''}</div>
+    <input class="inp branch-label" placeholder="Text volby (např. „Sledovat stopy do parku…")" value="${esc(ch?.label||'')}" style="margin-bottom:8px;"/>
+    <select class="inp branch-target">${stationTargetOptions(ch?.target||'',S.csi,false)}</select>
+  </div>`;
+}
+function addBranchChoice(){
+  const wrap=document.getElementById('branch-choices');if(!wrap)return;
+  const n=wrap.querySelectorAll('.branch-row').length;
+  if(n>=4)return;
+  wrap.insertAdjacentHTML('beforeend',branchChoiceRow(null,n));
+  if(n+1>=4)document.getElementById('branch-add-btn').style.display='none';
 }
 function handleOptImg(e,idx){
   const file=e.target.files[0];if(!file)return;
@@ -2620,8 +3365,15 @@ function saveTask(){
     task.ci=parseInt(document.querySelector('input[name="ci"]:checked')?.value??0);
     if(task.opts.length<2){toast('⚠️ Min. 2 možnosti (text nebo obrázek)');return;}
   }
-  else if(tp==='order'){task.opts=(document.getElementById('ca')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean);}
+  else if(tp==='order'){task.opts=(document.getElementById('ca')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean);if(task.opts.length<2){toast('⚠️ Zadejte alespoň 2 položky k seřazení');return;}}
   else if(tp==='inventory'){task.ca=document.getElementById('ca')?.value.trim()||'';if(!task.ca){toast('⚠️ Vyberte potřebný předmět');return;}}
+  else if(tp==='branch'){
+    const rows=[...document.querySelectorAll('#branch-choices .branch-row')];
+    task.choices=rows.map(r=>({label:r.querySelector('.branch-label')?.value.trim()||'',target:r.querySelector('.branch-target')?.value||''})).filter(ch=>ch.label);
+    if(task.choices.length<2){toast('⚠️ Vyplňte text alespoň u 2 voleb');return;}
+    // Rozhodnutí není bodovaný úkol
+    task.pts=0;task.pen=0;task.timer=0;task.hints=['','',''];
+  }
   else if(tp!=='photo'&&tp!=='gps'){task.ca=document.getElementById('ca')?.value.trim()||'';}
   if(task.givesItem)ensureGameItem(task.givesItem);
   const station=S.cg.stations[si];if(S.etask>=0)station.tasks[S.etask]=task;else station.tasks.push(task);
@@ -2678,8 +3430,19 @@ function deleteBadge(){
 
 // ══ CREATOR: PLAYER SUPPORT ═════════════════════════════
 function renderCrSupport(){renderReportsList();document.getElementById('sup-player-detail').innerHTML='';}
-function renderReportsList(){
-  const c=document.getElementById('cr-reports-list');const reports=S.reports||[];
+async function renderReportsList(){
+  const c=document.getElementById('cr-reports-list');
+  let reports=S.reports||[];
+  if(sb){
+    try{
+      const{data,error}=await withTimeout(sb.from('reports').select('*').order('created_at',{ascending:false}).limit(100),8000);
+      if(error)throw error;
+      if(data)reports=data.map(r=>({id:r.id,createdAt:new Date(r.created_at).getTime(),resolved:r.resolved,
+        userEmail:r.user_email,userName:r.user_name,gameId:r.game_id,gameName:r.game_name,
+        stationName:r.station_name,taskIndex:r.task_index,view:r.view,text:r.text,remote:true}));
+      S.reports=reports;DB.set('reports',S.reports);
+    }catch(e){console.warn('Načtení hlášení ze Supabase selhalo (tabulka reports možná ještě neexistuje):',sbErrMsg(e));}
+  }
   if(!reports.length){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:20px 0;">Zatím žádná hlášení</div>`;return;}
   c.innerHTML=reports.map(r=>`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:14px;margin-bottom:10px;${r.resolved?'opacity:.55;':''}">
     <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:6px;">
@@ -2695,8 +3458,16 @@ function renderReportsList(){
     </div>
   </div>`).join('');
 }
-function toggleReportResolved(id){const r=(S.reports||[]).find(r=>r.id===id);if(r){r.resolved=!r.resolved;persist();renderReportsList();}}
-function deleteReport(id){if(!confirm('Smazat hlášení?'))return;S.reports=(S.reports||[]).filter(r=>r.id!==id);persist();renderReportsList();}
+function toggleReportResolved(id){
+  const r=(S.reports||[]).find(r=>r.id===id);if(!r)return;
+  r.resolved=!r.resolved;persist();renderReportsList();
+  if(sb)sb.from('reports').update({resolved:r.resolved}).eq('id',id).then(({error})=>{if(error)console.warn('Update hlášení selhal:',sbErrMsg(error));});
+}
+function deleteReport(id){
+  if(!confirm('Smazat hlášení?'))return;
+  S.reports=(S.reports||[]).filter(r=>r.id!==id);persist();renderReportsList();
+  if(sb)sb.from('reports').delete().eq('id',id).then(({error})=>{if(error)console.warn('Smazání hlášení selhalo:',sbErrMsg(error));});
+}
 function lookupPlayer(){lookupPlayerByEmail(document.getElementById('sup-search').value.trim().toLowerCase());}
 async function lookupPlayerByEmail(em){
   const c=document.getElementById('sup-player-detail');
@@ -2711,6 +3482,7 @@ async function lookupPlayerByEmail(em){
     await showPlayerSupportDetail(profile.id);
   }catch(e){c.innerHTML=`<div style="font-size:13px;color:#FCA5A5;text-align:center;padding:16px 0;">Chyba: ${sbErrMsg(e)}</div>`;}
 }
+let supportEnts={};
 async function showPlayerSupportDetail(userId){
   const c=document.getElementById('sup-player-detail');
   try{
@@ -2719,6 +3491,7 @@ async function showPlayerSupportDetail(userId){
       sb.from('entitlements').select('*').eq('user_id',userId)
     ]);
     if(pErr)throw pErr;if(eErr)throw eErr;
+    supportEnts={};(ents||[]).forEach(en=>supportEnts[en.game_id]=en);
     c.innerHTML=`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:16px;">
       <div style="font-size:15px;font-weight:700;margin-bottom:2px;">${esc(profile.name)||'(bez jména)'}</div>
       <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${esc(profile.email)||''} · ${profile.xp||0} XP · ${profile.completed_missions||0} dokončených misí</div>
@@ -2734,7 +3507,9 @@ async function showPlayerSupportDetail(userId){
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             ${en.status==='in_progress'?`<button class="btn btn-ghost btn-xs" onclick="supportResetSession('${userId}','${en.game_id}')" style="color:#FCA5A5;">↺ Resetovat postup</button>`:''}
             ${en.status!=='completed'?`<button class="btn btn-ghost btn-xs" onclick="supportUnlockGame('${userId}','${en.game_id}')">🔓 Znovu odemknout</button>`:''}
+            ${en.status!=='completed'&&g?.stations?.length?`<button class="btn btn-ghost btn-xs" onclick="toggleSupportMove('${userId}','${en.game_id}')" style="color:var(--amber2);">⏩ Posunout na…</button>`:''}
           </div>
+          <div id="sup-move-${en.game_id}" style="display:none;margin-top:10px;padding:12px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-radius:var(--rs);"></div>
         </div>`;
       }).join('')}
     </div>`;
@@ -2753,6 +3528,57 @@ async function supportUnlockGame(userId,gid){
     const{error}=await sb.from('entitlements').upsert({user_id:userId,game_id:gid,status:'unlocked',progress:null,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
     if(error)throw error;
     toast('✅ Mise znovu odemčena');showPlayerSupportDetail(userId);
+  }catch(e){toast('❌ '+sbErrMsg(e));}
+}
+// ══ PODPORA: POSUNOUT HRÁČE NA KONKRÉTNÍ MÍSTO VE HŘE ═══
+function toggleSupportMove(userId,gid){
+  const box=document.getElementById(`sup-move-${gid}`);if(!box)return;
+  if(box.style.display!=='none'){box.style.display='none';return;}
+  const g=S.games.find(x=>x.id===gid);if(!g)return;
+  box.style.display='block';
+  box.innerHTML=`
+    <div style="font-size:12px;font-weight:700;margin-bottom:8px;">⏩ Posunout hráče na:</div>
+    <div class="ig" style="margin-bottom:8px;"><label class="lb">Stanoviště</label>
+      <select class="inp" id="sup-mv-st-${gid}" onchange="supportMoveStChanged('${gid}')">
+        ${g.stations.map((st,i)=>`<option value="${i}">${i+1}. ${esc(st.name)||'Stanoviště '+(i+1)}</option>`).join('')}
+      </select></div>
+    <div class="ig" style="margin-bottom:10px;"><label class="lb">Kam přesně</label>
+      <select class="inp" id="sup-mv-tk-${gid}"></select></div>
+    <div style="font-size:11px;color:var(--txt2);line-height:1.5;margin-bottom:10px;">Dosavadní odpovědi, čas a inventář hráče zůstanou zachovány. Hráč po otevření mise pokračuje z vybraného místa.</div>
+    <button class="btn btn-amber btn-sm btn-f" onclick="supportMoveTo('${userId}','${gid}')">Potvrdit posunutí</button>`;
+  supportMoveStChanged(gid);
+}
+function supportMoveStChanged(gid){
+  const g=S.games.find(x=>x.id===gid);if(!g)return;
+  const si=parseInt(document.getElementById(`sup-mv-st-${gid}`)?.value)||0;
+  const tkSel=document.getElementById(`sup-mv-tk-${gid}`);if(!tkSel)return;
+  const tasks=g.stations[si]?.tasks||[];
+  tkSel.innerHTML=`<option value="travel">🚶 Přesun na stanoviště (mapa)</option>`+
+    tasks.map((t,i)=>`<option value="${i}">Úkol ${i+1}${t.q?': '+esc(String(t.q).slice(0,40)):''}</option>`).join('');
+}
+async function supportMoveTo(userId,gid){
+  const g=S.games.find(x=>x.id===gid);if(!g)return;
+  const si=parseInt(document.getElementById(`sup-mv-st-${gid}`)?.value)||0;
+  const mode=document.getElementById(`sup-mv-tk-${gid}`)?.value||'travel';
+  const st=g.stations[si];if(!st){toast('⚠️ Stanoviště nenalezeno');return;}
+  const label=mode==='travel'?`přesun na „${st.name||'stanoviště '+(si+1)}"`:`úkol ${parseInt(mode)+1} na „${st.name||'stanoviště '+(si+1)}"`;
+  if(!confirm(`Posunout hráče na: ${label}?`))return;
+  const old=supportEnts[gid]?.progress||{};
+  const isTravel=mode==='travel';
+  const ti2=isTravel?0:Math.min(parseInt(mode)||0,(st.tasks?.length||1)-1);
+  const progress={
+    resumeView:isTravel?'v-travel':'v-game',
+    teamName:old.teamName||'Tým',teamSize:old.teamSize||1,geo:old.geo||'manual',
+    answers:old.answers||[],doneTasks:(old.answers||[]).length,
+    totalSecs:old.totalSecs||0,xpEarned:old.xpEarned||0,
+    si,ti2,usedHints:old.usedHints||{},inventory:old.inventory||[],
+    visitedStations:g.stations.slice(0,isTravel?si:si+1).map(s=>s.id)
+  };
+  try{
+    const{error}=await sb.from('entitlements').upsert({user_id:userId,game_id:gid,status:'in_progress',progress,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
+    if(error)throw error;
+    toast('✅ Hráč posunut — po otevření mise pokračuje z nového místa');
+    showPlayerSupportDetail(userId);
   }catch(e){toast('❌ '+sbErrMsg(e));}
 }
 
@@ -2783,6 +3609,9 @@ async function renderMailCfg(){
   document.getElementById('mc-tw').value=cfg.templateWelcome||'';
   document.getElementById('mc-tr').value=cfg.templateReset||'';
   document.getElementById('mc-tn').value=cfg.templateNewsletter||'';
+  document.getElementById('mc-ts').value=cfg.templateSupport||'';
+  document.getElementById('mc-tv').value=cfg.templateVoucher||'';
+  document.getElementById('mc-se').value=cfg.supportEmail||'info@questly.cz';
   document.getElementById('mc-status').textContent=mailReady()?'✅ EmailJS je nakonfigurován':'⚠️ EmailJS zatím není nastaven — e-maily se neodesílají';
   document.getElementById('nl-sub-count').textContent='👥 Načítám počet odběratelů…';
   if(sb){
@@ -2800,11 +3629,13 @@ function saveMailCfg(){
     templateWelcome:document.getElementById('mc-tw').value.trim(),
     templateReset:document.getElementById('mc-tr').value.trim(),
     templateNewsletter:document.getElementById('mc-tn').value.trim(),
+    templateSupport:document.getElementById('mc-ts').value.trim(),
+    templateVoucher:document.getElementById('mc-tv').value.trim(),
+    supportEmail:document.getElementById('mc-se').value.trim()||'info@questly.cz',
   };
   persist();initMail();toast('✅ Nastavení uloženo');renderMailCfg();
 }
 async function sendNewsletter(){
-  if(!mailReady()||!S.mailCfg.templateNewsletter){toast('⚠️ Nejprve nastavte a uložte EmailJS výše');return;}
   const subject=document.getElementById('nl-subj').value.trim(),body=document.getElementById('nl-body').value.trim();
   if(!subject||!body){toast('⚠️ Vyplňte předmět i text zprávy');return;}
   if(!sb){toast('⚠️ Supabase není připojené');return;}
@@ -2824,7 +3655,8 @@ async function sendNewsletter(){
     await new Promise(r=>setTimeout(r,350));
   }
   btn.disabled=false;btn.textContent='📤 Odeslat newsletter';
-  toast(`✅ Odesláno ${ok}/${subs.length} e-mailů`,4000);
+  if(ok===0)toast('❌ Nic se neodeslalo — nasaďte Edge Function send-email (Resend), nebo nastavte EmailJS výše',7000);
+  else toast(`✅ Odesláno ${ok}/${subs.length} e-mailů`,4000);
 }
 // ══ GLOBAL LEADERBOARD ══════════════════════════════════
 // TODO(backend): once a real database exists, replace the body of this function with
@@ -2991,9 +3823,10 @@ function migrateData(){
   if(changed)persist();
 }
 async function init(){
+  initMonitoring();
   migrateData();
+  await Promise.all([loadGamesFromSupabase(),loadConfigFromSupabase()]);
   initMail();
-  await loadGamesFromSupabase();
   await restoreSession();
   if(S.cu){
     updateAuthBtns();
