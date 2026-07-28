@@ -279,7 +279,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   #v-detail>div:first-child{height:340px;}
   #v-splash{max-width:none;border:none;box-shadow:none;}
   /* Tvůrčí obrazovky snesou víc místa */
-  #v-cr,#v-cr-new,#v-cr-gd,#v-cr-map,#v-cr-sts,#v-cr-se,#v-cr-te,#v-cr-codes,#v-cr-gifts,#v-cr-badges,#v-cr-badge-edit,#v-cr-support,#v-cr-pages,#v-cr-page-edit,#v-cr-mail,#v-cr-lb,#v-gift,#v-gift-success,#v-gift-redeem{max-width:720px;}
+  #v-cr,#v-cr-new,#v-cr-gd,#v-cr-map,#v-cr-sts,#v-cr-se,#v-cr-te,#v-cr-endings,#v-cr-codes,#v-cr-gifts,#v-cr-badges,#v-cr-badge-edit,#v-cr-support,#v-cr-pages,#v-cr-page-edit,#v-cr-mail,#v-cr-lb,#v-gift,#v-gift-success,#v-gift-redeem{max-width:720px;}
   /* Overlaye (odpovědi, nápovědy, přihlášení…): centrovaný panel místo plného sheetu */
   .ov{justify-content:center;align-items:center;}
   .ov-tap{position:absolute;inset:0;flex:none;}
@@ -657,6 +657,24 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 </div>
 
 <!-- ══ COMPLETION ═══════════════════════════════════════════ -->
+<!-- ══ PŘÍBĚHOVÉ STANOVIŠTĚ (bez úkolů) ══════════════════════ -->
+<div class="flow-view" id="v-story">
+  <div style="padding:14px 16px 0;">
+    <div style="height:5px;background:rgba(245,240,232,.1);border-radius:3px;overflow:hidden;">
+      <div id="story-prog" style="height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .5s ease;"></div>
+    </div>
+  </div>
+  <div class="scr" style="padding:28px 22px;display:flex;flex-direction:column;justify-content:center;">
+    <div style="font-size:38px;text-align:center;margin-bottom:14px;">📖</div>
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.6px;color:var(--teal);text-align:center;margin-bottom:6px;">Příběh pokračuje</div>
+    <div style="font-size:22px;font-weight:800;letter-spacing:-.4px;text-align:center;margin-bottom:20px;" id="story-name"></div>
+    <div id="story-txt" style="font-size:15.5px;line-height:1.75;color:var(--txt);white-space:pre-wrap;text-align:left;"></div>
+  </div>
+  <div style="padding:14px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--bdr);">
+    <button class="btn btn-teal btn-f" onclick="storyContinue()" style="padding:15px;font-size:15px;">Pokračovat →</button>
+  </div>
+</div>
+
 <div class="flow-view" id="v-completion">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;overflow-y:auto;">
     <div style="font-size:72px;margin-bottom:6px;filter:drop-shadow(0 0 24px rgba(245,158,11,.6));animation:xpPop .5s ease forwards;">🏆</div>
@@ -664,6 +682,13 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div style="font-size:28px;font-weight:800;letter-spacing:-.6px;margin-bottom:20px;" id="comp-name"></div>
     <div class="xp-pop" id="comp-xp" style="animation:xpPop .6s .2s ease both;"></div>
     <div style="font-size:14px;color:var(--txt2);margin-bottom:24px;">XP získáno</div>
+    <div id="comp-ending" style="display:none;width:100%;margin-bottom:22px;">
+      <div class="card card-p" style="text-align:left;border-color:rgba(245,158,11,.35);background:linear-gradient(135deg,rgba(245,158,11,.09),rgba(20,184,166,.05));">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--amber);margin-bottom:7px;">⑂ Vaše zakončení</div>
+        <div style="font-size:17px;font-weight:800;margin-bottom:8px;" id="comp-ending-ti"></div>
+        <div style="font-size:14px;line-height:1.7;color:var(--txt2);white-space:pre-wrap;" id="comp-ending-tx"></div>
+      </div>
+    </div>
     <div id="comp-badge" style="margin-bottom:24px;display:none;">
       <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:8px;">Nový odznak</div>
       <div style="font-size:48px;" id="comp-badge-icon"></div>
@@ -861,6 +886,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <button class="btn btn-ghost btn-sm" onclick="nav('v-cr-map')">🗺️ Trasa</button>
       <button class="btn btn-ghost btn-sm" onclick="nav('v-cr-sts')">📍 Stanoviště</button>
       <button class="btn btn-ghost btn-sm" onclick="nav('v-cr-codes')">🔑 Kódy</button>
+      <button class="btn btn-ghost btn-sm" onclick="renderCrEndings()">🏁 Zakončení</button>
       <button class="btn btn-ghost btn-sm" onclick="S.prevView='v-cr-gd';nav('v-cr-lb')">🏆 Žebříček</button>
       <button class="btn btn-ghost btn-sm" onclick="editGameVideo()">🎬 Intro video</button>
       <button class="btn btn-ghost btn-sm" onclick="editGameTrailer()">🎞️ Trailer (náhled)</button>
@@ -903,6 +929,16 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <div class="scr" style="padding:14px;"><div id="cst-li"></div></div>
 </div>
 
+<!-- ══ CREATOR ENDINGS EDITOR ═══════════════════════════════ -->
+<div class="flow-view" id="v-cr-endings">
+  <div class="hdr"><button class="hdr-bk" onclick="nav('v-cr-gd')">←</button><div><div class="hdr-ti">🏁 Zakončení</div><div class="hdr-sub" id="cend-sb"></div></div><button class="btn btn-teal btn-sm" onclick="saveEndings()" style="font-size:12px;padding:8px 14px;">Uložit</button></div>
+  <div class="scr" style="padding:16px;">
+    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--txt2);line-height:1.55;margin-bottom:14px;">Zakončení je závěrečný text, který hráč uvidí po dohrání. Přiřadíte ho k volbě v úkolu <b>⑂ Rozhodnutí</b>, která má jako cíl „🏁 Konec hry“ — nebo stanovišti, které hru ukončuje. Volitelně můžete za zakončení udělit odznak.</div>
+    <div id="cend-li"></div>
+    <button class="btn btn-ghost btn-f btn-sm" onclick="addEnding()" style="font-size:13px;">+ Přidat zakončení</button>
+  </div>
+</div>
+
 <!-- ══ CREATOR STATION EDITOR ═══════════════════════════════ -->
 <div class="flow-view" id="v-cr-se">
   <div class="hdr"><button class="hdr-bk" onclick="nav('v-cr-sts')">←</button><div><div class="hdr-ti" id="cse-ti">Stanoviště</div></div><button class="btn btn-teal btn-sm" onclick="saveSt()" style="font-size:12px;padding:8px 14px;">Uložit</button></div>
@@ -922,14 +958,23 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <input type="checkbox" id="cse-pin" checked style="width:22px;height:22px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;"/>
       </div>
     </div>
+    <div class="ig">
+      <div style="background:rgba(245,240,232,.06);border:1.5px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div><div style="font-size:13px;font-weight:600;">📖 Příběhové stanoviště (bez úkolů)</div><div style="font-size:11px;color:var(--txt2);margin-top:2px;line-height:1.45;">Hráč sem dojde, přečte si text a jde dál. Nezadává odpověď, nezískává body a stanoviště se nepočítá do úspěšnosti. Hodí se na dlouhé úseky bez zastávky.</div></div>
+        <input type="checkbox" id="cse-story" style="width:22px;height:22px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;" onchange="toggleStoryStation()"/>
+      </div>
+    </div>
+    <div class="ig" id="cse-story-wrap" style="display:none;"><label class="lb">Text, který hráč uvidí</label><textarea class="inp" id="cse-story-txt" placeholder="Tudy chodila každé ráno do práce. Čtyřicet minut tam, čtyřicet zpátky…" style="min-height:130px;"></textarea></div>
     <div class="ig"><label class="lb">⑂ Po dokončení stanoviště pokračovat na</label>
       <select class="inp" id="cse-next"></select>
       <div style="font-size:11px;color:var(--txt2);margin-top:6px;line-height:1.5;">Výchozí je další stanoviště v pořadí. Změňte, pokud tvoříte větvené dějové linie — sem se větve „slévají" zpět, nebo tu můžete danou linii ukončit.</div>
     </div>
     <div class="dv"></div>
-    <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Úkoly</div>
-    <div id="cse-tli"></div>
-    <button class="btn btn-ghost btn-f btn-sm" onclick="addTask()" style="font-size:13px;">+ Přidat úkol</button>
+    <div id="cse-tasks-wrap">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Úkoly</div>
+      <div id="cse-tli"></div>
+      <button class="btn btn-ghost btn-f btn-sm" onclick="addTask()" style="font-size:13px;">+ Přidat úkol</button>
+    </div>
   </div>
 </div>
 
@@ -1641,7 +1686,17 @@ function renderDiscList(filterCity){
   const c=document.getElementById('disc-game-list');
   const giftCard=`<div class="card" style="margin-bottom:16px;cursor:pointer;overflow:hidden;border-color:rgba(245,158,11,.3);" onclick="openGift()">
     <div style="padding:18px;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(20,184,166,.08));">
-      <div style="font-size:40px;flex-shrink:0;">🎁</div>
+      <div style="flex-shrink:0;width:46px;height:46px;"><svg viewBox="0 0 46 46" width="46" height="46" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dárkový poukaz">
+        <defs><linearGradient id="qgv" gradientUnits="userSpaceOnUse" x1="10" y1="5" x2="36" y2="42"><stop offset="0" stop-color="#2DD4BF"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs>
+        <path d="M14.6 27.4 23 42.6l8.4-15.2z" fill="url(#qgv)"/>
+        <circle cx="23" cy="17" r="13.4" fill="url(#qgv)"/>
+        <circle cx="23" cy="17" r="8.2" fill="#F5F0E8"/>
+        <rect x="17" y="14.6" width="12" height="2.9" rx=".9" fill="#0E1C35"/>
+        <rect x="18.3" y="17.9" width="9.4" height="5.3" rx=".9" fill="#0E1C35"/>
+        <rect x="22.2" y="14.6" width="1.6" height="8.6" fill="#F5F0E8"/>
+        <path d="M23 14.4c-.6-2.4-2.2-3.4-3.4-2.8-1 .5-.9 2 .5 2.8Z" fill="#0E1C35"/>
+        <path d="M23 14.4c.6-2.4 2.2-3.4 3.4-2.8 1 .5.9 2-.5 2.8Z" fill="#0E1C35"/>
+      </svg></div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:16px;font-weight:800;margin-bottom:3px;">Dárkový poukaz</div>
         <div style="font-size:12px;color:var(--txt2);line-height:1.5;">Darujte dobrodružství — obdarovaný si vybere libovolnou misi. Bez registrace, platí 12 měsíců.</div>
@@ -1934,7 +1989,10 @@ function resumeMission(g,sess){
   if(!S.pl.inventory)S.pl.inventory=[];
   if(!S.pl.visitedStations)S.pl.visitedStations=[];
   toast('▶ Pokračujete v rozehrané misi');
-  if(sess.progress.resumeView==='v-game')nav('v-game');else startTravel();
+  const rv=sess.progress.resumeView;
+  if(rv==='v-story')renderStoryStation();
+  else if(rv==='v-game')nav('v-game');
+  else startTravel();
 }
 function restartMission(gid){
   if(!confirm('Opravdu začít misi od začátku? Rozehraný postup se smaže.'))return;
@@ -2016,14 +2074,14 @@ function saveProgress(view){
   ent.status='in_progress';
   ent.progress=JSON.parse(JSON.stringify({resumeView:view,doneTasks:(S.pl.answers||[]).length,
     teamName:S.pl.teamName,teamSize:S.pl.teamSize,geo:S.pl.geo,answers:S.pl.answers,totalSecs:S.pl.totalSecs,
-    si:S.pl.si,ti2:S.pl.ti2,usedHints:S.pl.usedHints,inventory:S.pl.inventory,visitedStations:S.pl.visitedStations,xpEarned:S.pl.xpEarned}));
+    si:S.pl.si,ti2:S.pl.ti2,usedHints:S.pl.usedHints,inventory:S.pl.inventory,visitedStations:S.pl.visitedStations,endingId:S.pl.endingId||null,xpEarned:S.pl.xpEarned}));
   scheduleProgressSync(S.cg.id);
 }
 function confirmStart(){
   closeStartOv();startConfirmShown=false;stopWatchStart();
   if(!S.testMode)track('mission_started',{game_id:S.cg.id});
   setSession(S.cg.id,'in_progress');
-  S.pl.si=0;S.pl.visitedStations=[];
+  S.pl.si=0;S.pl.visitedStations=[];S.pl.endingId=null;
   startTravel();
 }
 
@@ -2130,17 +2188,31 @@ function stopCompass(){
   if(compassWid!==null&&navigator.geolocation){navigator.geolocation.clearWatch(compassWid);compassWid=null;}
   const w=document.getElementById('compass-wrap');if(w)w.style.display='none';
 }
-function arriveStation(){stopWatch();stopCompass();S.pl.ti2=0;toast('📍 Vítejte na stanovišti!');nav('v-game');saveProgress('v-game');}
+function isStoryStation(st){return st?.kind==='story';}
+function arriveStation(){
+  stopWatch();stopCompass();S.pl.ti2=0;
+  const st=S.cg?.stations[S.pl.si];
+  if(isStoryStation(st)){renderStoryStation();return;}
+  toast('📍 Vítejte na stanovišti!');nav('v-game');saveProgress('v-game');
+}
+// Příběhové stanoviště: jen text a „Pokračovat“ — žádná odpověď, žádné body.
+function renderStoryStation(){
+  const{cg:g,pl:p}=S;const st=g?.stations[p.si];if(!st)return;
+  document.getElementById('story-name').textContent=st.name||'';
+  document.getElementById('story-txt').textContent=st.storyText||'';
+  document.getElementById('story-prog').style.width=`${pathProgressPct()}%`;
+  nav('v-story');
+  saveProgress('v-story');
+}
+function storyContinue(){nextStation();}
 
 // ══ GAME ══════════════════════════════════════════════
 function renderGameTask(){
   const{cg:g,pl:p}=S;if(!g)return;
   const st=g.stations[p.si];if(!st||!st.tasks.length){nextStation();return;}
-  const task=st.tasks[p.ti2];const total=g.stations.reduce((s,st)=>s+st.tasks.length,0);
-  const done=p.si*Math.max(...g.stations.map(s=>s.tasks.length||0))+p.ti2;
+  const task=st.tasks[p.ti2];
   document.getElementById('g-task-num').textContent=`${p.ti2+1} / ${st.tasks.length}`;
-  const pct=Math.round(((p.si*100/g.stations.length)+(p.ti2*100/(st.tasks.length*g.stations.length))));
-  document.getElementById('g-prog').style.width=`${Math.min(99,pct)}%`;
+  document.getElementById('g-prog').style.width=`${pathProgressPct()}%`;
   const tyLbl={mc:'Výběr z možností',tx:'Textová odpověď',nm:'Číselná odpověď',cd:'Kód',photo:'Fotodůkaz',order:'Seřadit stopy',inventory:'Inventářový úkol',gps:'GPS zóna',branch:'⑂ Rozhodnutí'};
   document.getElementById('g-type-lbl').textContent=tyLbl[task.type]||task.type;
   document.getElementById('g-q').textContent=task.q;
@@ -2414,9 +2486,17 @@ function answerBranch(i){
   if(task.givesItem){const parts=task.givesItem.split(' ');const icon=parts[0],name=parts.slice(1).join(' ');p.inventory.push({icon,name,desc:'Nalezeno během mise'});document.getElementById('g-inv-count').textContent=p.inventory.length;toast(`🎒 Získáno: ${task.givesItem}`);}
   closeAns();
   toast(`⑂ ${ch.label}`,3000);
+  // Volba konce: větev rovnou ukončí misi a určí, které zakončení hráč uvidí.
+  if(ch.target==='END'){
+    p.endingId=ch.ending||null;
+    saveProgress('v-game');
+    finishGame();
+    return;
+  }
   if(ch.target){
     const idx=g.stations.findIndex(s=>s.id===ch.target);
-    if(idx>=0){p.si=idx;startTravel();return;}
+    if(idx>=0){p.si=idx;p.ti2=0;startTravel();return;}
+    console.warn('Větev míří na neexistující stanoviště:',ch.target);
   }
   saveProgress('v-game');
   nextTask();
@@ -2458,7 +2538,7 @@ function nextStation(){
   const{cg:g,pl:p}=S;
   const cur=g.stations[p.si];
   const nid=cur?.nextId;
-  if(nid==='END'){finishGame();return;}
+  if(nid==='END'){p.endingId=cur.endingId||p.endingId||null;finishGame();return;}
   if(nid){
     const idx=g.stations.findIndex(s=>s.id===nid);
     if(idx>=0){p.si=idx;startTravel();return;}
@@ -2469,6 +2549,81 @@ function autoFail(){
   stopTimer();const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];
   p.answers.push({si:p.si,ti:p.ti2,ok:false,pts:0,pen:task.pen||0});
   toast('⏰ Čas vypršel!');setTimeout(nextTask,1500);
+}
+
+// ══ VĚTVENÍ: graf stanovišť ═══════════════════════════
+// Následníci stanoviště: volby ⑂ Rozhodnutí, jinak „pokračovat na“, jinak další v pořadí.
+// -1 = konec hry.
+function stationSuccessors(g,idx){
+  const sts=g?.stations||[];const st=sts[idx];if(!st)return[];
+  const byId=id=>sts.findIndex(s=>s.id===id);
+  const nextInOrder=()=>idx+1<sts.length?idx+1:-1;
+  const branch=(st.tasks||[]).find(t=>t.type==='branch'&&(t.choices||[]).length);
+  if(branch){
+    return branch.choices.map(ch=>{
+      if(ch.target==='END')return -1;
+      if(!ch.target)return nextInOrder();
+      const j=byId(ch.target);return j>=0?j:-1;
+    });
+  }
+  if(st.nextId==='END')return[-1];
+  if(st.nextId){const j=byId(st.nextId);return[j>=0?j:-1];}
+  return[nextInOrder()];
+}
+// Nejkratší počet zbývajících stanovišť z pozice idx do konce hry (BFS).
+function remainingStations(g,idx){
+  const sts=g?.stations||[];
+  if(idx<0||idx>=sts.length)return 0;
+  const seen=new Set([idx]);let frontier=[idx],depth=0;
+  while(frontier.length&&depth<=sts.length+1){
+    const next=[];
+    for(const i of frontier){
+      for(const j of stationSuccessors(g,i)){
+        if(j<0)return depth;
+        if(!seen.has(j)){seen.add(j);next.push(j);}
+      }
+    }
+    frontier=next;depth++;
+  }
+  return depth;
+}
+// Postup v %: ušlá cesta vůči odhadu celé cesty. Funguje i u větvených misí,
+// kde hráč nikdy neprojde všechna stanoviště (dřív se počítalo z indexu → lhalo to).
+function pathProgressPct(){
+  const{cg:g,pl:p}=S;if(!g||!p)return 0;
+  const done=Math.max(1,(p.visitedStations||[]).length);
+  const st=g.stations[p.si];
+  const nTasks=(st?.tasks||[]).length;
+  const inStation=nTasks?Math.min(1,(p.ti2||0)/nTasks):0;
+  const total=done+remainingStations(g,p.si);
+  return Math.min(99,Math.max(0,Math.round(((done-1+inStation)/Math.max(total,1))*100)));
+}
+// Kontrola grafu pro tvůrce: nedosažitelná stanoviště, smyčky, slepé větve.
+function analyzeBranchGraph(g){
+  const sts=g?.stations||[];const n=sts.length;
+  const res={cycle:false,unreachable:[],noEnd:[]};
+  if(!n)return res;
+  const nameOf=(s,i)=>s.name||`Stanoviště ${i+1}`;
+  const seen=new Set([0]);const stack=[0];
+  while(stack.length){
+    const i=stack.pop();
+    for(const j of stationSuccessors(g,i))if(j>=0&&!seen.has(j)){seen.add(j);stack.push(j);}
+  }
+  sts.forEach((s,i)=>{if(!seen.has(i))res.unreachable.push(nameOf(s,i));});
+  const color=new Array(n).fill(0);const canEnd=new Array(n).fill(false);
+  const dfs=i=>{
+    color[i]=1;let ok=false;
+    for(const j of stationSuccessors(g,i)){
+      if(j<0){ok=true;continue;}
+      if(color[j]===1){res.cycle=true;continue;}
+      if(color[j]===0){if(dfs(j))ok=true;}
+      else if(canEnd[j])ok=true;
+    }
+    color[i]=2;canEnd[i]=ok;return ok;
+  };
+  seen.forEach(i=>{if(color[i]===0)dfs(i);});
+  sts.forEach((s,i)=>{if(seen.has(i)&&!canEnd[i])res.noEnd.push(nameOf(s,i));});
+  return res;
 }
 
 // ══ FINISH ════════════════════════════════════════════
@@ -2482,8 +2637,13 @@ async function finishGame(){
   const{cg:g,pl:p,cu:u}=S;
   const rawPts=p.answers.reduce((s,a)=>s+(a.pts||0),0);
   const totalPen=p.answers.reduce((s,a)=>s+(a.pen||0),0);
-  const ok=p.answers.filter(a=>a.ok).length;
-  const tot=gameHasBranching(g)?Math.max(p.answers.length,1):g.stations.reduce((s,st)=>s+st.tasks.length,0);
+  // Rozhodnutí ⑂ nejsou úkol (nedá se v nich chybovat) → do úspěšnosti se nepočítají.
+  const scored=(p.answers||[]).filter(a=>!a.branch);
+  const ok=scored.filter(a=>a.ok).length;
+  const tot=gameHasBranching(g)
+    ?Math.max(scored.length,1)
+    :g.stations.reduce((s,st)=>s+(isStoryStation(st)?0:(st.tasks||[]).length),0);
+  const ending=(g.endings||[]).find(e=>e.id===p.endingId)||null;
   const finalPts=Math.max(0,rawPts-totalPen);
   const xpGained=Math.round((g.xpReward||500)*(ok/Math.max(tot,1)));
   p.xpEarned=xpGained;
@@ -2496,6 +2656,7 @@ async function finishGame(){
     document.getElementById('comp-pts').textContent=`${finalPts} bodů`;
     document.getElementById('comp-rank').textContent='🧪 test — neukládá se';
     document.getElementById('comp-badge').style.display='none';
+    showCompEnding(ending);
     nav('v-completion');
     toast('🧪 Test dokončen — nic se neuložilo',3500);
     return;
@@ -2506,6 +2667,8 @@ async function finishGame(){
     u.xp=(u.xp||0)+xpGained;u.completedMissions=(u.completedMissions||0)+1;if(!u.badges)u.badges=[];
     const badgesBefore=u.badges.length;
     evaluateBadges(u,p,g,ok,tot);
+    // Odznak vázaný na zakončení příběhu (evaluateBadges 'manual' odznaky záměrně přeskakuje)
+    if(ending?.badgeId&&!u.badges.includes(ending.badgeId))u.badges.push(ending.badgeId);
     const newlyEarned=u.badges.slice(badgesBefore);
     newBadge=S.badges.find(b=>newlyEarned.includes(b.id))||null;
     if(sb){
@@ -2536,7 +2699,15 @@ async function finishGame(){
   document.getElementById('comp-rank').textContent=rank===1?'🥇 1. místo':`#${rank} z ${totalResults}`;
   if(newBadge){document.getElementById('comp-badge').style.display='block';document.getElementById('comp-badge-icon').textContent=newBadge.icon;document.getElementById('comp-badge-name').textContent=newBadge.name;}
   else document.getElementById('comp-badge').style.display='none';
+  showCompEnding(ending);
   nav('v-completion');
+}
+function showCompEnding(ending){
+  const el=document.getElementById('comp-ending');if(!el)return;
+  if(!ending){el.style.display='none';return;}
+  document.getElementById('comp-ending-ti').textContent=ending.title||'Vaše zakončení';
+  document.getElementById('comp-ending-tx').textContent=ending.text||'';
+  el.style.display='block';
 }
 function compExit(target){
   if(S.testMode){endTestMode();return;}
@@ -2963,11 +3134,67 @@ function openCrDetail(id){
   renderCrChecklist(g);
   nav('v-cr-gd');
 }
+// ══ ZAKONČENÍ PŘÍBĚHU (více konců jedné mise) ══════════
+function renderCrEndings(){
+  if(!S.cg)return;
+  if(!Array.isArray(S.cg.endings))S.cg.endings=[];
+  const sb=document.getElementById('cend-sb');if(sb)sb.textContent=`${S.cg.endings.length} zakončení`;
+  const c=document.getElementById('cend-li');if(!c)return;
+  if(!S.cg.endings.length){
+    c.innerHTML=`<div class="emp"><div class="emp-i">🏁</div><div class="emp-t">Zatím žádné zakončení</div><div class="emp-d">Mise skončí neutrálně. Přidejte zakončení, pokud chcete, aby volba hráče měnila konec příběhu.</div></div>`;
+  }else{
+    const badgeOpts=sel=>`<option value="">— bez odznaku —</option>`+(S.badges||[]).map(b=>`<option value="${esc(b.id)}" ${sel===b.id?'selected':''}>${b.icon} ${esc(b.name)}</option>`).join('');
+    c.innerHTML=S.cg.endings.map((e,i)=>`<div class="ending-row" data-id="${esc(e.id)}" style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:13px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Zakončení ${i+1}</span><button type="button" onclick="removeEnding('${esc(e.id)}')" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button></div>
+      <input class="inp ending-title" placeholder="Název (např. „Zapečetil jsi ho“)" value="${esc(e.title||'')}" style="margin-bottom:8px;"/>
+      <textarea class="inp ending-text" placeholder="Závěrečný text, který hráč uvidí po dohrání…" style="min-height:90px;margin-bottom:8px;">${esc(e.text||'')}</textarea>
+      <label class="lb" style="font-size:11px;margin-bottom:4px;">🏅 Odznak za toto zakončení</label>
+      <select class="inp ending-badge">${badgeOpts(e.badgeId||'')}</select>
+    </div>`).join('');
+  }
+  nav('v-cr-endings');
+}
+function addEnding(){
+  if(!S.cg)return;
+  if(!Array.isArray(S.cg.endings))S.cg.endings=[];
+  collectEndings();
+  S.cg.endings.push({id:uid(),title:'',text:'',badgeId:''});
+  renderCrEndings();
+}
+function removeEnding(id){
+  if(!S.cg?.endings)return;
+  const used=(S.cg.stations||[]).some(st=>(st.tasks||[]).some(t=>t.type==='branch'&&(t.choices||[]).some(ch=>ch.ending===id)));
+  if(used&&!confirm('Toto zakončení je přiřazené k některé volbě ⑂ Rozhodnutí. Opravdu smazat? Volba pak skončí výchozím závěrem.'))return;
+  collectEndings();
+  S.cg.endings=S.cg.endings.filter(e=>e.id!==id);
+  (S.cg.stations||[]).forEach(st=>(st.tasks||[]).forEach(t=>{if(t.type==='branch')(t.choices||[]).forEach(ch=>{if(ch.ending===id)ch.ending='';});}));
+  persist();renderCrEndings();
+}
+// Načte rozepsané hodnoty z formuláře zpět do modelu (aby se neztratily při přidání/mazání)
+function collectEndings(){
+  if(!S.cg?.endings)return;
+  [...document.querySelectorAll('#cend-li .ending-row')].forEach(row=>{
+    const e=S.cg.endings.find(x=>x.id===row.dataset.id);if(!e)return;
+    e.title=row.querySelector('.ending-title')?.value.trim()||'';
+    e.text=row.querySelector('.ending-text')?.value||'';
+    e.badgeId=row.querySelector('.ending-badge')?.value||'';
+  });
+}
+function saveEndings(){
+  if(!S.cg)return;
+  collectEndings();
+  const empty=(S.cg.endings||[]).filter(e=>!e.title.trim()).length;
+  persist();
+  toast(empty?`✅ Uloženo (${empty} zakončení bez názvu)`:'✅ Zakončení uložena');
+  nav('v-cr-gd');
+}
+
 // ══ CHECKLIST PŘIPRAVENOSTI MISE ═══════════════════════
 function renderCrChecklist(g){
   const el=document.getElementById('cgd-checklist');if(!el)return;
   const noPos=(g.stations||[]).filter(s=>!s.lat).length;
-  const noTasks=(g.stations||[]).filter(s=>!s.tasks?.length).length;
+  const noTasks=(g.stations||[]).filter(s=>!isStoryStation(s)&&!s.tasks?.length).length;
+  const noStory=(g.stations||[]).filter(s=>isStoryStation(s)&&!(s.storyText||'').trim()).length;
   // Větvení: cíle voleb i „pokračovat na" musí ukazovat na existující stanoviště
   const stIds=new Set((g.stations||[]).map(s=>s.id));
   let badTargets=0;
@@ -2976,11 +3203,18 @@ function renderCrChecklist(g){
     (s.tasks||[]).forEach(t=>{if(t.type==='branch')(t.choices||[]).forEach(ch=>{if(ch.target&&ch.target!=='END'&&!stIds.has(ch.target))badTargets++;});});
   });
   const hasBranch=gameHasBranching(g);
+  const graph=hasBranch?analyzeBranchGraph(g):{cycle:false,unreachable:[],noEnd:[]};
   const items=[
     {ok:(g.stations||[]).length>0,lbl:(g.stations||[]).length?`${g.stations.length} stanovišť`:'Přidejte stanoviště',go:"nav('v-cr-sts')"},
     {ok:(g.stations||[]).length>0&&noPos===0,lbl:noPos?`${noPos} stanovišť bez polohy`:'Všechna stanoviště mají polohu',go:"nav('v-cr-sts')"},
     {ok:(g.stations||[]).length>0&&noTasks===0,lbl:noTasks?`${noTasks} stanovišť bez úkolů`:'Každé stanoviště má úkoly',go:"nav('v-cr-sts')"},
-    ...(hasBranch?[{ok:badTargets===0,lbl:badTargets?`${badTargets} větvení míří na smazané stanoviště`:'⑂ Větvení příběhu v pořádku',go:"nav('v-cr-sts')"}]:[]),
+    ...(noStory?[{ok:false,lbl:`${noStory} příběhových stanovišť bez textu`,go:"nav('v-cr-sts')"}]:[]),
+    ...(hasBranch?[
+      {ok:badTargets===0,lbl:badTargets?`${badTargets} větvení míří na smazané stanoviště`:'⑂ Cíle větvení v pořádku',go:"nav('v-cr-sts')"},
+      {ok:!graph.cycle,lbl:graph.cycle?'⚠️ Větvení obsahuje smyčku — hra by nemusela skončit':'Větvení neobsahuje smyčku',go:"nav('v-cr-sts')"},
+      {ok:!graph.unreachable.length,lbl:graph.unreachable.length?`Nedosažitelná stanoviště: ${graph.unreachable.slice(0,3).join(', ')}${graph.unreachable.length>3?'…':''}`:'Všechna stanoviště jsou dosažitelná',go:"nav('v-cr-sts')"},
+      {ok:!graph.noEnd.length,lbl:graph.noEnd.length?`Z těchto stanovišť se nedá dojít do konce: ${graph.noEnd.slice(0,3).join(', ')}${graph.noEnd.length>3?'…':''}`:'Každá větev má konec',go:"nav('v-cr-sts')"}
+    ]:[]),
     {ok:!!(g.startPointLat&&g.startPointLng),lbl:g.startPointLat?'Startovní bod nastaven':'Nastavte startovní bod',go:'editGameMeta()'},
     {ok:!!g.coverImage,lbl:g.coverImage?'Cover fotka nahrána':'Nahrajte cover fotku (nepovinné, ale prodává)',go:'editGameMeta()'},
     {ok:!!(g.shortDesc&&g.fullDesc),lbl:(g.shortDesc&&g.fullDesc)?'Popisy vyplněny':'Doplňte krátký a plný popis',go:'editGameMeta()'},
@@ -3085,13 +3319,19 @@ function createGame(){
     coverImage:S.newGameImg||null,rating:5.0,ratingCount:0,
     status:'draft',timeLimit:parseInt(document.getElementById('ng-dur').value)||90,
     stations:[],results:[],items:[]};
+  if(Array.isArray(S.pendingAiMissionEndings)&&S.pendingAiMissionEndings.length){
+    g.endings=S.pendingAiMissionEndings.slice(0,6).map(e=>({id:String(e?.id||uid()),title:String(e?.title||''),text:String(e?.text||''),badgeId:''}));
+  }
+  S.pendingAiMissionEndings=null;
   if(Array.isArray(S.pendingAiStations)&&S.pendingAiStations.length){
-    const validTypes=['mc','tx','nm','cd','photo','order','inventory','gps'];
+    const validTypes=['mc','tx','nm','cd','photo','order','inventory','gps','branch'];
     g.stations=S.pendingAiStations.map(st=>{
       const lat=parseFloat(st.lat),lng=parseFloat(st.lng);
       const hasCoords=Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180&&!(lat===0&&lng===0);
       return{
       id:uid(),name:st.name||'Stanoviště',hint:st.hint||'',lat:hasCoords?lat:null,lng:hasCoords?lng:null,radius:20,showPin:true,
+      kind:st.kind==='story'?'story':null,storyText:st.kind==='story'?(st.storyText||''):'',
+      _nextRef:st.continueTo!=null?String(st.continueTo):'',
       tasks:(Array.isArray(st.tasks)?st.tasks:[]).map(t=>{
         const type=validTypes.includes(t.type)?t.type:'mc';
         const task={type,q:t.q||'Otázka',cx:t.cx||'',pts:parseInt(t.pts)||10,pen:parseInt(t.pen)||0,timer:parseInt(t.timer)||0,
@@ -3100,13 +3340,46 @@ function createGame(){
         if(type==='mc'){task.opts=Array.isArray(t.opts)&&t.opts.length>=2?t.opts.slice(0,4):['A','B','C','D'];task.ci=Number.isInteger(t.ci)&&t.ci<task.opts.length?t.ci:0;}
         else if(type==='order'){task.opts=Array.isArray(t.opts)?t.opts.map(String):[];}
         else if(type==='tx'||type==='nm'||type==='cd'||type==='inventory'){task.ca=t.ca!=null?String(t.ca):'';}
+        else if(type==='branch'){
+          task.pts=0;task.pen=0;
+          task.choices=(Array.isArray(t.choices)?t.choices:[]).slice(0,4)
+            .map(ch=>({label:String(ch?.label||'').trim(),_targetRef:ch?.target!=null?String(ch.target):'',_endingRef:ch?.ending!=null?String(ch.ending):'',target:'',ending:''}))
+            .filter(ch=>ch.label);
+        }
         if(task.givesItem)ensureGameItemOn(g,task.givesItem);
         return task;
       })
       };
     });
+    // Druhý průchod: JSON odkazuje na stanoviště pořadovým číslem (1..N) nebo "END",
+    // teprve tady existují skutečná id, na která se to přeloží.
+    const refToId=ref=>{
+      if(!ref)return'';
+      if(String(ref).toUpperCase()==='END')return'END';
+      const n=parseInt(ref,10);
+      if(Number.isInteger(n)&&n>=1&&n<=g.stations.length)return g.stations[n-1].id;
+      const byName=g.stations.find(s=>s.name===ref);
+      return byName?byName.id:'';
+    };
+    const endByRef=ref=>{
+      if(!ref)return'';
+      const e=(g.endings||[]).find(x=>x.id===ref||x.title===ref);
+      return e?e.id:'';
+    };
+    g.stations.forEach(s=>{
+      s.nextId=refToId(s._nextRef)||null;delete s._nextRef;
+      (s.tasks||[]).forEach(t=>{
+        if(t.type!=='branch')return;
+        (t.choices||[]).forEach(ch=>{
+          ch.target=refToId(ch._targetRef);
+          ch.ending=ch.target==='END'?endByRef(ch._endingRef):'';
+          delete ch._targetRef;delete ch._endingRef;
+        });
+      });
+    });
     toast('📍 Nezapomeňte zkontrolovat GPS souřadnice u stanovišť (u některých je appka převzala automaticky, u ostatních je doplňte v sekci Stanoviště)',6000);
   }
+  if(!Array.isArray(g.endings))g.endings=[];
   S.pendingAiStations=null;S.games.push(g);persist();resetGameForm();toast('✅ Mise vytvořena!');openCrDetail(g.id);
 }
 function editGameVideo(){
@@ -3195,7 +3468,7 @@ function renderStList(){
   if(!S.cg)return;const sts=S.cg.stations;const sb=document.getElementById('cst-sb');if(sb)sb.textContent=`${sts.length} stanovišť`;
   const c=document.getElementById('cst-li');
   if(!sts.length){c.innerHTML=`<div class="emp"><div class="emp-i">📍</div><div class="emp-t">Žádná stanoviště</div><div class="emp-d">Vytvořte trasu na mapě nebo přidejte ručně.</div></div>`;return;}
-  c.innerHTML=sts.map((st,i)=>`<div class="sti"><div class="stn" onclick="editSt(${i})">${i+1}</div><div style="flex:1;cursor:pointer;" onclick="editSt(${i})"><div style="font-size:14px;font-weight:700;">${esc(st.name)||'Bez názvu'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${st.tasks.length} úkol${st.tasks.length===1?'':st.tasks.length<5?'y':'ů'}${st.lat?` · 📍`:' · ⚠️ Poloha nenastavena'}${st.showPin===false?' · 🙈 bez špendlíku':''}${(st.nextId||(st.tasks||[]).some(t=>t.type==='branch'))?' · ⑂ větvení':''}</div></div><div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;"><button onclick="event.stopPropagation();moveSt(${i},-1)" style="background:none;border:none;color:${i===0?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===0?'disabled':''}>▲</button><button onclick="event.stopPropagation();moveSt(${i},1)" style="background:none;border:none;color:${i===sts.length-1?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===sts.length-1?'disabled':''}>▼</button></div><span style="color:var(--txt2);cursor:pointer;" onclick="editSt(${i})">›</span></div>`).join('');
+  c.innerHTML=sts.map((st,i)=>`<div class="sti"><div class="stn" onclick="editSt(${i})">${i+1}</div><div style="flex:1;cursor:pointer;" onclick="editSt(${i})"><div style="font-size:14px;font-weight:700;">${esc(st.name)||'Bez názvu'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${isStoryStation(st)?'📖 příběhové':`${st.tasks.length} úkol${st.tasks.length===1?'':st.tasks.length<5?'y':'ů'}`}${st.lat?` · 📍`:' · ⚠️ Poloha nenastavena'}${st.showPin===false?' · 🙈 bez špendlíku':''}${(st.nextId||(st.tasks||[]).some(t=>t.type==='branch'))?' · ⑂ větvení':''}</div></div><div style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;"><button onclick="event.stopPropagation();moveSt(${i},-1)" style="background:none;border:none;color:${i===0?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===0?'disabled':''}>▲</button><button onclick="event.stopPropagation();moveSt(${i},1)" style="background:none;border:none;color:${i===sts.length-1?'var(--txt3)':'var(--txt2)'};font-size:15px;cursor:pointer;padding:2px 8px;" ${i===sts.length-1?'disabled':''}>▼</button></div><span style="color:var(--txt2);cursor:pointer;" onclick="editSt(${i})">›</span></div>`).join('');
 }
 function addSt(){if(!S.cg)return;S.cg.stations.push({id:uid(),name:`Stanoviště ${S.cg.stations.length+1}`,hint:'',lat:null,lng:null,radius:20,showPin:true,tasks:[]});editSt(S.cg.stations.length-1);}
 function moveSt(i,dir){
@@ -3203,6 +3476,11 @@ function moveSt(i,dir){
   [sts[i],sts[j]]=[sts[j],sts[i]];persist();renderStList();
 }
 // Volby cílových stanovišť pro větvení (bez aktuálně editovaného stanoviště)
+function toggleStoryStation(){
+  const on=!!document.getElementById('cse-story')?.checked;
+  const sw=document.getElementById('cse-story-wrap');if(sw)sw.style.display=on?'block':'none';
+  const tw=document.getElementById('cse-tasks-wrap');if(tw)tw.style.display=on?'none':'block';
+}
 function stationTargetOptions(selected,excludeIdx,allowEnd){
   const sts=S.cg?.stations||[];
   let html=`<option value="" ${!selected?'selected':''}>→ další v pořadí</option>`;
@@ -3221,6 +3499,9 @@ function editSt(i){
   if(lt)lt.textContent=st.lat?'📍 Poloha nastavena':'Poloha nenastavena';if(lc)lc.textContent=st.lat?`${st.lat.toFixed(5)}, ${st.lng.toFixed(5)}`:'';
   const pinCb=document.getElementById('cse-pin');if(pinCb)pinCb.checked=st.showPin!==false;
   const nx=document.getElementById('cse-next');if(nx)nx.innerHTML=stationTargetOptions(st.nextId||'',i,true);
+  const scb=document.getElementById('cse-story');if(scb)scb.checked=isStoryStation(st);
+  const stx=document.getElementById('cse-story-txt');if(stx)stx.value=st.storyText||'';
+  toggleStoryStation();
   renderTasks(st.tasks);nav('v-cr-se');
 }
 function renderTasks(tasks){
@@ -3233,6 +3514,9 @@ function saveSt(){
   st.name=document.getElementById('cse-nm').value||`Stan. ${S.csi+1}`;st.hint=document.getElementById('cse-ht').value;st.radius=parseInt(document.getElementById('cse-rd').value)||20;
   st.showPin=document.getElementById('cse-pin')?document.getElementById('cse-pin').checked:true;
   st.nextId=document.getElementById('cse-next')?.value||null;
+  const isStory=!!document.getElementById('cse-story')?.checked;
+  st.kind=isStory?'story':null;
+  st.storyText=isStory?(document.getElementById('cse-story-txt')?.value||''):'';
   persist();toast('✅ Uloženo');nav('v-cr-sts');
 }
 function addTask(){
@@ -3323,11 +3607,25 @@ function renderTF(t=null){
       <button type="button" class="btn btn-ghost btn-xs" onclick="addBranchChoice()" id="branch-add-btn" style="margin-top:4px;${choices.length>=4?'display:none;':''}">➕ Přidat volbu (max. 4)</button>`;
   }
 }
+function toggleBranchEnding(sel){
+  const row=sel.closest('.branch-row');if(!row)return;
+  const w=row.querySelector('.branch-ending-wrap');if(w)w.style.display=sel.value==='END'?'block':'none';
+}
+function endingOptions(selected){
+  const es=S.cg?.endings||[];
+  let h=`<option value="">— výchozí závěr —</option>`;
+  es.forEach(e=>{h+=`<option value="${esc(e.id)}" ${selected===e.id?'selected':''}>${esc(e.title||'Bez názvu')}</option>`;});
+  return h;
+}
 function branchChoiceRow(ch,i){
   return`<div class="branch-row" style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px;margin-bottom:8px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Volba ${i+1}</span>${i>=2?`<button type="button" onclick="this.closest('.branch-row').remove();document.getElementById('branch-add-btn').style.display='';" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button>`:''}</div>
     <input class="inp branch-label" placeholder="Text volby (např. „Sledovat stopy do parku…")" value="${esc(ch?.label||'')}" style="margin-bottom:8px;"/>
-    <select class="inp branch-target">${stationTargetOptions(ch?.target||'',S.csi,false)}</select>
+    <select class="inp branch-target" onchange="toggleBranchEnding(this)">${stationTargetOptions(ch?.target||'',S.csi,true)}</select>
+    <div class="branch-ending-wrap" style="margin-top:8px;${ch?.target==='END'?'':'display:none;'}">
+      <label class="lb" style="font-size:11px;margin-bottom:4px;">🏁 Zakončení, které se hráči zobrazí</label>
+      <select class="inp branch-ending">${endingOptions(ch?.ending||'')}</select>
+    </div>
   </div>`;
 }
 function addBranchChoice(){
@@ -3369,7 +3667,11 @@ function saveTask(){
   else if(tp==='inventory'){task.ca=document.getElementById('ca')?.value.trim()||'';if(!task.ca){toast('⚠️ Vyberte potřebný předmět');return;}}
   else if(tp==='branch'){
     const rows=[...document.querySelectorAll('#branch-choices .branch-row')];
-    task.choices=rows.map(r=>({label:r.querySelector('.branch-label')?.value.trim()||'',target:r.querySelector('.branch-target')?.value||''})).filter(ch=>ch.label);
+    task.choices=rows.map(r=>({
+      label:r.querySelector('.branch-label')?.value.trim()||'',
+      target:r.querySelector('.branch-target')?.value||'',
+      ending:r.querySelector('.branch-target')?.value==='END'?(r.querySelector('.branch-ending')?.value||''):''
+    })).filter(ch=>ch.label);
     if(task.choices.length<2){toast('⚠️ Vyplňte text alespoň u 2 voleb');return;}
     // Rozhodnutí není bodovaný úkol
     task.pts=0;task.pen=0;task.timer=0;task.hints=['','',''];
@@ -3738,7 +4040,7 @@ function loadAiKey(){
   setAiProvider(localStorage.getItem('q7_aiprovider')==='paste'?'paste':'gemini');
 }
 function buildMissionPrompt(prompt){
-  return`Jsi asistent pro tvorbu městských únikových her (Questly). Vygeneruj misi na základě tohoto zadání: "${prompt}"\n\nPoužij různé typy úkolů podle situace na stanovišti — ne jen výběr z možností. Dostupné typy úkolu (pole "type"):\n- "mc" – výběr z možností: potřebuje "opts" (2–4 řetězce) a "ci" (index správné odpovědi od 0)\n- "tx" – volná textová odpověď: potřebuje "ca" (správná odpověď jako text)\n- "nm" – číselná odpověď: "ca" jako číslo v uvozovkách\n- "cd" – zadání kódu/hesla nalezeného na místě: "ca" jako text kódu\n- "order" – seřazení nápověd/stop: "opts" jako pole položek ve SPRÁVNÉM pořadí\n- "inventory" – vyžaduje předmět z inventáře: "ca" musí přesně odpovídat "givesItem" nějakého dřívějšího úkolu (emoji+mezera+název)\n- "photo" – hráč nahraje fotodůkaz, žádné další pole netřeba\n- "gps" – hráč jen potvrdí, že je na místě, žádné další pole netřeba\n\nKterýkoliv úkol může navíc udělit předmět do inventáře polem "givesItem" (emoji+mezera+název, např. "🗝️ Starý klíč") — hráč ho pak může použít v pozdějším "inventory" úkolu.\n\nPokud znáte reálné a ověřené GPS souřadnice místa, přidejte je do stanoviště jako "lat" a "lng" (desetinná čísla). Pokud si nejste jistí přesnou polohou, pole "lat"/"lng" vynechte — tvůrce je pak doplní ručně v appce.\n\nVracej POUZE JSON v tomto formátu (bez markdown, bez uvozujícího textu):\n{"name":"Název mise","shortDesc":"Krátký popis (1 věta)","fullDesc":"Plný příběhový popis (3-4 věty, atmosférický)","city":"Město","difficulty":"lehká nebo střední nebo těžká","duration":90,"xpReward":500,"stations":[{"name":"Název stanoviště (konkrétní reálné místo)","hint":"Navigační nápověda k nalezení místa","lat":null,"lng":null,"tasks":[{"type":"mc","q":"Otázka","opts":["A","B","C","D"],"ci":0,"pts":10,"hints":["nápověda1","nápověda2","nápověda3"],"givesItem":null}]}]}`;
+  return`Jsi asistent pro tvorbu městských únikových her (Questly). Vygeneruj misi na základě tohoto zadání: "${prompt}"\n\nPoužij různé typy úkolů podle situace na stanovišti — ne jen výběr z možností. Dostupné typy úkolu (pole "type"):\n- "mc" – výběr z možností: potřebuje "opts" (2–4 řetězce) a "ci" (index správné odpovědi od 0)\n- "tx" – volná textová odpověď: potřebuje "ca" (správná odpověď jako text)\n- "nm" – číselná odpověď: "ca" jako číslo v uvozovkách\n- "cd" – zadání kódu/hesla nalezeného na místě: "ca" jako text kódu\n- "order" – seřazení nápověd/stop: "opts" jako pole položek ve SPRÁVNÉM pořadí\n- "inventory" – vyžaduje předmět z inventáře: "ca" musí přesně odpovídat "givesItem" nějakého dřívějšího úkolu (emoji+mezera+název)\n- "photo" – hráč nahraje fotodůkaz, žádné další pole netřeba\n- "gps" – hráč jen potvrdí, že je na místě, žádné další pole netřeba\n- "branch" – ⑂ Rozhodnutí, kterým se příběh větví: potřebuje "choices" (2–4 položky). Každá volba je {"label":"Text volby","target":3} kde "target" je POŘADOVÉ ČÍSLO stanoviště (1 = první), kam hra pokračuje, nebo "END" pro ukončení mise. U "END" lze přidat "ending":"id_zakonceni". Za rozhodnutí se nedávají body a nemůže být špatně — dej ho vždy jako POSLEDNÍ úkol stanoviště.\n\nKterýkoliv úkol může navíc udělit předmět do inventáře polem "givesItem" (emoji+mezera+název, např. "🗝️ Starý klíč") — hráč ho pak může použít v pozdějším "inventory" úkolu.\n\nPŘÍBĚHOVÉ STANOVIŠTĚ: pokud je mezi dvěma zastávkami dlouhý úsek chůze, vlož stanoviště s "kind":"story" a "storyText":"…". Hráč sem dojde, přečte si text a pokračuje — nemá žádné úkoly (pole "tasks" nech prázdné) a nepočítá se do skóre.\n\nSLÉVÁNÍ VĚTVÍ: stanoviště může mít "continueTo" s pořadovým číslem stanoviště (nebo "END"), kam se má pokračovat místo dalšího v pořadí. Tím se větve slévají zpátky dohromady.\n\nZAKONČENÍ: pokud má mise víc konců, přidej pole "endings" na nejvyšší úrovni: [{"id":"a","title":"Název konce","text":"Závěrečný text"}]. Na id se pak odkazuje z volby s "target":"END".\n\nPOZOR: větvení nesmí tvořit smyčku (cesta se nesmí vracet na stanoviště, kterým už prošla) a z každé větve se musí dát dojít do konce.\n\nPokud znáte reálné a ověřené GPS souřadnice místa, přidejte je do stanoviště jako "lat" a "lng" (desetinná čísla). Pokud si nejste jistí přesnou polohou, pole "lat"/"lng" vynechte — tvůrce je pak doplní ručně v appce.\n\nVracej POUZE JSON v tomto formátu (bez markdown, bez uvozujícího textu):\n{"name":"Název mise","shortDesc":"Krátký popis (1 věta)","fullDesc":"Plný příběhový popis (3-4 věty, atmosférický)","city":"Město","difficulty":"lehká nebo střední nebo těžká","duration":90,"xpReward":500,"endings":[],"stations":[{"name":"Název stanoviště (konkrétní reálné místo)","hint":"Navigační nápověda k nalezení místa","lat":null,"lng":null,"kind":null,"storyText":"","continueTo":null,"tasks":[{"type":"mc","q":"Otázka","opts":["A","B","C","D"],"ci":0,"pts":10,"hints":["nápověda1","nápověda2","nápověda3"],"givesItem":null}]}]}`;
 }
 function copyClaudeTemplate(){
   const tpl=buildMissionPrompt('[SEM NAPIŠTE SVŮJ NÁPAD NA MISI — téma, město, délka, obtížnost…]');
@@ -3768,6 +4070,7 @@ function applyGeneratedMissionText(text){
   if(mission.difficulty)document.getElementById('ng-diff').value=mission.difficulty;
   if(mission.duration)document.getElementById('ng-dur').value=mission.duration;
   if(mission.xpReward)document.getElementById('ng-xp').value=mission.xpReward;
+  S.pendingAiMissionEndings=Array.isArray(mission.endings)?mission.endings:null;
   S.pendingAiStations=Array.isArray(mission.stations)?mission.stations:null;
   return S.pendingAiStations;
 }
