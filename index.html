@@ -20,7 +20,7 @@
   --cream:#F5F0E8; --cream2:#E8E0D0; --cream3:#C8BFAD;
   --amber:#F59E0B; --amber2:#FCD34D; --amber3:rgba(245,158,11,.15);
   --teal:#14B8A6; --teal2:#2DD4BF; --teal3:rgba(20,184,166,.15);
-  --txt:#F0EBE0; --txt2:#8BA3C4; --txt3:#4E6E8A;
+  --txt:#F0EBE0; --txt2:#97AECC; --txt3:#7B96B4;
   --good:#10B981; --bad:#EF4444; --bad3:rgba(239,68,68,.15);
   --bdr:rgba(245,240,232,.08); --bdr2:rgba(245,240,232,.14);
   --r:20px; --rm:12px; --rs:8px;
@@ -47,7 +47,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Displ
 .dest-tooltip{background:rgba(14,28,53,.94)!important;color:#F5F0E8!important;border:1.5px solid rgba(20,184,166,.5)!important;border-radius:10px!important;font-weight:700!important;font-size:12px!important;padding:5px 10px!important;box-shadow:0 4px 14px rgba(0,0,0,.4)!important;}
 .dest-tooltip::before{border-top-color:rgba(20,184,166,.5)!important;}
 .bn-icon{font-size:22px;line-height:1;}
-.bn-lbl{font-size:10px;font-weight:600;letter-spacing:.4px;}
+.bn-lbl{font-size:12px;font-weight:600;letter-spacing:.4px;}
 
 /* SCROLLABLE */
 .scr{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
@@ -56,7 +56,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Displ
 /* CARDS */
 .card{background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;}
 .card-p{padding:18px;}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.3px;}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.3px;}
 .pill-teal{background:var(--teal3);color:var(--teal2);}
 .pill-amber{background:var(--amber3);color:var(--amber2);}
 .pill-bad{background:var(--bad3);color:#FCA5A5;}
@@ -65,8 +65,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Displ
 /* BUTTONS */
 .btn{border:none;border-radius:var(--rm);padding:15px 20px;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,opacity .15s;font-family:inherit;letter-spacing:-.2px;}
 .btn:active{transform:scale(.97);opacity:.9;}
-.btn-amber{background:linear-gradient(135deg,var(--amber),#E07D00);color:#fff;box-shadow:0 6px 24px rgba(245,158,11,.35);}
-.btn-teal{background:linear-gradient(135deg,var(--teal),#0D9488);color:#fff;box-shadow:0 6px 20px rgba(20,184,166,.3);}
+.btn-amber{background:linear-gradient(135deg,var(--amber),#E07D00);color:#0B1424;box-shadow:0 6px 24px rgba(245,158,11,.35);}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#0D9488);color:#0B1424;box-shadow:0 6px 20px rgba(20,184,166,.3);}
 .btn-navy{background:var(--navy3);color:var(--txt);border:1px solid var(--bdr2);}
 .btn-ghost{background:rgba(245,240,232,.08);color:var(--txt);border:1px solid var(--bdr2);}
 .btn-danger{background:rgba(239,68,68,.2);color:#FCA5A5;border:1px solid rgba(239,68,68,.3);}
@@ -76,7 +76,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Displ
 
 /* INPUTS */
 .ig{margin-bottom:16px;}
-.lb{font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.9px;display:block;margin-bottom:7px;}
+.lb{font-size:12px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.9px;display:block;margin-bottom:7px;}
 .inp{width:100%;background:rgba(245,240,232,.06);border:1.5px solid var(--bdr);border-radius:var(--rs);color:var(--txt);padding:13px 15px;font-size:15px;outline:none;transition:border-color .15s,background .15s;font-family:inherit;}
 .inp:focus{border-color:var(--teal);background:rgba(245,240,232,.09);}
 textarea.inp{resize:vertical;min-height:80px;}
@@ -113,7 +113,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 /* STATION ITEM */
 .sti{background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .15s;}
 .sti:active{border-color:var(--teal);}
-.stn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#0D9488);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
+.stn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--teal),#0D9488);color:#0B1424;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
 
 /* MAP */
 .mapw{flex:1;position:relative;}
@@ -124,7 +124,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 /* LEAFLET OVERRIDES */
 .leaflet-popup-content-wrapper{background:var(--navy2)!important;color:var(--txt)!important;border:1px solid var(--bdr2)!important;border-radius:var(--rm)!important;box-shadow:0 8px 32px rgba(0,0,0,.5)!important;}
 .leaflet-popup-tip{background:var(--navy2)!important;}
-.leaflet-control-attribution{background:rgba(14,28,53,.8)!important;color:var(--txt3)!important;font-size:9px!important;}
+.leaflet-control-attribution{background:rgba(14,28,53,.8)!important;color:var(--txt3)!important;font-size:11px!important;}
 .leaflet-control-attribution a{color:var(--teal)!important;}
 
 /* MISSION CARD (discover) */
@@ -142,7 +142,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .game-bot-btn:active{transform:scale(.96);}
 .game-bot-btn.active-tab{border-color:var(--teal);background:var(--teal3);}
 .game-bot-icon{font-size:22px;line-height:1;}
-.game-bot-lbl{font-size:11px;font-weight:700;color:var(--txt2);}
+.game-bot-lbl{font-size:12px;font-weight:700;color:var(--txt2);}
 
 /* CINEMATIC */
 .cinematic-bg{position:absolute;inset:0;background:var(--dark);}
@@ -161,7 +161,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .badge-item.earned{opacity:1;}
 .badge-icon{font-size:32px;width:56px;height:56px;border-radius:50%;background:var(--navy3);display:flex;align-items:center;justify-content:center;border:2px solid var(--bdr);}
 .badge-item.earned .badge-icon{border-color:var(--amber);background:var(--amber3);}
-.badge-lbl{font-size:10px;text-align:center;color:var(--txt2);font-weight:600;line-height:1.2;}
+.badge-lbl{font-size:12px;text-align:center;color:var(--txt2);font-weight:600;line-height:1.2;}
 
 /* ANSWER OPTIONS */
 .ao{background:rgba(245,240,232,.05);border:2px solid var(--bdr);border-radius:var(--rm);padding:15px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s;}
@@ -181,7 +181,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 /* CREATOR */
 .cr-tab{display:flex;gap:4px;background:rgba(245,240,232,.06);border-radius:var(--rm);padding:4px;margin-bottom:18px;}
 .cr-tab-btn{flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;border-radius:var(--rs);cursor:pointer;color:var(--txt2);border:none;background:none;font-family:inherit;transition:all .15s;}
-.cr-tab-btn.a{background:linear-gradient(135deg,var(--teal),#0D9488);color:#fff;}
+.cr-tab-btn.a{background:linear-gradient(135deg,var(--teal),#0D9488);color:#0B1424;}
 
 /* TASK TYPES */
 .order-item{background:var(--navy3);border:1px solid var(--bdr2);border-radius:var(--rm);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:grab;}
@@ -201,7 +201,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .stat-card{background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:16px;}
 .stat-val{font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:2px;}
-.stat-lbl{font-size:11px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.stat-lbl{font-size:12px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
 
 /* HINT */
 .hint-panel{background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.25);border-radius:var(--r);padding:16px;margin-top:12px;}
@@ -239,7 +239,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 /* LOGO WMARK */
 .wm{font-size:22px;font-weight:700;letter-spacing:-.3px;font-family:'Space Grotesk',-apple-system,system-ui,sans-serif;}
 .wm .q{color:var(--teal);}
-.wm-sub{font-size:10px;color:var(--txt2);letter-spacing:.7px;margin-top:1px;}
+.wm-sub{font-size:12px;color:var(--txt2);letter-spacing:.7px;margin-top:1px;}
 .hide-scroll::-webkit-scrollbar{display:none;}
 
 /* ══ DESKTOP (≥ 900 px) ══════════════════════════════════════
@@ -385,7 +385,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div class="hint-lvl"><div><b style="font-size:14px;">Nápověda 3</b><div style="font-size:12px;color:var(--txt2);">Silné vodítko</div></div><button class="btn btn-ghost btn-sm" id="h3b" onclick="useHint(3)" style="color:var(--amber);font-size:12px;">−30 bodů</button></div>
       <div class="hint-lvl"><div><b style="font-size:14px;">Zobrazit odpověď</b><div style="font-size:12px;color:var(--txt2);">Vzdát úkol</div></div><button class="btn btn-ghost btn-sm" id="hab" onclick="useHint(0)" style="color:#FCA5A5;font-size:12px;">−50 bodů</button></div>
       <div id="hint-txt" style="display:none;" class="hint-text"></div>
-      <div style="font-size:11.5px;color:var(--txt2);margin-top:10px;line-height:1.5;">Nápovědy snižují body i získané XP na konci mise. Nepoužité nápovědy se vyplácí.</div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:10px;line-height:1.5;">Nápovědy snižují body i získané XP na konci mise. Nepoužité nápovědy se vyplácí.</div>
     </div>
     <button class="btn btn-ghost btn-f" onclick="closeHint()" style="margin-top:12px;">Zavřít</button>
     <button class="btn btn-ghost btn-sm" onclick="openReportIssue()" style="margin-top:8px;font-size:12px;color:var(--txt2);width:100%;"><svg class=qi aria-hidden=true><use href=#qi-sos /></svg> Něco nefunguje? Nahlásit problém tvůrci</button>
@@ -463,11 +463,11 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <!-- ══ ZÍSKÁN PŘEDMĚT ════════════════════════════════════ -->
 <div id="gain-ov" onclick="closeItemGain()">
   <div class="gain-card">
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--amber);margin-bottom:14px;">Nový předmět v inventáři</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.8px;color:var(--amber);margin-bottom:14px;">Nový předmět v inventáři</div>
     <div class="gain-ico" id="gain-ico"></div>
     <div style="font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px;" id="gain-name"></div>
     <div style="font-size:14px;color:var(--txt2);line-height:1.6;" id="gain-desc"></div>
-    <div style="font-size:12px;color:var(--txt3);margin-top:14px;">Ťukni pro zavření · najdeš ho v inventáři</div>
+    <div style="font-size:12px;color:var(--txt2);margin-top:14px;">Ťukni pro zavření · najdeš ho v inventáři</div>
     <div class="gain-bar"><i></i></div>
   </div>
 </div>
@@ -490,12 +490,12 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <div class="ov-sheet" style="text-align:center;">
     <div class="ov-handle"></div>
     <div style="font-size:54px;margin-bottom:8px;color:var(--amber);filter:drop-shadow(0 0 18px rgba(245,158,11,.45));"><svg class=qi aria-hidden=true><use href=#qi-timer /></svg></div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.6px;color:var(--amber);margin-bottom:6px;">Úkol na čas</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:var(--amber);margin-bottom:6px;">Úkol na čas</div>
     <div style="font-size:22px;font-weight:800;margin-bottom:10px;" id="tw-title">Máte 60 sekund</div>
     <div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:8px;" id="tw-text"></div>
     <div style="font-size:12.5px;color:var(--txt2);line-height:1.6;margin-bottom:22px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);border-radius:12px;padding:11px 13px;" id="tw-consq"></div>
     <button class="btn btn-amber btn-f" id="tw-go" style="margin-bottom:10px;">Jsem připraven — spustit čas</button>
-    <div style="font-size:11px;color:var(--txt3);">Časomíra se rozběhne až po potvrzení.</div>
+    <div style="font-size:12px;color:var(--txt2);">Časomíra se rozběhne až po potvrzení.</div>
     <div style="height:8px;"></div>
   </div>
 </div>
@@ -505,7 +505,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <div class="ov-sheet" style="text-align:center;">
     <div class="ov-handle"></div>
     <div style="font-size:54px;margin-bottom:8px;" id="to-ico"></div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:6px;" id="to-kicker">Čas vypršel</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:6px;" id="to-kicker">Čas vypršel</div>
     <div style="font-size:21px;font-weight:800;margin-bottom:10px;" id="to-title"></div>
     <div style="font-size:14.5px;color:var(--txt2);line-height:1.7;margin-bottom:22px;white-space:pre-wrap;" id="to-text"></div>
     <button class="btn btn-teal btn-f" id="to-go">Pokračovat →</button>
@@ -556,7 +556,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 </div>
 
 <!-- ══ BOTTOM NAV ══════════════════════════════════════════ -->
-<div id="test-banner" style="display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:900;background:rgba(245,158,11,.92);color:#0E1C35;font-size:11px;font-weight:800;letter-spacing:.8px;padding:5px 14px;border-radius:100px;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none;"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> TESTOVACÍ REŽIM</div>
+<div id="test-banner" style="display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:900;background:rgba(245,158,11,.92);color:#0E1C35;font-size:12px;font-weight:800;letter-spacing:.8px;padding:5px 14px;border-radius:100px;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none;"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> TESTOVACÍ REŽIM</div>
 <div id="bot-nav">
   <div id="nav-brand" onclick="navMain('v-disc')" style="display:none;align-items:center;gap:9px;cursor:pointer;padding:0 6px;margin-right:auto;">
     <svg width="20" height="26" viewBox="0 0 48 62" fill="none"><defs><linearGradient id="nbg" x1="0" y1="0" x2="48" y2="62" gradientUnits="userSpaceOnUse"><stop stop-color="#2DD4BF"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs><path d="M24 3C12 3 3 12 3 24c0 11 7 20 17 23l4 12 4-12c10-3 17-12 17-23C45 12 36 3 24 3Z" fill="url(#nbg)"/><circle cx="24" cy="22" r="11" fill="rgba(245,240,232,.9)"/><circle cx="24" cy="22" r="6.5" fill="#0E1C35"/></svg>
@@ -577,7 +577,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <button class="btn btn-ghost btn-sm" id="disc-auth-btn" onclick="openAuth('in')" style="font-size:12px;padding:8px 14px;">Přihlásit se</button>
   </div>
   <div style="display:flex;gap:4px;background:rgba(245,240,232,.05);border-radius:11px;padding:4px;margin:10px 16px 0;flex-shrink:0;">
-    <button id="disc-tab-list" onclick="discTab('list')" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;border:none;font-family:inherit;background:linear-gradient(135deg,#14B8A6,#0D9488);color:#fff;">≡ Mise</button>
+    <button id="disc-tab-list" onclick="discTab('list')" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;border:none;font-family:inherit;background:linear-gradient(135deg,#14B8A6,#0D9488);color:#0B1424;">≡ Mise</button>
     <button id="disc-tab-map" onclick="discTab('map')" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;border:none;font-family:inherit;background:none;color:var(--txt2);">⊙ Mapa</button>
   </div>
   <div id="disc-city-filter" style="display:flex;gap:8px;padding:10px 16px 4px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;"></div>
@@ -671,7 +671,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </div>
   <div class="cinematic-overlay" style="position:absolute;inset:0;"></div>
   <div style="position:relative;z-index:10;padding:28px 24px 40px;">
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:14px;"><svg class=qi aria-hidden=true><use href=#qi-scroll /></svg> Úvod mise</div>
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:14px;"><svg class=qi aria-hidden=true><use href=#qi-scroll /></svg> Úvod mise</div>
     <div class="typewriter" id="cin-text"></div>
     <span class="typewriter-cursor" id="cin-cursor"></span>
     <div id="cin-btn-wrap" style="display:none;margin-top:28px;">
@@ -705,7 +705,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(14,28,53,.9);backdrop-filter:blur(14px);flex-shrink:0;">
     <button onclick="quitGame()" style="background:none;border:none;color:var(--txt2);font-size:20px;cursor:pointer;padding:4px 8px;margin-right:4px;">✕</button>
     <div style="flex:1;"><div style="font-size:14px;font-weight:700;" id="sn-team"></div><div style="font-size:12px;color:var(--txt2);">Na cestě na start</div></div>
-    <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--teal);" id="sn-dist">— m</div><div style="font-size:11px;color:var(--txt2);">od startu</div></div>
+    <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--teal);" id="sn-dist">— m</div><div style="font-size:12px;color:var(--txt2);">od startu</div></div>
   </div>
   <div style="flex:1;position:relative;">
     <div id="start-map" style="position:absolute;inset:0;z-index:1;"></div>
@@ -713,7 +713,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div style="position:absolute;bottom:0;left:0;right:0;z-index:50;padding:12px 12px 16px;">
       <div id="sn-prox" style="margin-bottom:10px;"></div>
       <div style="background:rgba(14,28,53,.94);backdrop-filter:blur(16px);border:1.5px solid var(--bdr2);border-radius:var(--r);padding:16px 16px 18px;box-shadow:0 8px 32px rgba(0,0,0,.45);">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;">Navigujte na</div>
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;">Navigujte na</div>
         <div style="font-size:20px;font-weight:800;margin-bottom:4px;font-family:'Space Grotesk',sans-serif;" id="sn-dest"></div>
         <div style="font-size:13px;color:var(--txt2);margin-bottom:14px;line-height:1.5;font-style:italic;" id="sn-instr"></div>
         <button class="btn btn-ghost btn-f" onclick="manualArriveStart()">Jsem na místě ✓</button>
@@ -741,7 +741,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   <!-- Task card (main game view) -->
   <div id="g-task-wrap" style="flex:1;overflow-y:auto;padding:10px 14px 4px;display:flex;flex-direction:column;">
     <div class="game-task-card">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;" id="g-type-lbl"></div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--teal);margin-bottom:10px;" id="g-type-lbl"></div>
       <div style="font-size:20px;font-weight:800;line-height:1.4;letter-spacing:-.3px;margin-bottom:8px;" id="g-q"></div>
       <div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:16px;" id="g-cx"></div>
       <div id="g-inline-ans" style="flex:1;"></div>
@@ -767,24 +767,24 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 <!-- ══ TRAVEL SCREEN ════════════════════════════════════════ -->
 <div class="flow-view" id="v-travel">
   <div style="padding:10px 16px;background:rgba(14,28,53,.8);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-    <div style="display:flex;align-items:center;gap:4px;"><button onclick="quitGame()" style="background:none;border:none;color:var(--txt2);font-size:20px;cursor:pointer;padding:4px 8px;">✕</button><div><div style="font-size:13px;font-weight:700;color:var(--txt2);">Přesun</div><div style="font-size:11px;color:var(--txt3);" id="trv-team"></div></div></div>
-    <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--amber);" id="trv-time">00:00</div><div style="font-size:11px;color:var(--txt2);">čas úkolů</div></div>
+    <div style="display:flex;align-items:center;gap:4px;"><button onclick="quitGame()" style="background:none;border:none;color:var(--txt2);font-size:20px;cursor:pointer;padding:4px 8px;">✕</button><div><div style="font-size:13px;font-weight:700;color:var(--txt2);">Přesun</div><div style="font-size:12px;color:var(--txt3);" id="trv-team"></div></div></div>
+    <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--amber);" id="trv-time">00:00</div><div style="font-size:12px;color:var(--txt2);">čas úkolů</div></div>
   </div>
   <div style="flex:1;position:relative;">
     <div id="pmap" style="position:absolute;inset:0;z-index:1;"></div>
     <div class="mctr"><button class="mbtn" onclick="centerMap()"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg></button><button class="mbtn" id="compass-btn" onclick="toggleCompass()" title="Kompas" style="display:none;"><svg class=qi aria-hidden=true><use href=#qi-compass /></svg></button></div>
     <div id="compass-wrap" style="position:absolute;top:14px;left:14px;z-index:40;display:none;background:rgba(14,28,53,.92);backdrop-filter:blur(12px);border:1.5px solid var(--bdr2);border-radius:16px;padding:10px 14px;align-items:center;gap:12px;">
       <svg id="compass-arrow" width="42" height="42" viewBox="0 0 42 42" style="transition:transform .25s ease;flex-shrink:0;"><circle cx="21" cy="21" r="19" fill="rgba(20,184,166,.1)" stroke="rgba(20,184,166,.35)" stroke-width="1.5"/><path d="M21 6 L27 26 L21 22 L15 26 Z" fill="#F59E0B"/><circle cx="21" cy="21" r="2.2" fill="#F5F0E8"/></svg>
-      <div><div id="compass-dist" style="font-size:17px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;font-family:'Space Grotesk',sans-serif;">— m</div><div id="compass-lbl" style="font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;">k cíli</div></div>
+      <div><div id="compass-dist" style="font-size:17px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;font-family:'Space Grotesk',sans-serif;">— m</div><div id="compass-lbl" style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;">k cíli</div></div>
     </div>
     <div style="position:absolute;bottom:0;left:0;right:0;z-index:50;padding:12px 12px 16px;">
       <div id="trv-prox" style="margin-bottom:10px;"></div>
       <div style="background:rgba(14,28,53,.94);backdrop-filter:blur(16px);border:1.5px solid var(--bdr2);border-radius:var(--r);padding:16px 16px 18px;box-shadow:0 8px 32px rgba(0,0,0,.45);">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg> Přesuňte se na</div>
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg> Přesuňte se na</div>
         <div style="font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.4px;font-family:'Space Grotesk',sans-serif;" id="trv-dest"></div>
         <div style="font-size:13px;color:var(--txt2);margin-bottom:14px;line-height:1.5;font-style:italic;" id="trv-hint"></div>
         <button class="btn btn-teal btn-f" id="arrive-btn" onclick="arriveStation()">Jsem na místě ✓</button>
-        <div style="font-size:11px;color:var(--txt2);text-align:center;margin-top:9px;"><svg class=qi aria-hidden=true><use href=#qi-pause /></svg> Čas se při přesunu nepočítá</div>
+        <div style="font-size:12px;color:var(--txt2);text-align:center;margin-top:9px;"><svg class=qi aria-hidden=true><use href=#qi-pause /></svg> Čas se při přesunu nepočítá</div>
       </div>
     </div>
   </div>
@@ -800,7 +800,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
   </div>
   <div class="scr" style="padding:28px 22px;display:flex;flex-direction:column;justify-content:center;">
     <div style="font-size:38px;text-align:center;margin-bottom:14px;"><svg class=qi aria-hidden=true><use href=#qi-book /></svg></div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.6px;color:var(--teal);text-align:center;margin-bottom:6px;">Příběh pokračuje</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:var(--teal);text-align:center;margin-bottom:6px;">Příběh pokračuje</div>
     <div style="font-size:22px;font-weight:800;letter-spacing:-.4px;text-align:center;margin-bottom:20px;" id="story-name"></div>
     <div id="story-txt" style="font-size:15.5px;line-height:1.75;color:var(--txt);white-space:pre-wrap;text-align:left;"></div>
   </div>
@@ -824,7 +824,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 
       <div id="comp-ending" style="display:none;width:100%;margin-bottom:20px;">
         <div class="card card-p" style="text-align:left;border-color:rgba(245,158,11,.35);background:linear-gradient(135deg,rgba(245,158,11,.09),rgba(20,184,166,.05));">
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--amber);margin-bottom:7px;display:flex;align-items:center;gap:6px;"><svg class=qi aria-hidden=true><use href=#qi-branch /></svg> Vaše zakončení</div>
+          <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.3px;color:var(--amber);margin-bottom:7px;display:flex;align-items:center;gap:6px;"><svg class=qi aria-hidden=true><use href=#qi-branch /></svg> Vaše zakončení</div>
           <div style="font-size:17px;font-weight:800;margin-bottom:8px;" id="comp-ending-ti"></div>
           <div style="font-size:14px;line-height:1.7;color:var(--txt2);white-space:pre-wrap;" id="comp-ending-tx"></div>
         </div>
@@ -850,7 +850,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 
       <!-- Sdílení -->
       <div class="card card-p" style="width:100%;text-align:left;margin-bottom:14px;border-color:rgba(20,184,166,.3);background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(245,158,11,.04));">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><svg class=qi aria-hidden=true><use href=#qi-share /></svg> Pochlub se</div>
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><svg class=qi aria-hidden=true><use href=#qi-share /></svg> Pochlub se</div>
         <div style="font-size:14px;line-height:1.65;color:var(--txt2);margin-bottom:14px;" id="comp-share-txt"></div>
         <button class="btn btn-teal btn-f btn-sm" onclick="shareResult()" style="margin-bottom:8px;">Sdílet výsledek</button>
         <button class="btn btn-ghost btn-f btn-sm" onclick="downloadShareCard()" style="font-size:12.5px;">Stáhnout obrázek pro story</button>
@@ -873,7 +873,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div style="flex:1;min-width:0;"><div style="font-size:17px;font-weight:800;margin-bottom:3px;" id="pur-name"></div><div style="font-size:12px;color:var(--txt2);" id="pur-city"></div></div>
     </div>
     <div style="background:var(--amber3);border:1.5px solid rgba(245,158,11,.3);border-radius:var(--r);padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <div><div style="font-size:11px;color:var(--txt2);margin-bottom:2px;">Cena mise</div><div style="font-size:28px;font-weight:800;color:var(--amber);" id="pur-price"></div></div>
+      <div><div style="font-size:12px;color:var(--txt2);margin-bottom:2px;">Cena mise</div><div style="font-size:28px;font-weight:800;color:var(--amber);" id="pur-price"></div></div>
       <div style="font-size:12px;color:var(--txt2);text-align:right;line-height:1.6;">Jednorázová platba<br>Celoživotní přístup</div>
     </div>
     <div style="background:rgba(245,158,11,.12);border:1.5px solid rgba(245,158,11,.4);border-radius:var(--rs);padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--amber2);line-height:1.55;"><b><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Testovací režim.</b> Platby zatím nejsou napojené na banku — <b>nezadávejte skutečné údaje karty</b>. Pro odemčení mise použijte libovolná smyšlená čísla.</div>
@@ -885,7 +885,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     </div>
     <div class="ig"><label class="lb">Jméno na kartě</label><input class="inp" id="pay-name" type="text" placeholder="JAN NOVÁK"/></div>
     <button class="btn btn-amber btn-f" id="pay-btn" onclick="processPayment()" style="font-size:16px;padding:16px;"><svg class=qi aria-hidden=true><use href=#qi-lock /></svg> Zaplatit <span id="pay-btn-price"></span> Kč</button>
-    <div style="font-size:11px;color:var(--txt2);text-align:center;margin-top:12px;line-height:1.6;">Testovací režim — žádné peníze se nestrhávají.</div>
+    <div style="font-size:12px;color:var(--txt2);text-align:center;margin-top:12px;line-height:1.6;">Testovací režim — žádné peníze se nestrhávají.</div>
     <div style="height:16px;"></div>
   </div>
 </div>
@@ -910,11 +910,11 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div style="font-size:13px;color:var(--txt2);line-height:1.6;">Obdarovaný si sám vybere <b style="color:var(--txt);">libovolnou misi</b> z celé nabídky. Poukaz platí <b style="color:var(--txt);">12 měsíců</b> od zakoupení a přijde vám e-mailem — hned k vytištění nebo přeposlání.</div>
     </div>
     <div style="background:var(--amber3);border:1.5px solid rgba(245,158,11,.3);border-radius:var(--r);padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
-      <div><div style="font-size:11px;color:var(--txt2);margin-bottom:2px;">Cena poukazu</div><div style="font-size:28px;font-weight:800;color:var(--amber);" id="gift-price"></div></div>
+      <div><div style="font-size:12px;color:var(--txt2);margin-bottom:2px;">Cena poukazu</div><div style="font-size:28px;font-weight:800;color:var(--amber);" id="gift-price"></div></div>
       <div style="font-size:12px;color:var(--txt2);text-align:right;line-height:1.6;">1 poukaz = 1 mise<br>pro celý tým</div>
     </div>
     <div class="ig"><label class="lb">Váš e-mail (sem pošleme poukaz)</label><input class="inp" id="gift-email" type="email" placeholder="jmeno@email.cz" autocomplete="email"/></div>
-    <div class="ig"><label class="lb">Věnování / přání (nepovinné, objeví se na poukazu)</label><textarea class="inp" id="gift-msg" maxlength="220" placeholder="Všechno nejlepší! Užijte si dobrodružství…" style="min-height:80px;"></textarea><div style="font-size:11px;color:var(--txt3);margin-top:4px;text-align:right;"><span id="gift-msg-count">0</span>/220</div></div>
+    <div class="ig"><label class="lb">Věnování / přání (nepovinné, objeví se na poukazu)</label><textarea class="inp" id="gift-msg" maxlength="220" placeholder="Všechno nejlepší! Užijte si dobrodružství…" style="min-height:80px;"></textarea><div style="font-size:12px;color:var(--txt3);margin-top:4px;text-align:right;"><span id="gift-msg-count">0</span>/220</div></div>
     <div style="background:rgba(245,158,11,.12);border:1.5px solid rgba(245,158,11,.4);border-radius:var(--rs);padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--amber2);line-height:1.55;"><b><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Testovací režim.</b> Platby zatím nejsou napojené na banku — <b>nezadávejte skutečné údaje karty</b>.</div>
     <div style="font-size:13px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;">Platební karta</div>
     <div class="ig"><label class="lb">Číslo karty</label><div style="position:relative;"><input class="inp" id="gift-pay-num" type="tel" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" autocomplete="off"/><span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.5;"><svg class=qi aria-hidden=true><use href=#qi-card /></svg></span></div></div>
@@ -924,7 +924,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     </div>
     <div class="ig"><label class="lb">Jméno na kartě</label><input class="inp" id="gift-pay-name" type="text" placeholder="JAN NOVÁK"/></div>
     <button class="btn btn-amber btn-f" id="gift-pay-btn" onclick="processGiftPayment()" style="font-size:16px;padding:16px;"><svg class=qi aria-hidden=true><use href=#qi-gift /></svg> Koupit poukaz</button>
-    <div style="font-size:11px;color:var(--txt2);text-align:center;margin-top:12px;line-height:1.6;">Zadaný e-mail použijeme jen k doručení poukazu a případné reklamaci.<br>Testovací režim — žádné peníze se nestrhávají.</div>
+    <div style="font-size:12px;color:var(--txt2);text-align:center;margin-top:12px;line-height:1.6;">Zadaný e-mail použijeme jen k doručení poukazu a případné reklamaci.<br>Testovací režim — žádné peníze se nestrhávají.</div>
     <div style="height:16px;"></div>
   </div>
 </div>
@@ -959,7 +959,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div class="card card-p" style="margin-bottom:16px;">
       <div class="ig" style="margin-bottom:10px;"><label class="lb">Cena univerzálního poukazu (Kč)</label><input class="inp" id="crg-price" type="number" min="1"/></div>
       <button class="btn btn-teal btn-f btn-sm" onclick="saveGiftCfg()"><svg class=qi aria-hidden=true><use href=#qi-save /></svg> Uložit cenu</button>
-      <div style="font-size:11px;color:var(--txt2);margin-top:10px;line-height:1.5;"><svg class=qi aria-hidden=true><use href=#qi-bulb /></svg> Poukaz odemkne libovolnou misi bez ohledu na její cenu — nastavte ji proto na úroveň nejdražší mise, jinak si kupující poukazem „zlevní" dražší hry.</div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:10px;line-height:1.5;"><svg class=qi aria-hidden=true><use href=#qi-bulb /></svg> Poukaz odemkne libovolnou misi bez ohledu na její cenu — nastavte ji proto na úroveň nejdražší mise, jinak si kupující poukazem „zlevní" dražší hry.</div>
     </div>
     <div id="crg-list"></div>
   </div>
@@ -967,8 +967,8 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 
 <!-- ══ CREATOR DASHBOARD ════════════════════════════════════ -->
 <div class="flow-view" id="v-cr">
-  <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti"><svg class=qi aria-hidden=true><use href=#qi-wrench /></svg> Tvorba misí</div><div class="hdr-sub"><span style="color:var(--amber);font-size:11px;font-weight:700;">CREATOR</span></div></div><button class="btn btn-teal btn-sm" onclick="openNewGameForm()" style="font-size:12px;padding:8px 14px;">+ Nová</button></div>
-  <div class="scr" style="padding:14px;"><div id="sb-status" style="display:none;font-size:11px;color:var(--txt2);margin-bottom:10px;align-items:center;gap:4px;"></div><div id="cr-list"></div></div>
+  <div class="hdr"><button class="hdr-bk" onclick="navBack()">←</button><div><div class="hdr-ti"><svg class=qi aria-hidden=true><use href=#qi-wrench /></svg> Tvorba misí</div><div class="hdr-sub"><span style="color:var(--amber);font-size:12px;font-weight:700;">CREATOR</span></div></div><button class="btn btn-teal btn-sm" onclick="openNewGameForm()" style="font-size:12px;padding:8px 14px;">+ Nová</button></div>
+  <div class="scr" style="padding:14px;"><div id="sb-status" style="display:none;font-size:12px;color:var(--txt2);margin-bottom:10px;align-items:center;gap:4px;"></div><div id="cr-list"></div></div>
 </div>
 
 <!-- ══ CREATOR NEW GAME ══════════════════════════════════════ -->
@@ -986,7 +986,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div id="ai-key-wrap-gemini" style="margin-bottom:10px;">
         <label class="lb" style="display:flex;align-items:center;justify-content:space-between;">Google Gemini API klíč <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--teal);font-weight:400;text-decoration:underline;">Získat klíč →</a></label>
         <input class="inp" id="ai-key-gemini" type="password" placeholder="AIza…" oninput="saveAiKey()"/>
-        <div style="font-size:11px;color:var(--txt2);margin-top:5px;line-height:1.5;">Gemini má trvale zdarma denní kvótu, klíč jde získat bez karty.</div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:5px;line-height:1.5;">Gemini má trvale zdarma denní kvótu, klíč jde získat bez karty.</div>
       </div>
       <div id="ai-paste-wrap" style="margin-bottom:10px;display:none;">
         <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.6;">Žádný klíč, nic se neplatí. Zkopírujte šablonu, vložte ji do rozhovoru s Claude (claude.ai), doplňte svůj nápad na misi, a jeho odpověď (jen ten JSON) vložte zpátky sem.</div>
@@ -994,7 +994,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
         <label class="lb">Odpověď od Claude (jen JSON)</label>
         <textarea class="inp" id="ai-paste-text" placeholder='{"name":"...","stations":[...]}' style="min-height:110px;font-family:monospace;font-size:12px;"></textarea>
       </div>
-      <div style="font-size:11px;color:var(--txt2);margin-bottom:10px;" id="ai-key-warning"><svg class=qi aria-hidden=true><use href=#qi-warn /></svg> Klíč nesdílejte a nepoužívejte tuto stránku takto veřejně pro víc lidí — pro víc uživatelů je potřeba klíč schovat za vlastní server.</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;" id="ai-key-warning"><svg class=qi aria-hidden=true><use href=#qi-warn /></svg> Klíč nesdílejte a nepoužívejte tuto stránku takto veřejně pro víc lidí — pro víc uživatelů je potřeba klíč schovat za vlastní server.</div>
       <textarea class="inp" id="ai-prompt" placeholder="Chci hru po centru Brna na 90 minut o zmizelém alchymistovi…" style="min-height:80px;margin-bottom:10px;"></textarea>
       <button class="btn btn-teal btn-f btn-sm" onclick="aiGenerate()" id="ai-gen-btn"><svg class=qi aria-hidden=true><use href=#qi-spark /></svg> Vygenerovat misi</button>
       <div id="ai-status" style="display:none;margin-top:10px;"></div>
@@ -1010,7 +1010,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div class="ig"><label class="lb">Název startovního bodu</label><input class="inp" id="ng-spnm" type="text" placeholder="Staroměstské náměstí…"/></div>
     <div class="ig"><label class="lb">Instrukce pro start</label><textarea class="inp" id="ng-spinstr" placeholder="Přijeďte metrem A na stanici…"></textarea></div>
     <div class="ig"><label class="lb">Text na finální obrazovce a do sdílení</label><textarea class="inp" id="ng-share" placeholder="Např. Rozluštil jsem tajemství brněnského Zeleného trhu. Zvládneš to i ty?" maxlength="180"></textarea>
-      <div style="font-size:11.5px;color:var(--txt2);margin-top:6px;line-height:1.5;">Objeví se hráči po dokončení mise a vloží se do obrázku, který si sdílí do story. Držte to pod ~150 znaků a formulujte jako výzvu — funguje to lépe než popis.</div></div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Objeví se hráči po dokončení mise a vloží se do obrázku, který si sdílí do story. Držte to pod ~150 znaků a formulujte jako výzvu — funguje to lépe než popis.</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="ig"><label class="lb">Lat startu</label><div style="display:flex;gap:6px;"><input class="inp" id="ng-lat" type="number" step="0.0001" placeholder="50.0875"/><button class="btn btn-ghost btn-xs" onclick="openPickerFor('ng-lat','ng-lng')" title="Vybrat na mapě"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></button></div></div>
       <div class="ig"><label class="lb">Lng startu</label><input class="inp" id="ng-lng" type="number" step="0.0001" placeholder="14.4213"/></div>
@@ -1116,27 +1116,27 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
     <div class="ig"><label class="lb">Navigační nápověda (vidí hráč při přesunu)</label><textarea class="inp" id="cse-ht" placeholder="Po červené stezce 200 m…"></textarea></div>
     <div class="ig"><label class="lb">Poloha na mapě</label>
       <div style="background:rgba(245,240,232,.06);border:1.5px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;">
-        <div><div style="font-size:13px;font-weight:600;" id="cse-loc-txt">Poloha nenastavena</div><div style="font-size:11px;color:var(--txt2);margin-top:2px;font-family:monospace;" id="cse-loc-coords"></div></div>
+        <div><div style="font-size:13px;font-weight:600;" id="cse-loc-txt">Poloha nenastavena</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;font-family:monospace;" id="cse-loc-coords"></div></div>
         <button class="btn btn-ghost btn-xs" onclick="openPickerFor_st()" style="flex-shrink:0;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg> Vybrat</button>
       </div>
     </div>
     <div class="ig"><label class="lb">Poloměr auto-detekce (m)</label><input class="inp" id="cse-rd" type="number" value="20"/></div>
     <div class="ig">
       <div style="background:rgba(245,240,232,.06);border:1.5px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <div><div style="font-size:13px;font-weight:600;"><svg class=qi aria-hidden=true><use href=#qi-pinboard /></svg> Špendlík na mapě hráče</div><div style="font-size:11px;color:var(--txt2);margin-top:2px;line-height:1.45;">Zapnuto: hráč při přesunu vidí cíl na mapě. Vypnuto: musí místo najít jen podle nápovědy (mapa polohu neprozradí).</div></div>
+        <div><div style="font-size:13px;font-weight:600;"><svg class=qi aria-hidden=true><use href=#qi-pinboard /></svg> Špendlík na mapě hráče</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;line-height:1.45;">Zapnuto: hráč při přesunu vidí cíl na mapě. Vypnuto: musí místo najít jen podle nápovědy (mapa polohu neprozradí).</div></div>
         <input type="checkbox" id="cse-pin" checked style="width:22px;height:22px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;"/>
       </div>
     </div>
     <div class="ig">
       <div style="background:rgba(245,240,232,.06);border:1.5px solid var(--bdr);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <div><div style="font-size:13px;font-weight:600;"><svg class=qi aria-hidden=true><use href=#qi-book /></svg> Příběhové stanoviště (bez úkolů)</div><div style="font-size:11px;color:var(--txt2);margin-top:2px;line-height:1.45;">Hráč sem dojde, přečte si text a jde dál. Nezadává odpověď, nezískává body a stanoviště se nepočítá do úspěšnosti. Hodí se na dlouhé úseky bez zastávky.</div></div>
+        <div><div style="font-size:13px;font-weight:600;"><svg class=qi aria-hidden=true><use href=#qi-book /></svg> Příběhové stanoviště (bez úkolů)</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;line-height:1.45;">Hráč sem dojde, přečte si text a jde dál. Nezadává odpověď, nezískává body a stanoviště se nepočítá do úspěšnosti. Hodí se na dlouhé úseky bez zastávky.</div></div>
         <input type="checkbox" id="cse-story" style="width:22px;height:22px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;" onchange="toggleStoryStation()"/>
       </div>
     </div>
     <div class="ig" id="cse-story-wrap" style="display:none;"><label class="lb">Text, který hráč uvidí</label><textarea class="inp" id="cse-story-txt" placeholder="Tudy chodila každé ráno do práce. Čtyřicet minut tam, čtyřicet zpátky…" style="min-height:130px;"></textarea></div>
     <div class="ig"><label class="lb"><svg class=qi aria-hidden=true><use href=#qi-branch /></svg> Po dokončení stanoviště pokračovat na</label>
       <select class="inp" id="cse-next"></select>
-      <div style="font-size:11px;color:var(--txt2);margin-top:6px;line-height:1.5;">Výchozí je další stanoviště v pořadí. Změňte, pokud tvoříte větvené dějové linie — sem se větve „slévají" zpět, nebo tu můžete danou linii ukončit.</div>
+      <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Výchozí je další stanoviště v pořadí. Změňte, pokud tvoříte větvené dějové linie — sem se větve „slévají" zpět, nebo tu můžete danou linii ukončit.</div>
     </div>
     <div class="dv"></div>
     <div id="cse-tasks-wrap">
@@ -1204,7 +1204,7 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
       <div class="ig" id="cte-to-target-wrap" style="display:none;"><label class="lb">Pokračovat na</label><select class="inp" id="cte-to-target"></select></div>
       <div class="ig" id="cte-to-ending-wrap" style="display:none;"><label class="lb">Zakončení</label><select class="inp" id="cte-to-ending"></select></div>
       <div class="ig" id="cte-to-choice-wrap" style="display:none;"><label class="lb">Která volba se vybere</label><select class="inp" id="cte-to-choice"></select>
-        <div style="font-size:11.5px;color:var(--txt2);margin-top:6px;">Volby se berou z tohoto úkolu — nejdřív je vyplňte výše a uložte.</div></div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:6px;">Volby se berou z tohoto úkolu — nejdřív je vyplňte výše a uložte.</div></div>
       <div class="ig"><label class="lb">Text po vypršení času (nepovinné)</label><textarea class="inp" id="cte-timeout-text" placeholder="Např. Okno zhaslo. Ať jsi viděl cokoli, teď už je to jen v tvé hlavě." style="min-height:60px;"></textarea></div>
     </div>
     <div class="ig"><label class="lb">Předmět do inventáře za splnění (nepovinné)</label><select class="inp" id="cte-item"></select><button type="button" class="btn btn-ghost btn-xs" onclick="addGameItemPrompt('cte-item')" style="margin-top:8px;"><svg class=qi aria-hidden=true><use href=#qi-plus /></svg> Nový předmět</button></div>
@@ -1424,6 +1424,19 @@ function ic(name,o){
 function icBox(name,size,cls){return`<span class="${cls||'qi-box'}" style="width:${size}px;height:${size}px;">${ic(name,{s:Math.round(size*0.56)})}</span>`;}
 // Bezpečná ikona z uživatelských dat (tvůrce si mohl uložit i starý emoji)
 function icSafe(v,o){v=String(v||'').trim();return QI_SET.has(v)?ic(v,o):ic('box',o);}
+// Veřejná data hráčů (žebříček, cizí profily) se čtou z pohledu public_profiles,
+// který neobsahuje e-mail, roli ani souhlas s newsletterem. Pokud ještě neběží
+// SQL migrace supabase-migrace-soukromi.sql (pohled neexistuje), spadne to
+// zpět na tabulku profiles, aby appka mezitím nepřestala fungovat.
+async function pubProfilesQuery(build){
+  const r=await build(sb.from('public_profiles'));
+  const e=r&&r.error;
+  if(e&&(e.code==='PGRST205'||e.code==='42P01'||/public_profiles/i.test(e.message||''))){
+    console.warn('Pohled public_profiles chybí – spusťte supabase-migrace-soukromi.sql');
+    return build(sb.from('profiles'));
+  }
+  return r;
+}
 function sbErrMsg(e){
   if(!e)return'neznámá chyba';
   if(typeof e==='string')return e;
@@ -1844,9 +1857,13 @@ function discTab(mode){
   const isList=mode==='list';
   document.getElementById('disc-tab-list').classList.toggle('a',isList);
   document.getElementById('disc-tab-map').classList.toggle('a',!isList);
-  document.getElementById('disc-tab-list').style.color=isList?'#0E1C35':'var(--txt2)';
-  document.getElementById('disc-tab-map').style.color=!isList?'#fff':'var(--txt2)';
-  document.getElementById('disc-tab-map').style.background=!isList?'linear-gradient(135deg,#14B8A6,#0D9488)':'none';
+  const ACT_BG='linear-gradient(135deg,#14B8A6,#0D9488)';
+  [['disc-tab-list',isList],['disc-tab-map',!isList]].forEach(([id,on])=>{
+    const t=document.getElementById(id);
+    t.style.background=on?ACT_BG:'none';
+    t.style.color=on?'#0B1424':'var(--txt2)';
+    t.setAttribute('aria-pressed',on?'true':'false');
+  });
   document.getElementById('disc-list-view').style.display=isList?'block':'none';
   document.getElementById('disc-map-view').style.display=isList?'none':'flex';
   document.getElementById('disc-city-filter').style.display=isList?'flex':'none';
@@ -1880,7 +1897,7 @@ function initDiscMap(){
     cities[key].count++;
   });
   Object.entries(cities).forEach(([city,{lat,lng,count}])=>{
-    const ico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#F59E0B);color:#fff;border-radius:50%;width:46px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;box-shadow:0 4px 18px rgba(20,184,166,.45);border:2px solid rgba(255,255,255,.5);line-height:1;"><span style="font-size:18px;">${count}</span><span style="font-size:9px;letter-spacing:.5px;opacity:.85;">MIS${count===1?'E':'Í'}</span></div>`,iconSize:[46,46],iconAnchor:[23,23],className:''});
+    const ico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#F59E0B);color:#0B1424;border-radius:50%;width:46px;height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;box-shadow:0 4px 18px rgba(20,184,166,.45);border:2px solid rgba(255,255,255,.5);line-height:1;"><span style="font-size:18px;">${count}</span><span style="font-size:12px;letter-spacing:.5px;opacity:.85;">MIS${count===1?'E':'Í'}</span></div>`,iconSize:[46,46],iconAnchor:[23,23],className:''});
     L.marker([lat,lng],{icon:ico}).addTo(S.discLayer).bindPopup(`<b style="color:#14B8A6">${esc(city)}</b><br><small>${count} mis${count===1?'e':'í'}</small>`).on('click',()=>{
       discSelectedCity=city;discTab('list');renderDiscList(city);renderDiscCityChips(city);
     });
@@ -1895,7 +1912,7 @@ function renderDiscList(filterCity){
   const hero=document.getElementById('disc-hero-section');
   if(hero)hero.innerHTML=filterCity
     ?`<div style="padding:14px 0 8px;display:flex;align-items:center;gap:10px;"><span style="font-size:22px;"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg></span><div><div style="font-size:18px;font-weight:800;">${filterCity}</div><div style="font-size:13px;color:var(--txt2);">${games.length} mis${games.length===1?'e':games.length<5?'e':'í'}</div></div></div>`
-    :`<div style="padding:18px 0 10px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px;"><svg class=qi aria-hidden=true><use href=#qi-bolt /></svg> Nová dobrodružství</div><div style="font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1.2;">Tvoje město.<br><span style="background:linear-gradient(135deg,var(--teal),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Tvoje mise.</span></div></div>`;
+    :`<div style="padding:18px 0 10px;"><div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin-bottom:6px;"><svg class=qi aria-hidden=true><use href=#qi-bolt /></svg> Nová dobrodružství</div><div style="font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1.2;">Tvoje město.<br><span style="background:linear-gradient(135deg,var(--teal),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Tvoje mise.</span></div></div>`;
   const c=document.getElementById('disc-game-list');
   const giftCard=`<div class="card" style="margin-bottom:16px;cursor:pointer;overflow:hidden;border-color:rgba(245,158,11,.3);" onclick="openGift()">
     <div style="padding:18px;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(20,184,166,.08));">
@@ -1920,7 +1937,7 @@ function renderDiscList(filterCity){
   if(!games.length){c.innerHTML=`<div class="emp"><div class="emp-i"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></div><div class="emp-t">Žádné mise${filterCity?' v '+filterCity:''}</div><div class="emp-d">Zkuste jiné město nebo zobrazte vše.</div></div>${filterCity?'':giftCard}`;return;}
   c.innerHTML=games.map(g=>{
     const imgHtml=g.coverImage?`<img src="${g.coverImage}" style="width:100%;height:100%;object-fit:cover;" alt=""/>`:
-      `<div class="mission-hero-ph" style="height:100%;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></div>`;
+      `<div class="mission-hero-ph" style="height:100%;align-items:flex-start;padding-top:20px;font-size:44px;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></div>`;
     return`<div class="card" style="margin-bottom:16px;cursor:pointer;overflow:hidden;" onclick="showDiscSheet('${g.id}')">
       <div style="position:relative;height:170px;">${imgHtml}
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,28,53,.1) 0%,rgba(14,28,53,.92) 100%);"></div>
@@ -1941,7 +1958,7 @@ function renderDiscCityChips(sel){
   const cities=[...new Set(S.games.filter(g=>g.status==='active').map(g=>g.city).filter(Boolean))];
   const c=document.getElementById('disc-city-filter');if(!c)return;
   c.innerHTML=[{name:'<svg class=qi aria-hidden=true><use href=#qi-globe /></svg> Vše',val:null},...cities.map(c=>({name:'<svg class=qi aria-hidden=true><use href=#qi-pin /></svg> '+c,val:c}))].map(({name,val})=>
-    `<button style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;border:1px solid ${sel===val?'transparent':'var(--bdr2)'};background:${sel===val?'linear-gradient(135deg,var(--teal),#0D9488)':'rgba(245,240,232,.05)'};color:${sel===val?'#fff':'var(--txt)'};cursor:pointer;white-space:nowrap;flex-shrink:0;" onclick="discSelectCity(${val?`'${val}'`:null})">${name}</button>`).join('');
+    `<button style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;border:1px solid ${sel===val?'transparent':'var(--bdr2)'};background:${sel===val?'linear-gradient(135deg,var(--teal),#0D9488)':'rgba(245,240,232,.05)'};color:${sel===val?'#0B1424':'var(--txt)'};cursor:pointer;white-space:nowrap;flex-shrink:0;" onclick="discSelectCity(${val?`'${val}'`:null})">${name}</button>`).join('');
 }
 function discSelectCity(city){discSelectedCity=city;renderDiscList(city);renderDiscCityChips(city);}
 function ownsGame(gid){return(S.cu&&(S.entitlements||[]).some(e=>e.game_id===gid))||false;}
@@ -2062,7 +2079,7 @@ function missTab(t){S.missTab=t;renderMiss();}
 // ══ PROFILE ═══════════════════════════════════════════
 function footerPagesHTML(){
   const links=[['howto','Jak to funguje'],['faq','Časté dotazy'],['contact','Kontakt'],['privacy','Ochrana osobních údajů'],['terms','Obchodní podmínky']];
-  return`<div class="dv"></div><div style="display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;padding:18px 0 8px;">${links.map(([k,l])=>`<a onclick="openPage('${k}')" style="font-size:12px;color:var(--txt2);cursor:pointer;text-decoration:underline;">${l}</a>`).join('')}</div><div style="text-align:center;font-size:10px;color:var(--txt3);padding-bottom:6px;">Questly © ${new Date().getFullYear()}</div>`;
+  return`<div class="dv"></div><div style="display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;padding:18px 0 8px;">${links.map(([k,l])=>`<a onclick="openPage('${k}')" style="font-size:12px;color:var(--txt2);cursor:pointer;text-decoration:underline;">${l}</a>`).join('')}</div><div style="text-align:center;font-size:12px;color:var(--txt3);padding-bottom:6px;">Questly © ${new Date().getFullYear()}</div>`;
 }
 function openPage(key){
   const p=S.pages[key];if(!p)return;
@@ -2155,7 +2172,7 @@ function renderProf(){
       <button class="btn btn-ghost btn-xs" onclick="openEditProfile()" style="margin-top:10px;"><svg class=qi aria-hidden=true><use href=#qi-edit /></svg> Upravit profil</button>
       <div style="margin:14px auto;max-width:240px;">
         <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:${pct}%;"></div></div>
-        <div style="font-size:11px;color:var(--txt2);margin-top:5px;">${u.xp||0} / ${nextXP} XP do úrovně ${lvl+1}</div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:5px;">${u.xp||0} / ${nextXP} XP do úrovně ${lvl+1}</div>
       </div>
     </div>
     <div class="stat-grid">
@@ -2255,7 +2272,7 @@ function initStartNav(){
     const map=L.map('start-map',{center:[g.startPointLat,g.startPointLng],zoom:16,zoomControl:false});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
     S.maps.start=map;S.pmStart=null;
-    const sico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#F59E0B);color:#fff;width:36px;height:36px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(20,184,166,.5);border:2px solid rgba(255,255,255,.6);"><span style="transform:rotate(45deg)">▶</span></div>`,iconSize:[36,36],iconAnchor:[18,36],className:''});
+    const sico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#F59E0B);color:#0B1424;width:36px;height:36px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(20,184,166,.5);border:2px solid rgba(255,255,255,.6);"><span style="transform:rotate(45deg)">▶</span></div>`,iconSize:[36,36],iconAnchor:[18,36],className:''});
     L.marker([g.startPointLat,g.startPointLng],{icon:sico}).addTo(map);
     L.circle([g.startPointLat,g.startPointLng],{radius:g.startRadius||50,color:'#14B8A6',fillColor:'#14B8A6',fillOpacity:.08,weight:2,dashArray:'6,5'}).addTo(map);
     setTimeout(()=>map.invalidateSize(),100);
@@ -2329,7 +2346,7 @@ function initPMap(){
   S.maps.pmap=map;S.pm=null;
   if(pinVisible){
     L.circle([st.lat,st.lng],{radius:st.radius||20,color:'#14B8A6',fillColor:'#14B8A6',fillOpacity:.1,weight:2,dashArray:'6,5'}).addTo(map);
-    const dico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#F59E0B,#E07D00);color:#fff;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 4px 14px rgba(245,158,11,.55);border:2px solid rgba(255,255,255,.7);"><span style="transform:rotate(45deg)"><svg class=qi aria-hidden=true><use href=#qi-target /></svg></span></div>`,iconSize:[34,34],iconAnchor:[17,34],className:''});
+    const dico=L.divIcon({html:`<div style="background:linear-gradient(135deg,#F59E0B,#E07D00);color:#0B1424;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 4px 14px rgba(245,158,11,.55);border:2px solid rgba(255,255,255,.7);"><span style="transform:rotate(45deg)"><svg class=qi aria-hidden=true><use href=#qi-target /></svg></span></div>`,iconSize:[34,34],iconAnchor:[17,34],className:''});
     L.marker([st.lat,st.lng],{icon:dico}).addTo(map)
       .bindTooltip(st.name||`Stanoviště ${S.pl.si+1}`,{permanent:true,direction:'top',offset:[0,-36],className:'dest-tooltip'});
   }
@@ -2606,7 +2623,7 @@ function updateGameMapMarkers(){
     if(!st.lat||!visited.includes(st.id))return;
     if(st.showPin===false&&i===S.pl.si)return;   // aktuální stanoviště se má hledat, ne přečíst z mapy
     path.push([st.lat,st.lng]);
-    const ico=L.divIcon({html:`<div style="background:${S.pl.si===i?'linear-gradient(135deg,#14B8A6,#F59E0B)':'var(--navy3)'};color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;border:2px solid rgba(245,240,232,.5);box-shadow:0 2px 10px rgba(0,0,0,.4);">${i+1}</div>`,iconSize:[28,28],iconAnchor:[14,14],className:''});
+    const ico=L.divIcon({html:`<div style="background:${S.pl.si===i?'linear-gradient(135deg,#14B8A6,#F59E0B)':'var(--navy3)'};color:${S.pl.si===i?'#0B1424':'#fff'};width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;border:2px solid rgba(245,240,232,.5);box-shadow:0 2px 10px rgba(0,0,0,.4);">${i+1}</div>`,iconSize:[28,28],iconAnchor:[14,14],className:''});
     S.gameLayers.push(L.marker([st.lat,st.lng],{icon:ico}).addTo(S.maps.game).bindPopup(`<b>${esc(st.name||'')}</b>`));
     // U aktuálního stanoviště i cílová zóna, ať hráč ví, kam přesně dojít
     if(S.pl.si===i&&st.showPin!==false)S.gameLayers.push(L.circle([st.lat,st.lng],{radius:st.radius||20,color:'#F59E0B',fillColor:'#F59E0B',fillOpacity:.1,weight:2,dashArray:'6,5'}).addTo(S.maps.game));
@@ -2638,7 +2655,7 @@ function renderInv(){
       <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer;" onclick="showItemDetailIdx(${i},${spent?1:0})">
         <div class="inv-icon">${icSafe(item.icon)}</div>
         <div style="min-width:0;">
-          <div style="font-size:14px;font-weight:700;">${esc(item.name)}${spent?' <span style="font-size:11px;color:var(--txt3);font-weight:600;">· spotřebováno</span>':''}</div>
+          <div style="font-size:14px;font-weight:700;">${esc(item.name)}${spent?' <span style="font-size:12px;color:var(--txt3);font-weight:600;">· spotřebováno</span>':''}</div>
           <div style="font-size:12px;color:var(--txt2);margin-top:2px;">${esc(item.desc||'Ťukni pro detail')}</div>
         </div>
       </div>
@@ -2646,7 +2663,7 @@ function renderInv(){
     </div>`;
   };
   c.innerHTML=inv.map((it,i)=>row(it,i,false)).join('')
-    +(used.length?`<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);margin:16px 0 8px;">Spotřebováno</div>`+used.map((it,i)=>row(it,i,true)).join(''):'');
+    +(used.length?`<div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--txt3);margin:16px 0 8px;">Spotřebováno</div>`+used.map((it,i)=>row(it,i,true)).join(''):'');
 }
 // Indexové vstupy: název předmětu se tak nikdy nemusí vkládat do HTML atributu
 function showItemDetailIdx(i,spent){
@@ -2709,13 +2726,13 @@ function renderJournal(){
     const st=g.stations[i];
     if(isStoryStation(st)){
       blocks.push(`<div style="margin-bottom:14px;background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.2);border-radius:14px;padding:14px 16px;">
-        <div style="font-size:10.5px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:6px;display:flex;align-items:center;gap:6px;">${ic('book')} ${esc(st.name||'Příběh')}</div>
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--teal);margin-bottom:6px;display:flex;align-items:center;gap:6px;">${ic('book')} ${esc(st.name||'Příběh')}</div>
         <div style="font-size:13.5px;line-height:1.7;color:var(--cream2);white-space:pre-wrap;">${esc(st.storyText||'')}</div></div>`);
       return;
     }
     const rows=answers.filter(a=>a.si===i);
     if(!rows.length)return;
-    blocks.push(`<div style="margin-bottom:8px;font-size:10.5px;text-transform:uppercase;letter-spacing:1.2px;color:var(--txt2);display:flex;align-items:center;gap:6px;">${ic('pin')} ${esc(st.name||'Stanoviště '+(i+1))}</div>`);
+    blocks.push(`<div style="margin-bottom:8px;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--txt2);display:flex;align-items:center;gap:6px;">${ic('pin')} ${esc(st.name||'Stanoviště '+(i+1))}</div>`);
     rows.forEach(a=>{
       const isBranch=!!a.branch;
       const bad=!a.ok&&!isBranch;
@@ -2724,7 +2741,7 @@ function renderJournal(){
       blocks.push(`<div style="margin-bottom:12px;background:var(--navy2);border:1px solid ${bad?'rgba(239,68,68,.28)':isBranch?'rgba(245,158,11,.28)':'var(--bdr)'};border-radius:14px;padding:13px 15px;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
           <span style="font-size:15px;color:${isBranch?'var(--amber)':a.ok?'var(--good)':'#FCA5A5'};">${isBranch?ic('branch'):a.ok?ic('check'):ic('cross')}</span>
-          <span style="font-size:10.5px;text-transform:uppercase;letter-spacing:.9px;color:var(--txt2);flex:1;">${esc(JR_TYPE[a.type]||a.type||'Úkol')}</span>
+          <span style="font-size:12px;text-transform:uppercase;letter-spacing:.9px;color:var(--txt2);flex:1;">${esc(JR_TYPE[a.type]||a.type||'Úkol')}</span>
           ${a.timedOut?`<span class="pill pill-bad">čas vypršel</span>`:''}
           ${!isBranch?`<span style="font-size:12px;font-weight:800;color:${a.pts?'var(--amber)':'var(--txt3)'};font-variant-numeric:tabular-nums;">${a.pts?'+'+a.pts:'0'} b.${a.pen?` <span style="color:#FCA5A5;font-weight:600;">−${a.pen}</span>`:''}</span>`:''}
         </div>
@@ -2912,8 +2929,8 @@ function photoTaskHTML(task){
   const brief=photoBriefOf(task);
   const ref=task.photoKind==='recreate'&&task.qImg;
   return`
-  ${ref?`<div style="margin-bottom:12px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--teal);margin-bottom:6px;">Předloha</div><img src="${safeImgSrc(task.qImg)}" style="width:100%;border-radius:12px;max-height:170px;object-fit:cover;" alt=""/></div>`:''}
-  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.1px;color:var(--amber);margin-bottom:8px;">${esc(PHOTO_KIND_LBL[task.photoKind||'object'])}</div>
+  ${ref?`<div style="margin-bottom:12px;"><div style="font-size:12px;text-transform:uppercase;letter-spacing:1.1px;color:var(--teal);margin-bottom:6px;">Předloha</div><img src="${safeImgSrc(task.qImg)}" style="width:100%;border-radius:12px;max-height:170px;object-fit:cover;" alt=""/></div>`:''}
+  <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.1px;color:var(--amber);margin-bottom:8px;">${esc(PHOTO_KIND_LBL[task.photoKind||'object'])}</div>
   <div class="photo-drop" id="photo-drop" onclick="document.getElementById('photo-in').click()">
     <div style="font-size:38px;margin-bottom:8px;color:var(--teal2);">${ic('camera')}</div>
     <div style="font-size:14px;font-weight:700;margin-bottom:3px;">Vyfotit teď</div>
@@ -2923,7 +2940,7 @@ function photoTaskHTML(task){
   <img id="photo-prev" style="width:100%;border-radius:12px;object-fit:cover;max-height:210px;display:none;margin-top:12px;" alt=""/>
   <div id="photo-status" style="font-size:12.5px;margin-top:10px;line-height:1.6;"></div>
   ${brief.length?`<div id="photo-checks" style="margin-top:12px;background:rgba(245,240,232,.04);border:1px solid var(--bdr);border-radius:12px;padding:12px 14px;">
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);margin-bottom:8px;">Zkontrolujte, že na fotce je</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);margin-bottom:8px;">Zkontrolujte, že na fotce je</div>
     ${brief.map((b,i)=>`<label style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;margin-bottom:7px;cursor:pointer;"><input type="checkbox" class="photo-chk" data-i="${i}" style="accent-color:var(--teal);width:17px;height:17px;margin-top:1px;"/><span>${esc(b)}</span></label>`).join('')}
   </div>`:''}`;
 }
@@ -3038,7 +3055,7 @@ function albumHTML(){
   const a=loadAlbum();
   if(!a.length)return'';
   return`<div style="width:100%;margin-bottom:20px;text-align:left;">
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:9px;">${ic('camera')} Deník mise · ${a.length} ${a.length===1?'fotka':a.length<5?'fotky':'fotek'}</div>
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:9px;">${ic('camera')} Deník mise · ${a.length} ${a.length===1?'fotka':a.length<5?'fotky':'fotek'}</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;">
       ${a.map((ph,i)=>`<div onclick="openAlbumPhoto(${i})" style="position:relative;cursor:pointer;border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--navy3);">
         <img src="${safeImgSrc(ph.dataUrl)}" style="width:100%;height:100%;object-fit:cover;" alt=""/></div>`).join('')}
@@ -3480,10 +3497,10 @@ function renderXpBreakdown(x){
     <div style="height:4px;background:rgba(245,240,232,.09);border-radius:3px;overflow:hidden;margin-top:5px;">
       <div style="height:100%;width:${max?Math.round(v/max*100):0}%;background:linear-gradient(90deg,var(--teal),var(--amber));"></div>
     </div>
-    ${d?`<div style="font-size:11.5px;color:var(--txt3);margin-top:3px;">${esc(d)}</div>`:''}
+    ${d?`<div style="font-size:12px;color:var(--txt3);margin-top:3px;">${esc(d)}</div>`:''}
   </div>`;
   el.style.display='block';
-  el.innerHTML=`<div style="font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:12px;">Z čeho se XP skládá</div>
+  el.innerHTML=`<div style="font-size:12px;text-transform:uppercase;letter-spacing:1.3px;color:var(--teal);margin-bottom:12px;">Z čeho se XP skládá</div>
     ${x.parts.map(pp=>row(pp.k,pp.v,pp.max,pp.d)).join('')}
     ${x.bonuses.length?`<div style="border-top:1px solid var(--bdr);margin-top:6px;padding-top:12px;">
       ${x.bonuses.map(b=>`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
@@ -3494,14 +3511,14 @@ function renderXpBreakdown(x){
       <span style="font-size:13.5px;font-weight:700;">Celkem</span>
       <span style="font-size:17px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;">+${x.total} XP</span>
     </div>
-    <div style="font-size:11.5px;color:var(--txt3);margin-top:8px;line-height:1.5;">Maximum za tuhle misi je ${x.base} XP + bonusy. Nápovědy a čas nad ${Math.round(x.target/60)} min výdělek snižují.</div>`;
+    <div style="font-size:12px;color:var(--txt3);margin-top:8px;line-height:1.5;">Maximum za tuhle misi je ${x.base} XP + bonusy. Nápovědy a čas nad ${Math.round(x.target/60)} min výdělek snižují.</div>`;
 }
 async function getGlobalRank(u){
   if(!sb||!u)return null;
   try{
-    const{count:total,error:e1}=await sb.from('profiles').select('id',{count:'exact',head:true}).gt('completed_missions',0);
+    const{count:total,error:e1}=await pubProfilesQuery(t=>t.select('id',{count:'exact',head:true}).gt('completed_missions',0));
     if(e1)throw e1;
-    const{count:above,error:e2}=await sb.from('profiles').select('id',{count:'exact',head:true}).gt('xp',u.xp||0);
+    const{count:above,error:e2}=await pubProfilesQuery(t=>t.select('id',{count:'exact',head:true}).gt('xp',u.xp||0));
     if(e2)throw e2;
     return{rank:(above||0)+1,total:Math.max(1,total||1)};
   }catch(e){console.warn('Globální pořadí se nepodařilo zjistit',sbErrMsg(e));return null;}
@@ -3961,7 +3978,7 @@ async function renderCrGifts(){
         :`<span class="pill pill-cream">● Volné</span>`;
       return`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px 14px;margin-bottom:8px;">
         <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--teal);margin-bottom:4px;font-family:monospace;">${esc(v.code)}</div>
-        <div style="font-size:11px;color:var(--txt2);margin-bottom:6px;"><svg class=qi aria-hidden=true><use href=#qi-mail /></svg> ${esc(v.buyer_email||'—')} · zakoupeno ${fmtDate(v.purchased_at)} · platí do ${fmtDate(v.expires_at)}</div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:6px;"><svg class=qi aria-hidden=true><use href=#qi-mail /></svg> ${esc(v.buyer_email||'—')} · zakoupeno ${fmtDate(v.purchased_at)} · platí do ${fmtDate(v.expires_at)}</div>
         ${v.message?`<div style="font-size:12px;color:var(--txt2);font-style:italic;margin-bottom:6px;">„${esc(v.message)}“</div>`:''}
         <div style="display:flex;align-items:center;justify-content:space-between;">${pill}${!used&&!expired?`<button class="btn btn-ghost btn-xs" onclick="navigator.clipboard?.writeText('${esc(v.code)}').then(()=>toast('Zkopírováno!',0,'clipboard'))">Kopírovat</button>`:''}</div>
       </div>`;
@@ -4067,7 +4084,7 @@ function renderCrList(){
     <div style="flex:1;min-width:0;display:flex;gap:12px;align-items:center;cursor:pointer;" onclick="openCrDetail('${g.id}')">
     ${g.coverImage?`<img src="${g.coverImage}" style="width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0;" alt=""/>`:
     `<div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,var(--navy3),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></div>`}
-    <div style="flex:1;min-width:0;"><div style="display:flex;gap:6px;margin-bottom:4px;"><span class="pill ${g.status==='active'?'pill-teal':g.status==='finished'?'pill-cream':'pill-amber'}" style="font-size:10px;">${g.status==='active'?'▶ Aktivní':g.status==='finished'?'✓ Konec':'● Příprava'}</span></div>
+    <div style="flex:1;min-width:0;"><div style="display:flex;gap:6px;margin-bottom:4px;"><span class="pill ${g.status==='active'?'pill-teal':g.status==='finished'?'pill-cream':'pill-amber'}" style="font-size:12px;">${g.status==='active'?'▶ Aktivní':g.status==='finished'?'✓ Konec':'● Příprava'}</span></div>
     <div style="font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${g.name}</div>
     <div style="font-size:12px;color:var(--txt2);"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg> ${g.city||'?'} · ${g.price} Kč · <svg class=qi aria-hidden=true><use href=#qi-key /></svg> ${g.code}</div></div><span style="color:var(--txt2);">›</span></div>
     <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();deleteGame('${g.id}')" title="Smazat misi" style="color:#FCA5A5;flex-shrink:0;"><svg class=qi aria-hidden=true><use href=#qi-trash /></svg></button>
@@ -4108,10 +4125,10 @@ function renderCrEndings(){
   }else{
     const badgeOpts=sel=>`<option value="">— bez odznaku —</option>`+(S.badges||[]).map(b=>`<option value="${esc(b.id)}" ${sel===b.id?'selected':''}>${esc(b.name)}</option>`).join('');
     c.innerHTML=S.cg.endings.map((e,i)=>`<div class="ending-row" data-id="${esc(e.id)}" style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:13px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Zakončení ${i+1}</span><button type="button" onclick="removeEnding('${esc(e.id)}')" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Zakončení ${i+1}</span><button type="button" onclick="removeEnding('${esc(e.id)}')" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button></div>
       <input class="inp ending-title" placeholder="Název (např. „Zapečetil jsi ho“)" value="${esc(e.title||'')}" style="margin-bottom:8px;"/>
       <textarea class="inp ending-text" placeholder="Závěrečný text, který hráč uvidí po dohrání…" style="min-height:90px;margin-bottom:8px;">${esc(e.text||'')}</textarea>
-      <label class="lb" style="font-size:11px;margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-medal /></svg> Odznak za toto zakončení</label>
+      <label class="lb" style="font-size:12px;margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-medal /></svg> Odznak za toto zakončení</label>
       <select class="inp ending-badge">${badgeOpts(e.badgeId||'')}</select>
     </div>`).join('');
   }
@@ -4431,7 +4448,7 @@ function initCMap(){
   map.on('click',e=>{if(!S.ar)return;addRP(e.latlng.lat,e.latlng.lng,`Stanoviště ${S.rm.length+1}`);const b=document.getElementById('cmap-bubble');if(b){b.textContent=`${S.rm.length} bodů`;b.style.display='block';setTimeout(()=>b.style.display='none',1800);}});
   updateMapUI();setTimeout(()=>map.invalidateSize(),120);
 }
-function mkSI(n){return L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#0D9488);color:#fff;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 12px rgba(20,184,166,.4);border:2px solid rgba(245,240,232,.5);"><span style="transform:rotate(45deg)">${n}</span></div>`,iconSize:[30,30],iconAnchor:[15,30],className:''});}
+function mkSI(n){return L.divIcon({html:`<div style="background:linear-gradient(135deg,#14B8A6,#0D9488);color:#0B1424;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;box-shadow:0 2px 12px rgba(20,184,166,.4);border:2px solid rgba(245,240,232,.5);"><span style="transform:rotate(45deg)">${n}</span></div>`,iconSize:[30,30],iconAnchor:[15,30],className:''});}
 function addRP(lat,lng,label,upd=true,stId=null){
   const n=S.rm.length+1;
   const mk=L.marker([lat,lng],{icon:mkSI(n),draggable:true}).addTo(S.maps.cmap).bindPopup(`<b style="color:#14B8A6">${esc(label)}</b>`);
@@ -4441,7 +4458,7 @@ function addRP(lat,lng,label,upd=true,stId=null){
 function updateRL(){if(S.rp)S.maps.cmap.removeLayer(S.rp);if(S.rm.length<2)return;S.rp=L.polyline(S.rm.map(m=>[m.lat,m.lng]),{color:'#14B8A6',weight:3,opacity:.65,dashArray:'8,6'}).addTo(S.maps.cmap);}
 function calcDist(){if(S.rm.length<2)return 0;let t=0;for(let i=1;i<S.rm.length;i++)t+=hav(S.rm[i-1].lat,S.rm[i-1].lng,S.rm[i].lat,S.rm[i].lng);return Math.round(t);}
 function toggleRoute(){
-  S.ar=!S.ar;const b=document.getElementById('rt-btn');if(b){b.innerHTML=S.ar?ic('stop'):ic('plus');b.style.background=S.ar?'var(--teal)':'';b.style.color=S.ar?'#fff':'';}updateMapUI();
+  S.ar=!S.ar;const b=document.getElementById('rt-btn');if(b){b.innerHTML=S.ar?ic('stop'):ic('plus');b.style.background=S.ar?'var(--teal)':'';b.style.color=S.ar?'#0B1424':'';}updateMapUI();
 }
 function updateMapUI(){
   const n=S.rm.length;const sb=document.getElementById('cm-sb');if(sb)sb.textContent=`${n} bodů`;
@@ -4711,7 +4728,7 @@ function renderTF(t=null){
       </div>
       <div class="ig"><label class="lb">Co musí být na fotce (každý bod na řádek)</label>
         <textarea class="inp" id="cte-photo-brief" placeholder="Celý tým\nLví hlava nad vchodem" style="min-height:72px;">${esc((t?.photoBrief||[]).join('\n'))}</textarea>
-        <div style="font-size:11.5px;color:var(--txt2);margin-top:6px;">Hráč body odklikne — drží ho to u věci a vy máte v deníku použitelné fotky.</div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:6px;">Hráč body odklikne — drží ho to u věci a vy máte v deníku použitelné fotky.</div>
       </div>
       <label style="display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--txt2);margin-bottom:10px;cursor:pointer;">
         <input type="checkbox" id="cte-photo-geo" ${t?.photoGeo!==false?'checked':''} style="accent-color:var(--teal);width:17px;height:17px;margin-top:1px;"/>
@@ -4768,11 +4785,11 @@ function endingOptions(selected){
 }
 function branchChoiceRow(ch,i){
   return`<div class="branch-row" style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px;margin-bottom:8px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Volba ${i+1}</span>${i>=2?`<button type="button" onclick="this.closest('.branch-row').remove();document.getElementById('branch-add-btn').style.display='';" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button>`:''}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.8px;">Volba ${i+1}</span>${i>=2?`<button type="button" onclick="this.closest('.branch-row').remove();document.getElementById('branch-add-btn').style.display='';" style="background:none;border:none;color:#FCA5A5;font-size:13px;cursor:pointer;">✕ odebrat</button>`:''}</div>
     <input class="inp branch-label" placeholder="Text volby (např. „Sledovat stopy do parku…")" value="${esc(ch?.label||'')}" style="margin-bottom:8px;"/>
     <select class="inp branch-target" onchange="toggleBranchEnding(this)">${stationTargetOptions(ch?.target||'',S.csi,true)}</select>
     <div class="branch-ending-wrap" style="margin-top:8px;${ch?.target==='END'?'':'display:none;'}">
-      <label class="lb" style="font-size:11px;margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-flag /></svg> Zakončení, které se hráči zobrazí</label>
+      <label class="lb" style="font-size:12px;margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-flag /></svg> Zakončení, které se hráči zobrazí</label>
       <select class="inp branch-ending">${endingOptions(ch?.ending||'')}</select>
     </div>
   </div>`;
@@ -4912,10 +4929,10 @@ async function renderReportsList(){
   c.innerHTML=reports.map(r=>`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:14px;margin-bottom:10px;${r.resolved?'opacity:.55;':''}">
     <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:6px;">
       <div style="font-size:13px;font-weight:700;">${esc(r.userName)} <span style="color:var(--txt2);font-weight:400;">(${esc(r.userEmail)})</span></div>
-      <span class="pill ${r.resolved?'pill-cream':'pill-amber'}" style="font-size:10px;flex-shrink:0;">${r.resolved?'✓ Vyřešeno':'● Nové'}</span>
+      <span class="pill ${r.resolved?'pill-cream':'pill-amber'}" style="font-size:12px;flex-shrink:0;">${r.resolved?'✓ Vyřešeno':'● Nové'}</span>
     </div>
     <div style="font-size:13px;color:var(--txt);margin-bottom:8px;line-height:1.5;">${esc(r.text)}</div>
-    <div style="font-size:11px;color:var(--txt2);margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg> ${r.gameName}${r.stationName?' · <svg class=qi aria-hidden=true><use href=#qi-pin /></svg> '+r.stationName:''}${r.taskIndex!=null?' · úkol #'+(r.taskIndex+1):''} · ${new Date(r.createdAt).toLocaleString('cs-CZ')}</div>
+    <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg> ${r.gameName}${r.stationName?' · <svg class=qi aria-hidden=true><use href=#qi-pin /></svg> '+r.stationName:''}${r.taskIndex!=null?' · úkol #'+(r.taskIndex+1):''} · ${new Date(r.createdAt).toLocaleString('cs-CZ')}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn btn-ghost btn-xs" onclick="toggleReportResolved('${r.id}')">${r.resolved?'Označit jako nové':'✓ Vyřešeno'}</button>
       <button class="btn btn-ghost btn-xs" onclick="lookupPlayerByEmail('${esc(r.userEmail).replace(/'/g,'&#39;')}')" style="color:var(--teal);"><svg class=qi aria-hidden=true><use href=#qi-search /></svg> Zobrazit hráče</button>
@@ -4966,9 +4983,9 @@ async function showPlayerSupportDetail(userId){
         return`<div style="border-top:1px solid var(--bdr);padding:10px 0;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
             <div style="font-size:13px;font-weight:700;">${g?.name||en.game_id}</div>
-            <span class="pill ${en.status==='completed'?'pill-cream':en.status==='in_progress'?'pill-teal':'pill-amber'}" style="font-size:10px;flex-shrink:0;">${en.status==='completed'?'✓ Dokončeno':en.status==='in_progress'?'▶ Rozehráno':'● Odemčeno'}</span>
+            <span class="pill ${en.status==='completed'?'pill-cream':en.status==='in_progress'?'pill-teal':'pill-amber'}" style="font-size:12px;flex-shrink:0;">${en.status==='completed'?'✓ Dokončeno':en.status==='in_progress'?'▶ Rozehráno':'● Odemčeno'}</span>
           </div>
-          <div style="font-size:11px;color:var(--txt2);margin-bottom:8px;">${en.progress?.doneTasks?`${en.progress.doneTasks} odpovědí uloženo`:'zatím bez odpovědí'}${en.progress?.inventory?.length?` · <svg class=qi aria-hidden=true><use href=#qi-bag /></svg> ${en.progress.inventory.length} předmětů`:''}${en.progress?.resumeView?` · naposledy: ${en.progress.resumeView}`:''}</div>
+          <div style="font-size:12px;color:var(--txt2);margin-bottom:8px;">${en.progress?.doneTasks?`${en.progress.doneTasks} odpovědí uloženo`:'zatím bez odpovědí'}${en.progress?.inventory?.length?` · <svg class=qi aria-hidden=true><use href=#qi-bag /></svg> ${en.progress.inventory.length} předmětů`:''}${en.progress?.resumeView?` · naposledy: ${en.progress.resumeView}`:''}</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             ${en.status==='in_progress'?`<button class="btn btn-ghost btn-xs" onclick="supportResetSession('${userId}','${en.game_id}')" style="color:#FCA5A5;">↺ Resetovat postup</button>`:''}
             ${en.status!=='completed'?`<button class="btn btn-ghost btn-xs" onclick="supportUnlockGame('${userId}','${en.game_id}')"><svg class=qi aria-hidden=true><use href=#qi-unlock /></svg> Znovu odemknout</button>`:''}
@@ -5009,7 +5026,7 @@ function toggleSupportMove(userId,gid){
       </select></div>
     <div class="ig" style="margin-bottom:10px;"><label class="lb">Kam přesně</label>
       <select class="inp" id="sup-mv-tk-${gid}"></select></div>
-    <div style="font-size:11px;color:var(--txt2);line-height:1.5;margin-bottom:10px;">Dosavadní odpovědi, čas a inventář hráče zůstanou zachovány. Hráč po otevření mise pokračuje z vybraného místa.</div>
+    <div style="font-size:12px;color:var(--txt2);line-height:1.5;margin-bottom:10px;">Dosavadní odpovědi, čas a inventář hráče zůstanou zachovány. Hráč po otevření mise pokračuje z vybraného místa.</div>
     <button class="btn btn-amber btn-sm btn-f" onclick="supportMoveTo('${userId}','${gid}')">Potvrdit posunutí</button>`;
   supportMoveStChanged(gid);
 }
@@ -5124,9 +5141,6 @@ async function sendNewsletter(){
   else toast(`Odesláno ${ok}/${subs.length} e-mailů`,4000,'check');
 }
 // ══ GLOBAL LEADERBOARD ══════════════════════════════════
-// TODO(backend): once a real database exists, replace the body of this function with
-// e.g. `return (await fetch('/api/leaderboard')).json();` — the render call site (renderGlobalLB)
-// already awaits it, so swapping local aggregation for a real API call needs no other changes.
 async function openPlayerProfile(userId){
   if(!sb||!userId)return;
   S.prevView=document.querySelector('.main-view.act,.flow-view.act')?.id||'v-prof';
@@ -5134,7 +5148,7 @@ async function openPlayerProfile(userId){
   const c=document.getElementById('pp-content');
   c.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--txt2);font-size:13px;">Načítám…</div>`;
   try{
-    const{data:profile,error}=await sb.from('profiles').select('*').eq('id',userId).single();
+    const{data:profile,error}=await pubProfilesQuery(t=>t.select('id,name,avatar,xp,level,completed_missions,badges').eq('id',userId).single());
     if(error)throw error;
     const lvl=getLvl(profile.xp||0);
     const earnedBadges=profile.badges||[];
@@ -5154,7 +5168,7 @@ async function openPlayerProfile(userId){
 async function getGlobalLeaderboard(limit=50){
   if(!sb)return[];
   try{
-    const{data,error}=await sb.from('profiles').select('*').gt('completed_missions',0).order('xp',{ascending:false}).limit(limit);
+    const{data,error}=await pubProfilesQuery(t=>t.select('id,name,avatar,xp,level,completed_missions,badges').gt('completed_missions',0).order('xp',{ascending:false}).limit(limit));
     if(error)throw error;
     return data||[];
   }catch(e){console.warn('Nepodařilo se načíst žebříček',sbErrMsg(e));return[];}
