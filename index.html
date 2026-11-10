@@ -682,6 +682,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
     <div style="font-size:16px;font-weight:700;margin-bottom:6px;"><svg class=qi aria-hidden=true><use href=#qi-sos /></svg> Nahlásit problém</div>
     <div style="font-size:12px;color:var(--txt2);margin-bottom:14px;line-height:1.5;">Popište, co se stalo. Tvůrci mise se spolu s hlášením pošlou i informace o tom, kde v misi jste.</div>
     <textarea class="inp" id="report-text" placeholder="Např. GPS mě nepustí dál, i když jsem na místě…" style="min-height:110px;"></textarea>
+    <div id="report-code" style="font-size:13px;color:var(--txt2);margin-top:8px;"></div>
     <button class="btn btn-teal btn-f" onclick="submitReport()" style="margin-top:12px;">Odeslat hlášení</button>
   </div>
 </div>
@@ -935,6 +936,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
       <div class="ir"><span class="irk"><svg class=qi aria-hidden=true><use href=#qi-key /></svg> Cena</span><span class="irv ky-d" style="font-size:22px;font-family:var(--ff-d);font-weight:400;color:var(--teal);" id="det-price"></span></div>
     </div>
     <button class="btn btn-amber btn-f" id="det-cta" onclick="detailCTA()" style="font-size:16px;padding:17px;margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-cart /></svg> Koupit a hrát</button>
+    <button class="btn btn-ghost btn-f" id="det-test" onclick="testFromDetail()" style="display:none;margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Zahrát z gauče (test, jen pro tvůrce)</button>
     <button class="btn btn-ghost btn-f btn-sm" onclick="S.cg=S.detailGame;S.prevView='v-detail';nav('v-cr-lb')" style="margin-bottom:20px;"><svg class=qi aria-hidden=true><use href=#qi-users /></svg> Žebříček a síň slávy</button>
   </div>
 </div>
@@ -973,7 +975,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
     </div>
     <div class="ig"><label class="lb">Název týmu</label><input class="inp" id="prep-team" type="text" placeholder="Tým Drak…"/></div>
     <div class="ig"><label class="lb">Počet hráčů</label><input class="inp" id="prep-size" type="number" value="1" min="1" max="20"/></div>
-    <div class="ig"><label class="lb">GPS sledování</label>
+    <div class="ig" id="prep-geo-wrap" style="display:none;"><label class="lb">GPS sledování (vidí jen tvůrce)</label>
       <select class="inp" id="prep-geo"><option value="auto">Automatické (doporučeno)</option><option value="manual">Bez GPS – ručně</option></select>
     </div>
     <div style="font-size:12px;color:var(--txt2);text-align:center;margin-bottom:16px;line-height:1.5;"><svg class=qi aria-hidden=true><use href=#qi-warn /></svg> Mise se spustí až na startovní pozici.<br>Čas běží jen při plnění úkolů.</div>
@@ -1261,8 +1263,9 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
   <div class="hdr"><button class="hdr-bk" aria-label="Zpět" onclick="cancelGameForm()"><svg class=qi aria-hidden=true><use href=#qi-back /></svg></button><div><div class="hdr-ti" id="ng-form-title">Nová mise</div></div></div>
   <div class="scr" style="padding:16px;">
     <!-- AI Generator -->
-    <div id="ng-ai-card" style="background:rgba(238,231,215,.05);border:1.5px solid rgba(238,231,215,.3);border-radius:var(--r);padding:18px;margin-bottom:20px;">
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px;"><svg class=qi aria-hidden=true><use href=#qi-spark /></svg> AI generátor misí</div>
+    <details id="ng-ai-card" class="cte-more" style="margin-bottom:20px;">
+      <summary><svg class=qi aria-hidden=true><use href=#qi-spark /></svg> Navrhnout celou misi s AI (Gemini nebo Claude)</summary>
+      <div style="padding-top:10px;">
       <div style="font-size:13px;color:var(--txt2);margin-bottom:12px;line-height:1.5;">Popište misi a AI navrhne trasu, příběh, úkoly a nápovědy.</div>
       <div class="cr-tab" style="margin-bottom:12px;">
         <button class="cr-tab-btn a" id="ai-prov-gemini" onclick="setAiProvider('gemini')">Gemini (zdarma)</button>
@@ -1283,33 +1286,35 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
       <textarea class="inp" id="ai-prompt" placeholder="Chci hru po centru Brna na 90 minut o zmizelém alchymistovi…" style="min-height:80px;margin-bottom:10px;"></textarea>
       <button class="btn btn-teal btn-f btn-sm" onclick="aiGenerate()" id="ai-gen-btn"><svg class=qi aria-hidden=true><use href=#qi-spark /></svg> Vygenerovat misi</button>
       <div id="ai-status" style="display:none;margin-top:10px;"></div>
-    </div>
-    <div style="font-size:12px;color:var(--txt2);text-align:center;margin-bottom:16px;">— nebo vyplňte ručně —</div>
+      </div>
+    </details>
     <div class="ig"><label class="lb">Cover fotka</label><div class="cover-area" onclick="document.getElementById('ng-img').click()"><img id="ng-img-prev" class="cover-thumb" alt=""/><div id="ng-img-ph" class="cover-area-ph"><div style="font-size:32px;margin-bottom:8px;"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg></div><div style="font-size:13px;color:var(--txt2);">Klikněte · max. 2 MB</div></div></div><input type="file" id="ng-img" accept="image/*" style="display:none;" onchange="handleCover(event,'ng-img-prev','ng-img-ph','new')"/></div>
     <div class="ig"><label class="lb">Název mise</label><input class="inp" id="ng-nm" type="text" placeholder="Záhada starého mlýna…"/></div>
     <div class="ig"><label class="lb">Krátký popis</label><input class="inp" id="ng-ds" type="text" placeholder="Jedna věta lákající hráče…"/></div>
     <div class="ig"><label class="lb">Plný popis / příběh</label><textarea class="inp" id="ng-fdesc" placeholder="Příběh mise, atmosféra, co hráče čeká…" style="min-height:100px;"></textarea></div>
-    <div class="ig"><label class="lb">Video jako intro po spuštění mise (YouTube nebo Vimeo odkaz, nepovinné)</label><input class="inp" id="ng-video" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
-    <div class="ig"><label class="lb">Trailer pro ukázku před koupením (nepovinné, jiné video)</label><input class="inp" id="ng-trailer" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
-    <div class="ig"><label class="lb">Město (nepovinné — jakmile přidáte stanoviště s polohou, appka ho určí a doplní sama)</label><input class="inp" id="ng-city" type="text" placeholder="Praha"/></div>
     <div class="ig"><label class="lb">Název startovního bodu</label><input class="inp" id="ng-spnm" type="text" placeholder="Staroměstské náměstí…"/></div>
-    <div class="ig"><label class="lb">Instrukce pro start</label><textarea class="inp" id="ng-spinstr" placeholder="Přijeďte metrem A na stanici…"></textarea></div>
-    <div class="ig"><label class="lb">Text na finální obrazovce a do sdílení</label><textarea class="inp" id="ng-share" placeholder="Např. Rozluštil jsem tajemství brněnského Zeleného trhu. Zvládneš to i ty?" maxlength="180"></textarea>
-      <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Objeví se hráči po dokončení mise a vloží se do obrázku, který si sdílí do story. Držte to pod ~150 znaků a formulujte jako výzvu — funguje to lépe než popis.</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="ig"><label class="lb">Lat startu</label><div style="display:flex;gap:6px;"><input class="inp" id="ng-lat" type="number" step="0.0001" placeholder="50.0875"/><button class="btn btn-ghost btn-xs" onclick="openPickerFor('ng-lat','ng-lng')" title="Vybrat na mapě"><svg class=qi aria-hidden=true><use href=#qi-map /></svg></button></div></div>
       <div class="ig"><label class="lb">Lng startu</label><input class="inp" id="ng-lng" type="number" step="0.0001" placeholder="14.4213"/></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="ig"><label class="lb">Cena (Kč)</label><input class="inp" id="ng-price" type="number" value="299"/></div>
-      <div class="ig"><label class="lb">XP odměna</label><input class="inp" id="ng-xp" type="number" value="500"/></div>
+      <div class="ig"><label class="lb">Cena (Kč, 0 = zdarma)</label><input class="inp" id="ng-price" type="number" value="299"/></div>
+      <div class="ig"><label class="lb">Délka (min)</label><input class="inp" id="ng-dur" type="number" value="90"/></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <div class="ig"><label class="lb">Obtížnost</label><select class="inp" id="ng-diff"><option value="lehká">Lehká</option><option value="střední" selected>Střední</option><option value="těžká">Těžká</option></select></div>
-      <div class="ig"><label class="lb">Délka (min)</label><input class="inp" id="ng-dur" type="number" value="90"/></div>
+      <div class="ig" id="ng-xp-wrap" style="display:none;"><label class="lb">XP odměna</label><input class="inp" id="ng-xp" type="number" value="500"/></div>
     </div>
+    <details class="cte-more" style="margin-bottom:16px;"><summary>Další nastavení (nepovinné): video, město, instrukce, sdílení, kód</summary>
+    <div class="ig"><label class="lb">Video jako intro po spuštění mise (YouTube nebo Vimeo odkaz, nepovinné)</label><input class="inp" id="ng-video" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
+    <div class="ig"><label class="lb">Trailer pro ukázku před koupením (nepovinné, jiné video)</label><input class="inp" id="ng-trailer" type="text" placeholder="https://youtube.com/watch?v=…"/></div>
+    <div class="ig"><label class="lb">Město (nepovinné — jakmile přidáte stanoviště s polohou, appka ho určí a doplní sama)</label><input class="inp" id="ng-city" type="text" placeholder="Praha"/></div>
+    <div class="ig"><label class="lb">Instrukce pro start</label><textarea class="inp" id="ng-spinstr" placeholder="Přijeďte metrem A na stanici…"></textarea></div>
+    <div class="ig"><label class="lb">Text na finální obrazovce a do sdílení</label><textarea class="inp" id="ng-share" placeholder="Např. Rozluštil jsem tajemství brněnského Zeleného trhu. Zvládneš to i ty?" maxlength="180"></textarea>
+      <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Objeví se hráči po dokončení mise a vloží se do obrázku, který si sdílí do story. Držte to pod ~150 znaků a formulujte jako výzvu — funguje to lépe než popis.</div></div>
     <div class="ig"><label class="lb">Interní kód</label><div style="display:flex;gap:8px;"><input class="inp" id="ng-cd" type="text" placeholder="MLÝN24" style="text-transform:uppercase;letter-spacing:2px;font-weight:700;"/><button class="btn btn-ghost" onclick="genCode()"><svg class=qi aria-hidden=true><use href=#qi-dice /></svg></button></div></div>
-    <button class="btn btn-amber btn-f" id="ng-submit-btn" onclick="createGame()" style="font-size:15px;padding:16px;">Vytvořit misi</button>
+    </details>
+    <button class="btn btn-amber btn-f" id="ng-submit-btn" onclick="createGame()" style="font-size:15px;padding:16px;">Vytvořit misi a přidat stanoviště</button>
     <div style="height:16px;"></div>
   </div>
 </div>
@@ -1337,7 +1342,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
       <button class="btn btn-ghost btn-sm" onclick="editGameMeta()" style="grid-column:1/-1;"><svg class=qi aria-hidden=true><use href=#qi-gear /></svg> Upravit info mise (název, cena, popis, start…)</button>
     </div>
     <div class="dv"></div>
-    <button class="btn btn-ghost btn-f" onclick="startTestPlay()" style="font-size:14px;padding:14px;margin-bottom:10px;border-color:rgba(238,231,215,.35);color:var(--amber2);"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Testovat hru (hrací mód, nic se neukládá)</button>
+    <button class="btn btn-ghost btn-f" onclick="startTestPlay()" style="font-size:14px;padding:14px;margin-bottom:10px;border-color:rgba(238,231,215,.35);color:var(--amber2);"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Zahrát z gauče (test, nic se neukládá)</button>
     <button class="btn btn-teal btn-f" id="cgd-start" onclick="toggleGameStatus()" style="font-size:15px;padding:15px;">▶ Spustit misi</button>
     <button class="btn btn-danger btn-f" id="cgd-stop" onclick="toggleGameStatus()" style="display:none;margin-top:8px;font-size:15px;padding:15px;">■ Zastavit misi</button>
     <button class="btn btn-ghost btn-f" onclick="deleteGame(S.cg?.id)" style="margin-top:16px;font-size:13px;color:#E8A097;"><svg class=qi aria-hidden=true><use href=#qi-trash /></svg> Smazat misi natrvalo</button>
@@ -1427,8 +1432,11 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
     <div id="cse-tasks-wrap">
       <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Úkoly</div>
       <div id="cse-tli"></div>
-      <button class="btn btn-ghost btn-f btn-sm" onclick="addTask()" style="font-size:13px;">+ Přidat úkol</button>
+      <button class="btn btn-ghost btn-f btn-sm" onclick="addTask()" style="font-size:13px;"><svg class=qi aria-hidden=true><use href=#qi-plus /></svg> Přidat úkol</button>
     </div>
+    <div class="dv"></div>
+    <button class="btn btn-ghost btn-f" onclick="stTestHere()" style="margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-flask /></svg> Zahrát odsud z gauče</button>
+    <div id="cse-nav" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;"></div>
   </div>
 </div>
 
@@ -1436,6 +1444,15 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
 <div class="flow-view" id="v-cr-te">
   <div class="hdr"><button class="hdr-bk" aria-label="Zpět" onclick="nav('v-cr-se')"><svg class=qi aria-hidden=true><use href=#qi-back /></svg></button><div><div class="hdr-ti">Úkol</div></div><button class="btn btn-teal btn-sm" onclick="saveTask()" style="font-size:12px;padding:8px 14px;">Uložit</button></div>
   <div class="scr" style="padding:16px;">
+    <div class="ig"><div class="lb">Rychlá volba mechaniky</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;" role="group" aria-label="Šablony úkolů">
+        <button type="button" class="ky-chip" onclick="taskTpl('digits')"><svg class=qi aria-hidden=true><use href=#qi-lock /></svg> Číselný zámek</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('dirs')"><svg class=qi aria-hidden=true><use href=#qi-compass /></svg> Směrový zámek</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('then')"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg> Tehdy a teď</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('bearing')"><svg class=qi aria-hidden=true><use href=#qi-compass /></svg> Kompas a kroky</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('branch')"><svg class=qi aria-hidden=true><use href=#qi-branch /></svg> Volba příběhu</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('photo')"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg> Fotodůkaz</button>
+      </div></div>
     <div class="ig"><label class="lb">Typ úkolu</label>
       <select class="inp" id="cte-tp" onchange="renderTF();renderTimeoutFields();">
         <option value="mc">Výběr z možností (A–D)</option>
@@ -1509,6 +1526,11 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
       <div class="ig"><label class="lb">Text po vypršení času (nepovinné)</label><textarea class="inp" id="cte-timeout-text" placeholder="Např. Okno zhaslo. Ať jsi viděl cokoli, teď už je to jen v tvé hlavě." style="min-height:60px;"></textarea></div>
     </div>
     <div class="ig"><label class="lb">Předmět do inventáře za splnění (nepovinné)</label><select class="inp" id="cte-item"></select><button type="button" class="btn btn-ghost btn-xs" onclick="addGameItemPrompt('cte-item')" style="margin-top:8px;"><svg class=qi aria-hidden=true><use href=#qi-plus /></svg> Nový předmět</button></div>
+    <div class="dv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <button class="btn btn-ghost" onclick="saveTask()"><svg class=qi aria-hidden=true><use href=#qi-check /></svg> Uložit</button>
+      <button class="btn btn-teal" onclick="saveTask({next:true})"><svg class=qi aria-hidden=true><use href=#qi-plus /></svg> Uložit a další</button>
+    </div>
   </div>
 </div>
 
@@ -1598,11 +1620,14 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
 <div class="flow-view" id="v-cr-support">
   <div class="hdr"><button class="hdr-bk" aria-label="Zpět" onclick="nav('v-prof')"><svg class=qi aria-hidden=true><use href=#qi-back /></svg></button><div><div class="hdr-ti"><svg class=qi aria-hidden=true><use href=#qi-wrench /></svg> Podpora hráčů</div></div></div>
   <div class="scr" style="padding:16px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px;"><div style="font-size:15px;font-weight:700;"><svg class=qi aria-hidden=true><use href=#qi-users /></svg> Hrají právě teď</div><span id="sup-live-ts" style="font-size:12px;color:var(--txt2);"></span></div>
+    <div id="sup-live" style="margin-bottom:22px;"></div>
     <div style="font-size:13px;font-weight:700;margin-bottom:12px;"><svg class=qi aria-hidden=true><use href=#qi-inbox /></svg> Nahlášené problémy</div>
     <div id="cr-reports-list" style="margin-bottom:24px;"></div>
     <div class="dv"></div>
     <div style="font-size:13px;font-weight:700;margin:16px 0 12px;"><svg class=qi aria-hidden=true><use href=#qi-search /></svg> Vyhledat hráče a jeho postup</div>
-    <div class="ig"><input class="inp" id="sup-search" type="email" placeholder="e-mail hráče…" onkeydown="if(event.key==='Enter')lookupPlayer()"/></div>
+    <div class="ig"><input class="inp" id="sup-search" type="search" autocomplete="off" placeholder="Kód pro podporu, název týmu nebo e-mail" onkeydown="if(event.key==='Enter')lookupPlayer()"/>
+      <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Hráči bez e-mailu najdou svůj kód v okně Nahlásit problém.</div></div>
     <button class="btn btn-teal btn-f" onclick="lookupPlayer()" style="margin-bottom:16px;">Vyhledat</button>
     <div id="sup-player-detail"></div>
   </div>
@@ -2206,6 +2231,54 @@ async function adoptSession(user){
   await loadEntitlements();
   monitorIdentify(S.cu);
   updateAuthBtns();
+  subscribeSupport();
+}
+// ══ ŽIVÁ PODPORA: změny od tvůrce se v appce hráče projeví hned ══
+let supChan=null;
+function subscribeSupport(){
+  try{
+    if(supChan&&sb?.removeChannel)sb.removeChannel(supChan);
+    supChan=null;
+    if(!sb?.channel||!S.cu?.id||S.cu.role==='creator')return;
+    supChan=sb.channel('sup-'+S.cu.id)
+      .on('postgres_changes',{event:'*',schema:'public',table:'entitlements',filter:`user_id=eq.${S.cu.id}`},p=>onEntPush(p.new))
+      .subscribe();
+  }catch(e){console.warn('Živé spojení s podporou se nepodařilo navázat',e);}
+}
+function onEntPush(row){
+  if(!row||!row.game_id||S.testMode)return;
+  const ents=S.entitlements||(S.entitlements=[]);
+  const ent=ents.find(e=>e.game_id===row.game_id);
+  const pr=row.progress||null;
+  const view=document.querySelector('.flow-view.act')?.id;
+  const playing=S.cg?.id===row.game_id&&['v-travel','v-game','v-story'].includes(view);
+  if(pr?.supportTs&&pr.supportTs!==S.lastSupportTs){
+    S.lastSupportTs=pr.supportTs;
+    if(ent){ent.status=row.status;ent.progress=pr;}else ents.push({user_id:row.user_id,game_id:row.game_id,status:row.status,progress:pr});
+    if(playing)applySupportMove(pr);
+    else toast('Podpora upravila váš postup. Po otevření mise pokračujete z nového místa.',6000,'wrench');
+    return;
+  }
+  if(row.status==='unlocked'&&!pr){
+    const was=ent?.status;
+    if(ent){ent.status='unlocked';ent.progress=null;}else ents.push({user_id:row.user_id,game_id:row.game_id,status:'unlocked',progress:null});
+    if(playing&&was==='in_progress'){
+      stopTimer();stopCountdown();stopWatch();stopWatchStart();stopCompass();stopGameMeWatch();
+      toast('Podpora vrátila misi na začátek. Spusťte ji znovu.',7000,'wrench');navMain('v-miss');
+    }else if(!was)toast('Podpora vám odemkla misi.',5000,'unlock');
+  }
+}
+function applySupportMove(pr){
+  const g=S.cg;if(!g||!S.pl)return;
+  const si=Math.max(0,Math.min(+pr.si||0,g.stations.length-1));
+  stopTimer();stopCountdown();stopWatch();stopCompass();stopGameMeWatch();
+  document.querySelectorAll('.ov.show').forEach(o=>o.classList.remove('show'));
+  S.pl.si=si;S.pl.ti2=+pr.ti2||0;
+  if(Array.isArray(pr.visitedStations))S.pl.visitedStations=pr.visitedStations;
+  const st=g.stations[si];
+  toast(`Podpora vás posunula: ${st?.name||'stanoviště '+(si+1)}`,6000,'wrench');
+  if(pr.resumeView==='v-game'){nav('v-game');saveProgress('v-game');}
+  else startTravel();
 }
 async function login(){
   const em=document.getElementById('a-em')?.value.trim().toLowerCase(),pw=document.getElementById('a-pw')?.value;
@@ -2232,6 +2305,7 @@ async function logout(){
   stopTimer();stopWatch();stopWatchStart();stopCountdown();
   if(sb){try{await sb.auth.signOut();}catch(e){console.warn('Odhlášení selhalo',sbErrMsg(e));}}
   S.cu=null;S.cg=null;S.entitlements=[];S.myResults=[];
+  subscribeSupport();
   monitorReset();
   updateAuthBtns();navMain('v-disc');
 }
@@ -2431,12 +2505,13 @@ function openDetail(gid){
   const owned=ownsGame(g.id);
   const sess=S.cu?getSession(g.id):null;
   const cta=document.getElementById('det-cta');
+  const tb=document.getElementById('det-test');if(tb)tb.style.display=S.cu?.role==='creator'?'':'none';
   cta.disabled=false;cta.style.background='';
   if(sess?.status==='completed'){
     if(canReplayForEnding(g)){cta.innerHTML=`${ic('branch')} Odhalit další zakončení · ${replayPrice(g)} Kč`;cta.onclick=()=>openPurchase(g.id,{replay:true});}
     else{cta.innerHTML=ic('check')+' Mise dokončena'+(bestStars(g.id)?' · '+starsTxt(bestStars(g.id)):'');cta.disabled=true;}
   }
-  else if(owned){cta.textContent='▶ Hrát misi';cta.style.background='#EEE7D7';cta.onclick=()=>{S.prevView='v-detail';openPrep(g.id);};}
+  else if(owned){cta.innerHTML=`${ic('play')} Hrát misi`;cta.onclick=()=>{S.prevView='v-detail';openPrep(g.id);};}
   else if(isSpisFinal(g)){cta.innerHTML=`${ic('scroll')} Odemkni pečetěmi z ${esc(S.spis.title||'spisu')}`;cta.onclick=()=>navMain('v-prof');}
   else if(isFreeGame(g)){cta.innerHTML=`${ic('play')} Hrát zdarma`;cta.onclick=()=>startFree(g.id);}
   else{cta.innerHTML=`<svg class=qi aria-hidden=true><use href=#qi-cart /></svg> Koupit za ${g.price} Kč`;cta.onclick=detailCTA;}
@@ -2744,6 +2819,8 @@ async function openPrep(gid){
   }else{
     S.cg=g;S.prevView='v-cr-gd';
   }
+  const gw=document.getElementById('prep-geo-wrap');if(gw)gw.style.display=couchOK()?'':'none';
+  const gs=document.getElementById('prep-geo');if(gs)gs.value=S.testMode?'manual':'auto';
   document.getElementById('prep-ti').textContent=g.name;
   document.getElementById('prep-start-name').textContent=g.startPointName||'—';
   document.getElementById('prep-start-instr').textContent=g.startInstructions||'Přesuňte se na startovní pozici.';
@@ -2773,7 +2850,8 @@ function restartMission(gid){
 }
 function openInMaps(){const g=S.cg;if(!g?.startPointLat)return;window.open(`https://maps.google.com/?q=${g.startPointLat},${g.startPointLng}`,'_blank');}
 function goToStart(){
-  const nm=document.getElementById('prep-team').value.trim(),sz=parseInt(document.getElementById('prep-size').value)||1,geo=document.getElementById('prep-geo').value;
+  const nm=document.getElementById('prep-team').value.trim(),sz=parseInt(document.getElementById('prep-size').value)||1;
+  let geo=document.getElementById('prep-geo').value;if(geo==='manual'&&!couchOK())geo='auto';
   if(!nm){toast('Zadejte název týmu',0,'warn');return;}if(!S.cg?.stations.length){toast('Mise nemá žádná stanoviště',0,'warn');return;}
   S.pl={teamName:nm,teamSize:sz,geo,answers:[],totalSecs:0,ti:null,ts:null,si:0,ti2:0,usedHints:{},countdownTi:null,inventory:[],visitedStations:[],showMap:false,xpEarned:0};
   startConfirmShown=false;
@@ -2820,7 +2898,7 @@ function initStartNav(){
 function centerStartMap(){if(!navigator.geolocation||!S.maps.start)return;navigator.geolocation.getCurrentPosition(p=>S.maps.start.setView([p.coords.latitude,p.coords.longitude],17));}
 function startWatchStart(){
   stopWatchStart();if(!navigator.geolocation)return;
-  S.widStart=navigator.geolocation.watchPosition(pos=>{
+  S.widStart=navigator.geolocation.watchPosition(pos=>{noteFix(pos);
     const{latitude:lat,longitude:lng}=pos.coords;const map=S.maps.start;if(!map)return;
     const ico=L.divIcon({html:`<div style="width:14px;height:14px;border-radius:50%;background:#EEE7D7;border:3px solid #fff;box-shadow:none;"></div>`,iconSize:[14,14],iconAnchor:[7,7],className:''});
     if(S.pmStart)S.pmStart.setLatLng([lat,lng]);else{S.pmStart=L.marker([lat,lng],{icon:ico}).addTo(map);map.setView([lat,lng],16);}
@@ -2836,7 +2914,7 @@ function stopWatchStart(){if(S.widStart!==null){navigator.geolocation.clearWatch
 function showStartConfirm(){if(startConfirmShown)return;startConfirmShown=true;openStartOv();}
 function openStartOv(){document.getElementById('start-ov').classList.add('show');}
 function closeStartOv(){document.getElementById('start-ov').classList.remove('show');}
-function manualArriveStart(){openStartOv();}
+async function manualArriveStart(){const g=S.cg;const r=await checkPlace(g?.startPointLat,g?.startPointLng,g?.startRadius||50);if(!r.ok){placeFail(r);return;}placeFails=0;openStartOv();}
 function saveProgress(view){
   if(!S.cu||!S.cg||S.testMode)return;
   let ent=(S.entitlements||[]).find(e=>e.game_id===S.cg.id);
@@ -2854,6 +2932,38 @@ function confirmStart(){
   setSession(S.cg.id,'in_progress');
   S.pl.si=0;S.pl.visitedStations=[];S.pl.endingId=null;
   startTravel();
+}
+
+// ══ POLOHA: tým musí stát na místě ═════════════════════
+// Hrát „z gauče“ smí jen tvůrce: v testovacím režimu nebo pod účtem tvůrce.
+// Hráč potvrdí příchod jen tehdy, když ho GPS ukazuje v okruhu stanoviště
+// (poloměr stanoviště, nejméně 25 m, plus přesnost GPS, nejvýš 40 m navíc).
+function couchOK(){return!!(S.testMode||S.cu?.role==='creator');}
+function noteFix(pos){if(pos?.coords)S.fix={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:pos.coords.accuracy||0,t:Date.now()};}
+function freshFix(maxAge=20000){
+  return new Promise(res=>{
+    if(S.fix&&Date.now()-S.fix.t<maxAge){res(S.fix);return;}
+    if(!navigator.geolocation){res(null);return;}
+    navigator.geolocation.getCurrentPosition(p=>{noteFix(p);res(S.fix);},()=>res(null),{enableHighAccuracy:true,maximumAge:15000,timeout:12000});
+  });
+}
+async function checkPlace(lat,lng,radius){
+  lat=+lat;lng=+lng;
+  if(couchOK()||!Number.isFinite(lat)||!Number.isFinite(lng)||(!lat&&!lng))return{ok:true};
+  const f=await freshFix();
+  if(!f)return{ok:false,why:'nofix'};
+  const d=hav(f.lat,f.lng,lat,lng),tol=Math.max(+radius||20,25)+Math.min(f.acc||0,40);
+  return{ok:d<=tol,why:d<=tol?'':'far',d:Math.round(d),left:Math.max(5,Math.round(d-tol)),acc:Math.round(f.acc||0)};
+}
+let placeFails=0;
+function placeFail(r){
+  placeFails++;
+  if(r.why==='nofix')toast('Nevidíme vaši polohu. Povolte v telefonu polohu pro prohlížeč a zkuste to znovu.',6500,'pin');
+  else toast(`Ještě nejste na místě, chybí asi ${r.left} m.${r.acc>40?' GPS teď měří nepřesně, zkuste vyjít na otevřené místo.':''}`,5000,'pin');
+  if(placeFails>=3){
+    placeFails=0;
+    setTimeout(()=>{if(confirm('Poloha vám pořád nesedí? Napište podpoře, umí vás posunout na dálku.')){openReportIssue();const t=document.getElementById('report-text');if(t)t.value=`Nejde potvrdit příchod (${r.why==='nofix'?'aplikace nevidí polohu':'podle GPS jsem '+r.d+' m od cíle'}).`;}},600);
+  }
 }
 
 // ══ TRAVEL ════════════════════════════════════════════
@@ -2894,7 +3004,7 @@ function initPMap(){
 function centerMap(){if(!navigator.geolocation||!S.maps.pmap)return;navigator.geolocation.getCurrentPosition(p=>S.maps.pmap.setView([p.coords.latitude,p.coords.longitude],16));}
 function startWatch(){
   stopWatch();if(!navigator.geolocation)return;
-  S.wid=navigator.geolocation.watchPosition(pos=>{
+  S.wid=navigator.geolocation.watchPosition(pos=>{noteFix(pos);
     const{latitude:lat,longitude:lng}=pos.coords;const map=S.maps.pmap;if(!map)return;
     const ico=L.divIcon({html:'<div class="me-dot" style="position:relative;"></div>',iconSize:[18,18],iconAnchor:[9,9],className:''});
     if(S.pm)S.pm.setLatLng([lat,lng]);else{S.pm=L.marker([lat,lng],{icon:ico}).addTo(map);map.setView([lat,lng],16);}
@@ -2947,7 +3057,7 @@ async function toggleCompass(){
   window.addEventListener('deviceorientationabsolute',onDeviceOrientation,true);
   window.addEventListener('deviceorientation',onDeviceOrientation,true);
   if(navigator.geolocation)compassWid=navigator.geolocation.watchPosition(
-    p=>{compassPos={lat:p.coords.latitude,lng:p.coords.longitude};updateCompassUI();},
+    p=>{noteFix(p);compassPos={lat:p.coords.latitude,lng:p.coords.longitude};updateCompassUI();},
     ()=>{},{enableHighAccuracy:true,maximumAge:3000,timeout:12000});
   const w=document.getElementById('compass-wrap');if(w)w.style.display='flex';
   updateCompassUI();toast('Kompas zapnut',0,'compass');
@@ -2961,9 +3071,15 @@ function stopCompass(){
   const w=document.getElementById('compass-wrap');if(w)w.style.display='none';
 }
 function isStoryStation(st){return st?.kind==='story';}
-function arriveStation(){
-  stopWatch();stopCompass();S.pl.ti2=0;
+async function arriveStation(){
   const st=S.cg?.stations[S.pl.si];
+  const btn=document.getElementById('arrive-btn');
+  if(btn){btn.disabled=true;btn.style.opacity='.6';}
+  const r=await checkPlace(st?.lat,st?.lng,st?.radius);
+  if(btn){btn.disabled=false;btn.style.opacity='';}
+  if(!r.ok){placeFail(r);return;}
+  placeFails=0;
+  stopWatch();stopCompass();S.pl.ti2=0;
   if(isStoryStation(st)){renderStoryStation();return;}
   toast('Vítejte na stanovišti!',0,'pin');nav('v-game');saveProgress('v-game');
 }
@@ -3124,7 +3240,7 @@ function initGameMap(){
 function startGameMeWatch(){
   stopGameMeWatch();
   if(!navigator.geolocation){setGameMapLbl('Prohlížeč nepodporuje určení polohy');return;}
-  S.gameMeWid=navigator.geolocation.watchPosition(pos=>{
+  S.gameMeWid=navigator.geolocation.watchPosition(pos=>{noteFix(pos);
     const map=S.maps.game;if(!map)return;
     const{latitude:lat,longitude:lng,accuracy:acc}=pos.coords;
     const ico=L.divIcon({html:'<div class="me-dot" style="position:relative;"></div>',iconSize:[18,18],iconAnchor:[9,9],className:''});
@@ -3300,14 +3416,15 @@ function renderJournal(){
 }
 
 // ══ SUPPORT: REPORT ISSUE (player side) ════════════════
-function openReportIssue(){document.getElementById('report-text').value='';document.getElementById('report-ov').classList.add('show');}
+function supportCode(id){return String(id||'').replace(/-/g,'').slice(0,6).toUpperCase();}
+function openReportIssue(){document.getElementById('report-text').value='';const sc=document.getElementById('report-code');if(sc)sc.innerHTML=S.cu?.id?`Kód pro podporu: <b style="letter-spacing:2px;">${supportCode(S.cu.id)}</b>`:'';document.getElementById('report-ov').classList.add('show');}
 function closeReportIssue(){document.getElementById('report-ov').classList.remove('show');}
 function submitReport(){
   const text=document.getElementById('report-text').value.trim();
   if(!text){toast('Popište problém',0,'warn');return;}
   const g=S.cg,p=S.pl;
   const report={id:uid(),createdAt:Date.now(),resolved:false,
-    userEmail:S.cu?.email||'—',userName:S.cu?.name||'Neznámý hráč',
+    userId:S.cu?.id||null,userEmail:S.cu?.email||'—',userName:S.pl?.teamName||S.cu?.name||'Tým bez jména',teamName:S.pl?.teamName||null,supportCode:S.cu?.id?supportCode(S.cu.id):null,
     gameId:g?.id||null,gameName:g?.name||'—',
     stationName:g?.stations?.[p?.si]?.name||null,taskIndex:(p&&p.ti2!=null)?p.ti2:null,
     view:document.querySelector('.flow-view.act')?.id||'?',text};
@@ -3315,10 +3432,15 @@ function submitReport(){
   S.reports.unshift(report);persist();
   // Hlášení do Supabase — jinak by se k tvůrci na jiném zařízení nikdy nedostalo
   if(sb&&S.cu){
-    sb.from('reports').insert({id:report.id,user_id:S.cu.id,user_email:report.userEmail,user_name:report.userName,
+    const row={id:report.id,user_id:S.cu.id,user_email:report.userEmail,user_name:report.userName,
       game_id:report.gameId,game_name:report.gameName,station_name:report.stationName,task_index:report.taskIndex,
-      view:report.view,text:report.text,resolved:false,created_at:new Date(report.createdAt).toISOString()})
-      .then(({error})=>{if(error)console.warn('Uložení hlášení do Supabase selhalo:',sbErrMsg(error));});
+      view:report.view,text:report.text,resolved:false,created_at:new Date(report.createdAt).toISOString()};
+    // team_name a support_code přidává migrace v4; bez ní se hlášení uloží i tak
+    sb.from('reports').insert({...row,team_name:report.teamName,support_code:report.supportCode}).then(({error})=>{
+      if(!error)return;
+      if(/team_name|support_code|column/i.test(error.message||''))sb.from('reports').insert(row).then(({error:e2})=>{if(e2)console.warn('Uložení hlášení do Supabase selhalo:',sbErrMsg(e2));});
+      else console.warn('Uložení hlášení do Supabase selhalo:',sbErrMsg(error));
+    });
   }
   // E-mailové upozornění tvůrci (fire-and-forget, hráče nezdržuje)
   const supEmail=S.mailCfg?.supportEmail||'info@questly.cz';
@@ -3346,6 +3468,8 @@ function quitGame(){
 // ══ TESTOVACÍ REŽIM TVŮRCE ═════════════════════════════
 function startTestPlay(){
   if(!S.cg)return;
+  if(S.cu?.role!=='creator'){toast('Testování je jen pro tvůrce',0,'lock');return;}
+  S.testReturn=null;
   if(!S.cg.stations?.length){toast('Mise nemá žádná stanoviště',0,'warn');return;}
   S.testMode=true;
   document.getElementById('test-banner').style.display='flex';
@@ -3356,7 +3480,28 @@ function startTestPlay(){
 function endTestMode(){
   S.testMode=false;
   document.getElementById('test-banner').style.display='none';
+  const back=S.testReturn;S.testReturn=null;
+  if(back?.view==='v-detail'&&S.cg){openDetail(S.cg.id);return;}
+  if(back?.view==='v-cr-se'&&S.cg&&S.cg.stations[back.si]){editSt(back.si);return;}
   if(S.cg)openCrDetail(S.cg.id);else nav('v-cr');
+}
+// Test rovnou od zvoleného stanoviště: bez přípravy a úvodu, inventář jako by tým prošel předchozí stanoviště
+function quickTestFrom(si){
+  if(!S.cg||S.cu?.role!=='creator')return;
+  const g=S.cg;if(!g.stations[si]){toast('Stanoviště nenalezeno',0,'warn');return;}
+  const inv=[];
+  g.stations.slice(0,si).forEach(st=>(st.tasks||[]).forEach(t=>{if(t.givesItem&&!inv.includes(t.givesItem))inv.push(t.givesItem);}));
+  S.testMode=true;S.testReturn={view:'v-cr-se',si};
+  document.getElementById('test-banner').style.display='flex';
+  S.pl={teamName:'Test',teamSize:1,geo:'manual',answers:[],totalSecs:0,ti:null,ts:null,si,ti2:0,usedHints:{},countdownTi:null,
+    inventory:inv,visitedStations:g.stations.slice(0,si).map(s=>s.id),showMap:false,xpEarned:0,startedAt:Date.now(),photos:[],usedItems:[],timerDone:{},endingId:null};
+  track('mission_test_started',{game_id:g.id,from:si});
+  toast(`Test od stanoviště ${si+1}, nic se neukládá`,3000,'flask');
+  startTravel();
+}
+function testFromDetail(){
+  const g=S.detailGame;if(!g||S.cu?.role!=='creator')return;
+  S.cg=g;startTestPlay();S.testReturn={view:'v-detail'};
 }
 
 
@@ -3693,7 +3838,7 @@ async function handlePhotoTask(e){
   photoSetStatus(ic('check')+' Fotka připravená.','var(--teal2)');
   // 3) GPS v momentě focení
   const st=S.cg?.stations?.[S.pl.si];
-  if(task.photoGeo!==false&&st?.lat&&navigator.geolocation&&!S.testMode){
+  if(task.photoGeo!==false&&st?.lat&&navigator.geolocation&&!couchOK()){
     photoSetStatus(ic('check')+' Fotka připravená. '+ic('antenna')+' Ověřuji polohu…','var(--teal2)');
     navigator.geolocation.getCurrentPosition(pos=>{
       const d=hav(pos.coords.latitude,pos.coords.longitude,st.lat,st.lng);
@@ -3801,6 +3946,14 @@ function showHintTxt(task,level){
 // ══ SUBMIT ════════════════════════════════════════════
 function submitAns(){
   const{cg:g,pl:p}=S;const task=g.stations[p.si].tasks[p.ti2];let ok=false;
+  if(task.type==='gps'&&!S._placeOk){
+    const st=g.stations[p.si];
+    checkPlace(task.lat??st.lat,task.lng??st.lng,task.radius||st.radius).then(r=>{
+      if(!r.ok){placeFail(r);return;}
+      placeFails=0;S._placeOk=true;try{submitAns();}finally{S._placeOk=false;}
+    });
+    return;
+  }
   // Odpočet se NESMÍ zastavit tady — každý předčasný return (prázdná odpověď,
   // nevybraná možnost, chybějící fotka) by hráči vypnul časový limit.
   // Zastaví ho až finalizeAnswer(), tj. skutečně přijatá odpověď.
@@ -5218,7 +5371,7 @@ function createGame(){
     toast('Nezapomeňte zkontrolovat GPS souřadnice u stanovišť (u některých je appka převzala automaticky, u ostatních je doplňte v sekci Stanoviště)',6000,'pin');
   }
   if(!Array.isArray(g.endings))g.endings=[];
-  S.pendingAiStations=null;S.games.push(g);persist();resetGameForm();toast('Mise vytvořena!',0,'check');openCrDetail(g.id);
+  S.pendingAiStations=null;S.games.push(g);persist();resetGameForm();openCrDetail(g.id);if(!(g.stations||[]).length){addSt();toast('Mise vytvořena. Teď první stanoviště: pojmenujte ho a vyberte místo na mapě.',4500,'pin');}else toast('Mise vytvořena!',0,'check');;
 }
 function editGameVideo(){
   if(!S.cg)return;
@@ -5340,14 +5493,14 @@ function editSt(i){
   const scb=document.getElementById('cse-story');if(scb)scb.checked=isStoryStation(st);
   const stx=document.getElementById('cse-story-txt');if(stx)stx.value=st.storyText||'';
   toggleStoryStation();
-  renderTasks(st.tasks);nav('v-cr-se');
+  renderTasks(st.tasks);renderStNav();nav('v-cr-se');
 }
 function renderTasks(tasks){
   const ic={mc:'<svg class=qi aria-hidden=true><use href=#qi-radio /></svg>',tx:'<svg class=qi aria-hidden=true><use href=#qi-edit /></svg>',nm:'<svg class=qi aria-hidden=true><use href=#qi-hash /></svg>',cd:'<svg class=qi aria-hidden=true><use href=#qi-key /></svg>',photo:'<svg class=qi aria-hidden=true><use href=#qi-camera /></svg>',order:'<svg class=qi aria-hidden=true><use href=#qi-shuffle /></svg>',inventory:'<svg class=qi aria-hidden=true><use href=#qi-bag /></svg>',gps:'<svg class=qi aria-hidden=true><use href=#qi-pin /></svg>',branch:'<svg class=qi aria-hidden=true><use href=#qi-branch /></svg>'};
   const c=document.getElementById('cse-tli');
   c.innerHTML=tasks.length?tasks.map((t,i)=>`<div class="sti" onclick="editTask(${i})"><div class="stn" style="background:var(--navy3);color:var(--txt);font-size:16px;">${ic[t.type]||'<svg class=qi aria-hidden=true><use href=#qi-help /></svg>'}</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;">${t.q||'Bez zadání'}</div><div style="font-size:12px;color:var(--txt2);margin-top:2px;">${t.pts||10} b. · pen: ${t.pen||0} · <svg class=qi aria-hidden=true><use href=#qi-timer /></svg> ${t.timer||0}s</div></div><span style="color:var(--txt2);">›</span></div>`).join(''):`<div style="color:var(--txt2);font-size:14px;margin-bottom:14px;">Žádné úkoly.</div>`;
 }
-function saveSt(){
+function saveSt(opt={}){
   if(S.csi===null)return;const st=S.cg.stations[S.csi];
   st.name=document.getElementById('cse-nm').value||`Stan. ${S.csi+1}`;st.hint=document.getElementById('cse-ht').value;st.radius=parseInt(document.getElementById('cse-rd').value)||20;
   st.showPin=document.getElementById('cse-pin')?document.getElementById('cse-pin').checked:true;
@@ -5355,7 +5508,22 @@ function saveSt(){
   const isStory=!!document.getElementById('cse-story')?.checked;
   st.kind=isStory?'story':null;
   st.storyText=isStory?(document.getElementById('cse-story-txt')?.value||''):'';
-  persist();toast('Uloženo',0,'check');nav('v-cr-sts');
+  persist();
+  if(opt.silent)return;
+  toast('Uloženo',0,'check');nav('v-cr-sts');
+}
+function stGo(dir){
+  if(S.csi===null||!S.cg)return;
+  const j=S.csi+dir;saveSt({silent:true});
+  if(j>=S.cg.stations.length){addSt();toast('Nové stanoviště přidáno',0,'plus');return;}
+  if(j<0)return;
+  editSt(j);
+}
+function stTestHere(){if(S.csi===null)return;saveSt({silent:true});quickTestFrom(S.csi);}
+function renderStNav(){
+  const n=S.cg?.stations?.length||0,i=S.csi??0,el=document.getElementById('cse-nav');if(!el)return;
+  el.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="stGo(-1)" ${i<=0?'disabled style="opacity:.4;"':''}>${ic('back')} Předchozí</button>
+    <button class="btn btn-ghost btn-sm" onclick="stGo(1)">${i>=n-1?ic('plus')+' Další nové':'Další '+ic('next')}</button>`;
 }
 function addTask(){
   S.etask=-1;['cte-q','cte-cx','cte-h1','cte-h2','cte-h3'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -5674,7 +5842,16 @@ function handleOptImg(e,idx){
   };
   r.readAsDataURL(file);
 }
-function saveTask(){
+function taskTpl(k){
+  const map={digits:['cd','digits'],dirs:['cd','dirs'],then:['tx',''],bearing:['bearing',''],branch:['branch',''],photo:['photo','']};
+  const[tp,lk]=map[k]||['mc',''];
+  document.getElementById('cte-tp').value=tp;renderTF();renderTimeoutFields();
+  if(lk){const s=document.getElementById('cte-lock');if(s){s.value=lk;lockHelp();}}
+  const more=document.getElementById('cte-more');if(more)more.open=(k==='then');
+  if(k==='then')setTimeout(()=>document.getElementById('cte-then')?.focus(),50);
+  else document.getElementById('cte-q')?.focus();
+}
+function saveTask(opt={}){
   const si=S.csi;if(si===null){nav('v-cr-se');return;}
   const tp=document.getElementById('cte-tp').value;const q=document.getElementById('cte-q').value.trim();if(!q){toast('Zadejte otázku',0,'warn');return;}
   const task={type:tp,q,cx:document.getElementById('cte-cx').value.trim(),pts:parseInt(document.getElementById('cte-pt').value)||10,
@@ -5737,7 +5914,9 @@ function saveTask(){
   if(!readMediaFields(task))return;
   if(task.givesItem)ensureGameItem(task.givesItem);
   const station=S.cg.stations[si];if(S.etask>=0)station.tasks[S.etask]=task;else station.tasks.push(task);
-  renderTasks(station.tasks);persist();toast('Úkol uložen',0,'check');nav('v-cr-se');
+  renderTasks(station.tasks);persist();
+  if(opt.next){toast(`Úkol uložen, další na stanovišti ${si+1}`,0,'check');addTask();setTimeout(()=>document.getElementById('cte-q')?.focus(),60);return;}
+  toast('Úkol uložen',0,'check');nav('v-cr-se');
 }
 function genCodes(){const cnt=parseInt(document.getElementById('cod-cnt').value)||5;if(!S.cg)return;const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';const r8=()=>Array.from({length:8},()=>ch[Math.random()*ch.length|0]).join('');for(let i=0;i<cnt;i++)S.codes.push({code:`ESC-${S.cg.id.slice(-4).toUpperCase()}-${r8()}`,gameId:S.cg.id,activatedBy:null,activatedAt:null});persist();renderCodes();toast(`${cnt} kódů`,0,'check');}
 function renderCodes(){if(!S.cg)return;const codes=S.codes.filter(c=>c.gameId===S.cg.id);const sb=document.getElementById('cod-sb');if(sb)sb.textContent=`${codes.length} kódů`;const c=document.getElementById('cod-li');if(!codes.length){c.innerHTML=`<div class="emp"><div class="emp-i"><svg class=qi aria-hidden=true><use href=#qi-key /></svg></div><div class="emp-t">Žádné kódy</div></div>`;return;}c.innerHTML=codes.map(cd=>`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:12px 14px;margin-bottom:8px;"><div style="font-size:13px;font-weight:700;letter-spacing:1px;color:var(--teal);margin-bottom:5px;font-family:monospace;">${cd.code}</div><div style="display:flex;align-items:center;justify-content:space-between;"><span class="pill ${cd.activatedBy?'pill-teal':'pill-cream'}">${cd.activatedBy?'✓ Aktivováno':'● Volné'}</span>${!cd.activatedBy?`<button class="btn btn-ghost btn-xs" onclick="navigator.clipboard?.writeText('${cd.code}').then(()=>toast('Zkopírováno!',0,'clipboard'))">Kopírovat</button>`:''}</div></div>`).join('');}
@@ -5789,7 +5968,7 @@ function deleteBadge(){
 }
 
 // ══ CREATOR: PLAYER SUPPORT ═════════════════════════════
-function renderCrSupport(){renderReportsList();document.getElementById('sup-player-detail').innerHTML='';}
+function renderCrSupport(){renderReportsList();document.getElementById('sup-player-detail').innerHTML='';renderSupportLive();clearInterval(supLiveTimer);supLiveTimer=setInterval(()=>{renderSupportLive();renderReportsList();},15000);}
 async function renderReportsList(){
   const c=document.getElementById('cr-reports-list');
   let reports=S.reports||[];
@@ -5798,6 +5977,7 @@ async function renderReportsList(){
       const{data,error}=await withTimeout(sb.from('reports').select('*').order('created_at',{ascending:false}).limit(100),8000);
       if(error)throw error;
       if(data)reports=data.map(r=>({id:r.id,createdAt:new Date(r.created_at).getTime(),resolved:r.resolved,
+        userId:r.user_id||null,teamName:r.team_name||null,supportCode:r.support_code||(r.user_id?supportCode(r.user_id):null),
         userEmail:r.user_email,userName:r.user_name,gameId:r.game_id,gameName:r.game_name,
         stationName:r.station_name,taskIndex:r.task_index,view:r.view,text:r.text,remote:true}));
       S.reports=reports;DB.set('reports',S.reports);
@@ -5806,14 +5986,14 @@ async function renderReportsList(){
   if(!reports.length){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:20px 0;">Zatím žádná hlášení</div>`;return;}
   c.innerHTML=reports.map(r=>`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:14px;margin-bottom:10px;${r.resolved?'opacity:.55;':''}">
     <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:6px;">
-      <div style="font-size:13px;font-weight:700;">${esc(r.userName)} <span style="color:var(--txt2);font-weight:400;">(${esc(r.userEmail)})</span></div>
+      <div style="font-size:13px;font-weight:700;">${esc(r.teamName||r.userName)} <span style="color:var(--txt2);font-weight:400;">${r.userEmail&&r.userEmail!=='—'?'('+esc(r.userEmail)+')':'(bez e-mailu)'}${r.supportCode?' · kód '+esc(r.supportCode):''}</span></div>
       <span class="pill ${r.resolved?'pill-cream':'pill-amber'}" style="font-size:12px;flex-shrink:0;">${r.resolved?'✓ Vyřešeno':'● Nové'}</span>
     </div>
     <div style="font-size:13px;color:var(--txt);margin-bottom:8px;line-height:1.5;">${esc(r.text)}</div>
     <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-map /></svg> ${r.gameName}${r.stationName?' · <svg class=qi aria-hidden=true><use href=#qi-pin /></svg> '+r.stationName:''}${r.taskIndex!=null?' · úkol #'+(r.taskIndex+1):''} · ${new Date(r.createdAt).toLocaleString('cs-CZ')}</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn btn-ghost btn-xs" onclick="toggleReportResolved('${r.id}')">${r.resolved?'Označit jako nové':'✓ Vyřešeno'}</button>
-      <button class="btn btn-ghost btn-xs" onclick="lookupPlayerByEmail('${esc(r.userEmail).replace(/'/g,'&#39;')}')" style="color:var(--teal);"><svg class=qi aria-hidden=true><use href=#qi-search /></svg> Zobrazit hráče</button>
+      <button class="btn btn-ghost btn-xs" onclick="${r.userId?`openSupportPlayer('${esc(r.userId)}')`:`lookupPlayerByEmail('${esc(r.userEmail).replace(/'/g,'&#39;')}')`}" style="color:var(--teal);"><svg class=qi aria-hidden=true><use href=#qi-search /></svg> Zobrazit hráče</button>
       <button class="btn btn-ghost btn-xs" onclick="deleteReport('${r.id}')" style="color:#E8A097;"><svg class=qi aria-hidden=true><use href=#qi-trash /></svg></button>
     </div>
   </div>`).join('');
@@ -5828,7 +6008,50 @@ function deleteReport(id){
   S.reports=(S.reports||[]).filter(r=>r.id!==id);persist();renderReportsList();
   if(sb)sb.from('reports').delete().eq('id',id).then(({error})=>{if(error)console.warn('Smazání hlášení selhalo:',sbErrMsg(error));});
 }
-function lookupPlayer(){lookupPlayerByEmail(document.getElementById('sup-search').value.trim().toLowerCase());}
+function lookupPlayer(){
+  const q=document.getElementById('sup-search').value.trim();
+  if(q.includes('@')){lookupPlayerByEmail(q.toLowerCase());return;}
+  supportFind(q);
+}
+function openSupportPlayer(userId){
+  const d=document.getElementById('sup-player-detail');if(d)d.scrollIntoView({behavior:'smooth',block:'start'});
+  showPlayerSupportDetail(userId);
+}
+function supRowHTML(r){
+  const g=S.games.find(x=>x.id===r.game_id);
+  const st=g?.stations?.[r.si];
+  const where=r.status==='in_progress'?(r.resume_view==='v-travel'?`cesta na ${esc(st?.name||'stanoviště '+((r.si??0)+1))}`:`${esc(st?.name||'stanoviště '+((r.si??0)+1))}, úkol ${(r.ti2??0)+1}`):(r.status==='completed'?'dokončeno':'nezačato');
+  const ago=Math.max(0,Math.round((Date.now()-new Date(r.updated_at).getTime())/60000));
+  return`<button type="button" class="sti" style="width:100%;text-align:left;font:inherit;color:inherit;" onclick="openSupportPlayer('${esc(r.user_id)}')">
+    <span style="flex-shrink:0;min-width:70px;height:30px;padding:0 6px;border-radius:3px;background:rgba(238,231,215,.1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:1px;">${esc(r.support_code||'')}</span>
+    <div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:700;">${esc(r.team_name||'Tým bez jména')} <span style="font-weight:400;color:var(--txt2);">${r.is_anonymous?'bez e-mailu':esc(r.email||'')}</span></div>
+    <div style="font-size:12px;color:var(--txt2);margin-top:2px;">${esc(g?.name||r.game_id)}: ${where}. ${ago<1?'právě teď':'před '+ago+' min'}</div></div>${ic('next')}</button>`;
+}
+async function supportFind(q){
+  const c=document.getElementById('sup-player-detail');
+  if(!q){c.innerHTML='';return;}
+  if(!sb){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:16px 0;">Supabase není připojené</div>`;return;}
+  c.innerHTML=`<div style="text-align:center;padding:16px;color:var(--txt2);font-size:13px;">Hledám…</div>`;
+  try{
+    const{data,error}=await withTimeout(sb.rpc('support_find',{p_q:q}),8000);
+    if(error)throw error;
+    if(!data?.length){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);text-align:center;padding:16px 0;">Nic nenalezeno. Zkuste kód pro podporu (6 znaků), název týmu nebo e-mail.</div>`;return;}
+    c.innerHTML=data.map(supRowHTML).join('');
+  }catch(e){c.innerHTML=`<div style="font-size:13px;color:var(--bad);text-align:center;padding:16px 0;">Hledání nefunguje: ${esc(sbErrMsg(e))}. Spustili jste migraci v4?</div>`;}
+}
+// Týmy, které právě hrají: obnovuje se samo, dokud je obrazovka podpory otevřená
+let supLiveTimer=null;
+async function renderSupportLive(){
+  const c=document.getElementById('sup-live');if(!c)return;
+  if(!document.getElementById('v-cr-support')?.classList.contains('act')){clearInterval(supLiveTimer);supLiveTimer=null;return;}
+  if(!sb){c.innerHTML=`<div style="font-size:13px;color:var(--txt2);">Supabase není připojené</div>`;return;}
+  try{
+    const{data,error}=await withTimeout(sb.rpc('support_active',{p_hours:6}),8000);
+    if(error)throw error;
+    const t=document.getElementById('sup-live-ts');if(t)t.textContent=`obnoveno ${new Date().toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
+    c.innerHTML=data?.length?data.map(supRowHTML).join(''):`<div style="font-size:13px;color:var(--txt2);padding:6px 0 4px;">Teď nikdo nehraje.</div>`;
+  }catch(e){c.innerHTML=`<div style="font-size:13px;color:var(--bad);">Živý přehled nefunguje: ${esc(sbErrMsg(e))}. Spustili jste migraci v4?</div>`;}
+}
 async function lookupPlayerByEmail(em){
   const c=document.getElementById('sup-player-detail');
   if(!em){c.innerHTML='';return;}
@@ -5847,14 +6070,14 @@ async function showPlayerSupportDetail(userId){
   const c=document.getElementById('sup-player-detail');
   try{
     const[{data:profile,error:pErr},{data:ents,error:eErr}]=await Promise.all([
-      sb.from('profiles').select('*').eq('id',userId).single(),
+      sb.from('profiles').select('*').eq('id',userId).maybeSingle(),
       sb.from('entitlements').select('*').eq('user_id',userId)
     ]);
     if(pErr)throw pErr;if(eErr)throw eErr;
     supportEnts={};(ents||[]).forEach(en=>supportEnts[en.game_id]=en);
     c.innerHTML=`<div style="background:var(--navy2);border:1px solid var(--bdr);border-radius:var(--rm);padding:16px;">
-      <div style="font-size:15px;font-weight:700;margin-bottom:2px;">${esc(profile.name)||'(bez jména)'}</div>
-      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${esc(profile.email)||''} · ${profile.xp||0} XP · ${profile.completed_missions||0} dokončených misí</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:2px;">${esc((ents||[]).map(e=>e.progress?.teamName).find(Boolean)||profile?.name||'Tým bez jména')}</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${profile?.email?esc(profile.email):'bez e-mailu'}, kód pro podporu ${supportCode(userId)}</div>
       <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt2);margin-bottom:4px;">Mise a postup</div>
       ${!ents?.length?`<div style="font-size:13px;color:var(--txt2);padding:8px 0;">Žádné odemčené ani rozehrané mise.</div>`:ents.map(en=>{
         const g=S.games.find(g=>g.id===en.game_id);
@@ -5904,7 +6127,7 @@ function toggleSupportMove(userId,gid){
       </select></div>
     <div class="ig" style="margin-bottom:10px;"><label class="lb">Kam přesně</label>
       <select class="inp" id="sup-mv-tk-${gid}"></select></div>
-    <div style="font-size:12px;color:var(--txt2);line-height:1.5;margin-bottom:10px;">Dosavadní odpovědi, čas a inventář hráče zůstanou zachovány. Hráč po otevření mise pokračuje z vybraného místa.</div>
+    <div style="font-size:12px;color:var(--txt2);line-height:1.5;margin-bottom:10px;">Dosavadní odpovědi, čas a inventář zůstanou. Když má hráč appku otevřenou, přesune se hned. Jinak pokračuje z nového místa po otevření mise.</div>
     <button class="btn btn-amber btn-sm btn-f" onclick="supportMoveTo('${userId}','${gid}')">Potvrdit posunutí</button>`;
   supportMoveStChanged(gid);
 }
@@ -5932,12 +6155,14 @@ async function supportMoveTo(userId,gid){
     answers:old.answers||[],doneTasks:(old.answers||[]).length,
     totalSecs:old.totalSecs||0,xpEarned:old.xpEarned||0,
     si,ti2,usedHints:old.usedHints||{},inventory:old.inventory||[],
-    visitedStations:g.stations.slice(0,isTravel?si:si+1).map(s=>s.id)
+    visitedStations:g.stations.slice(0,isTravel?si:si+1).map(s=>s.id),
+    timerDone:old.timerDone||{},startedAt:old.startedAt||null,photos:old.photos||[],usedItems:old.usedItems||[],endingId:old.endingId||null,
+    supportTs:Date.now()
   };
   try{
     const{error}=await sb.from('entitlements').upsert({user_id:userId,game_id:gid,status:'in_progress',progress,updated_at:new Date().toISOString()},{onConflict:'user_id,game_id'});
     if(error)throw error;
-    toast('Hráč posunut — po otevření mise pokračuje z nového místa',0,'check');
+    toast('Hráč posunut. Pokud má appku otevřenou, přesune se hned.',4500,'check');
     showPlayerSupportDetail(userId);
   }catch(e){toast(''+sbErrMsg(e),0,'cross');}
 }
