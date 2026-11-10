@@ -1788,6 +1788,8 @@ function icSafe(v,o){v=String(v||'').trim();return QI_SET.has(v)?ic(v,o):ic('box
 // SQL migrace supabase-migrace-soukromi.sql (pohled neexistuje), spadne to
 // zpět na tabulku profiles, aby appka mezitím nepřestala fungovat.
 async function pubProfilesQuery(build){
+  // Globální profily jsou vypnuté a pohled public_profiles maže migrace v5
+  if(!FEAT.globalProgress)return{data:null,count:0,error:{message:'Globální profily jsou vypnuté'}};
   const r=await build(sb.from('public_profiles'));
   const e=r&&r.error;
   if(e&&(e.code==='PGRST205'||e.code==='42P01'||/public_profiles/i.test(e.message||''))){
@@ -1865,7 +1867,8 @@ async function syncGamesToSupabase(){
   try{
     const localIds=S.games.map(g=>g.id);
     if(S.games.length){
-      const rows=S.games.map(g=>({id:g.id,data:g,updated_at:new Date().toISOString()}));
+      // creatorId do veřejné tabulky nepatří (prozrazovalo id administrátora)
+      const rows=S.games.map(g=>{const{creatorId,...data}=g;return{id:g.id,data,updated_at:new Date().toISOString()};});
       const{error}=await sb.from('games').upsert(rows);
       if(error)throw error;
     }
@@ -2182,7 +2185,7 @@ async function ensurePlayer(){
 function openCreatorLogin(){
   idFlow=null;
   authHead('Přihlášení tvůrce','Jen pro správu misí.');
-  document.getElementById('auth-frm').innerHTML=`<div class="ig"><label class="lb" for="a-em">E-mail</label><input class="inp" id="a-em" type="email" placeholder="admin@questly.cz" autocomplete="email"/></div><div class="ig"><label class="lb" for="a-pw">Heslo</label><input class="inp" id="a-pw" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/></div><button class="btn btn-teal btn-f" onclick="login()" style="font-size:15px;padding:15px;">Přihlásit se</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('forgot')" style="color:var(--teal);font-size:13px;cursor:pointer;">Zapomenuté heslo?</a></div>`;
+  document.getElementById('auth-frm').innerHTML=`<div class="ig"><label class="lb" for="a-em">E-mail</label><input class="inp" id="a-em" type="email" placeholder="vas@email.cz" autocomplete="email"/></div><div class="ig"><label class="lb" for="a-pw">Heslo</label><input class="inp" id="a-pw" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/></div><button class="btn btn-teal btn-f" onclick="login()" style="font-size:15px;padding:15px;">Přihlásit se</button><div style="text-align:center;margin-top:12px;"><a onclick="authTab('forgot')" style="color:var(--teal);font-size:13px;cursor:pointer;">Zapomenuté heslo?</a></div>`;
   document.getElementById('auth-ov').classList.add('show');
 }
 function authTab(t){
@@ -2191,7 +2194,7 @@ function authTab(t){
   openIdentity('restore');
 }
 function renderForgotForm(){
-  return`<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;">Zadejte e-mail tvůrčího účtu. Pošleme vám odkaz pro nastavení nového hesla.</div><div class="ig"><label class="lb" for="rf-em">E-mail</label><input class="inp" id="rf-em" type="email" placeholder="admin@questly.cz"/></div><button class="btn btn-teal btn-f" onclick="requestPasswordReset()" style="font-size:15px;padding:15px;">Odeslat odkaz</button><div style="text-align:center;margin-top:12px;"><a onclick="openCreatorLogin()" style="color:var(--txt2);font-size:13px;cursor:pointer;">← Zpět na přihlášení</a></div>`;
+  return`<div style="font-size:13px;color:var(--txt2);margin-bottom:14px;">Zadejte e-mail tvůrčího účtu. Pošleme vám odkaz pro nastavení nového hesla.</div><div class="ig"><label class="lb" for="rf-em">E-mail</label><input class="inp" id="rf-em" type="email" placeholder="vas@email.cz"/></div><button class="btn btn-teal btn-f" onclick="requestPasswordReset()" style="font-size:15px;padding:15px;">Odeslat odkaz</button><div style="text-align:center;margin-top:12px;"><a onclick="openCreatorLogin()" style="color:var(--txt2);font-size:13px;cursor:pointer;">← Zpět na přihlášení</a></div>`;
 }
 async function requestPasswordReset(){
   const em=document.getElementById('rf-em')?.value.trim().toLowerCase();
@@ -5251,7 +5254,7 @@ function createGame(){
     if(!g.cityLat){S.cg=g;updateGameCityFromStations();}
     return;
   }
-  const g={id:uid(),creatorId:S.cu.id,name:nm,code:cd,
+  const g={id:uid(),name:nm,code:cd,
     shortDesc:document.getElementById('ng-ds').value.trim(),
     fullDesc:document.getElementById('ng-fdesc').value.trim(),
     videoUrl:document.getElementById('ng-video').value.trim()||null,
