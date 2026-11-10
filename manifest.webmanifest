@@ -2,7 +2,7 @@
   "name": "Questly: venkovní únikové hry",
   "short_name": "Questly",
   "lang": "cs",
-  "start_url": "questly.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0F2D52",
