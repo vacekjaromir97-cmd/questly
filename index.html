@@ -447,7 +447,7 @@ h1,h2,h3,.hdr-ti,.emp-t,.wm,.ky-d,#det-name,#disc-name,#g-q,#trv-dest,#sn-dest,#
   --navy:#E2D9C4; --navy2:#E7DFCD; --navy3:#DED4BF;
   --teal:#13233D; --teal2:#13233D; --teal3:rgba(19,35,61,.08);
   --amber:#8E2822; --amber2:#8E2822; --amber3:rgba(163,49,42,.1);
-  --cream:#13233D; --cream3:#4C5B73;
+  --cream:#13233D; --cream2:#13233D; --cream3:#4C5B73;
   --good:#2F6B47; --bad:#A3312A; --bad3:rgba(163,49,42,.12);
   --on-acc:#EEE7D7;
   background:var(--kost);color:var(--ink);
@@ -645,10 +645,10 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
   <div class="ov-tap" onclick="closeItemDetail()"></div>
   <div class="ov-sheet" style="text-align:center;">
     <div class="ov-handle"></div>
-    <div id="item-detail-icon" style="font-size:56px;margin-bottom:10px;color:var(--amber2);"></div>
+    <div id="item-detail-icon" style="font-size:56px;margin-bottom:10px;color:var(--amber2);display:flex;justify-content:center;"></div>
     <div id="item-detail-name" style="font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px;"></div>
     <div id="item-detail-desc" style="font-size:14.5px;color:var(--txt2);line-height:1.65;margin-bottom:14px;"></div>
-    <div id="item-detail-lore" style="display:none;font-size:14px;line-height:1.75;text-align:left;background:rgba(238,231,215,.07);border:1px solid rgba(238,231,215,.22);border-radius:5px;padding:14px 16px;margin-bottom:14px;white-space:pre-wrap;color:var(--cream2);"></div>
+    <div id="item-detail-lore" style="display:none;font-size:14.5px;line-height:1.75;text-align:left;background:rgba(19,35,61,.06);border:1px solid rgba(19,35,61,.2);border-left:3px solid var(--vosk);border-radius:5px;padding:14px 16px;margin-bottom:14px;white-space:pre-wrap;color:var(--ink);font-family:var(--ff-s,inherit);"></div>
     <div id="item-detail-meta" style="font-size:12px;color:var(--txt3);margin-bottom:18px;line-height:1.6;"></div>
     <button class="btn btn-teal btn-f" id="item-detail-use" style="margin-bottom:8px;">Použít</button>
     <button class="btn btn-ghost btn-f" onclick="closeItemDetail()">Zavřít</button>
@@ -740,6 +740,12 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
     <div style="font-size:18px;font-weight:800;margin-bottom:4px;" id="ie-ti">Nový předmět</div>
     <div style="font-size:12.5px;color:var(--txt2);line-height:1.55;margin-bottom:16px;">Předmět se hráči objeví ve výrazném oznámení a pak v inventáři. Skrytý popis si hráč přečte až v detailu — dá se tam schovat vodítko k pozdějšímu úkolu.</div>
     <div class="ig"><label class="lb">Ikona</label><div class="ipick" id="ie-icons"></div></div>
+    <div class="ig"><label class="lb">Vlastní obrázek předmětu (nepovinné, nahradí ikonu)</label>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div id="ie-img-prev" onclick="document.getElementById('ie-img-in').click()" style="width:72px;height:72px;flex-shrink:0;border:1.5px dashed var(--bdr2);border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;background:var(--navy3);"></div>
+        <div style="flex:1;min-width:0;font-size:12px;color:var(--txt2);line-height:1.5;">Nejlíp PNG s průhledným pozadím, čtverec. Hráč ho uvidí v inventáři, v detailu i při získání.<div style="margin-top:6px;display:flex;gap:6px;"><button type="button" class="btn btn-ghost btn-xs" onclick="document.getElementById('ie-img-in').click()">Nahrát</button><button type="button" class="btn btn-ghost btn-xs" id="ie-img-del" onclick="setItemImg(null)">Odebrat</button></div></div>
+      </div>
+      <input type="file" id="ie-img-in" accept="image/png,image/jpeg,image/webp" style="display:none;" onchange="handleItemImg(event)"/></div>
     <div class="ig"><label class="lb">Název</label><input class="inp" id="ie-name" type="text" placeholder="Např. Zrezivělý klíč" maxlength="40"/></div>
     <div class="ig"><label class="lb">Krátký popis (vidí se v inventáři)</label><input class="inp" id="ie-desc" type="text" placeholder="Např. Těžký, s vyrytým číslem 7" maxlength="90"/></div>
     <div class="ig"><label class="lb">Skrytý popis / vodítko (jen v detailu předmětu)</label><textarea class="inp" id="ie-lore" placeholder="Např. Na hlavě klíče je vyryto „SUB ROSA 1871“ — možná to je heslo…" style="min-height:78px;"></textarea></div>
@@ -1012,6 +1018,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <div style="font-size:13px;font-weight:700;color:var(--txt2);">Úkol <span id="g-task-num" style="color:var(--teal);"></span></div>
       <div style="display:flex;gap:8px;align-items:center;">
+        <div id="g-pts-wrap" title="Body v této misi" style="font-size:13px;font-weight:800;color:var(--teal);font-variant-numeric:tabular-nums;padding:5px 2px;"><span id="g-pts">0</span> b.</div>
         <div id="g-countdown" style="display:none;"></div>
         <button onclick="openJournal()" title="Deník mise — co už jsi vyřešil" style="background:rgba(238,231,215,.08);border:1px solid var(--bdr);color:var(--txt);border-radius:var(--rs);padding:5px 9px;font-size:13px;cursor:pointer;"><svg class=qi aria-hidden=true><use href=#qi-history /></svg></button>
         <button onclick="openInvGame()" style="background:rgba(238,231,215,.08);border:1px solid var(--bdr);color:var(--txt);border-radius:var(--rs);padding:5px 10px;font-size:13px;cursor:pointer;" id="g-inv-btn"><svg class=qi aria-hidden=true><use href=#qi-bag /></svg> <span id="g-inv-count">0</span></button>
@@ -1052,7 +1059,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
 <div class="flow-view" id="v-travel">
   <div style="padding:10px 16px;background:rgba(12,38,69,.8);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
     <div style="display:flex;align-items:center;gap:4px;"><button onclick="quitGame()" style="background:none;border:none;color:var(--txt2);font-size:20px;cursor:pointer;padding:4px 8px;">✕</button><div><div style="font-size:13px;font-weight:700;color:var(--txt2);">Přesun</div><div style="font-size:12px;color:var(--txt3);" id="trv-team"></div></div></div>
-    <div style="text-align:right;"><div style="font-size:20px;font-weight:800;color:var(--amber);" id="trv-time">00:00</div><div style="font-size:12px;color:var(--txt2);">čas úkolů</div></div>
+    <div style="display:flex;gap:16px;text-align:right;"><div><div style="font-size:20px;font-weight:800;color:var(--amber);font-variant-numeric:tabular-nums;" id="trv-pts">0</div><div style="font-size:12px;color:var(--txt2);">body</div></div><div><div style="font-size:20px;font-weight:800;color:var(--amber);" id="trv-time">00:00</div><div style="font-size:12px;color:var(--txt2);">čas úkolů</div></div></div>
   </div>
   <div style="flex:1;position:relative;">
     <div id="pmap" style="position:absolute;inset:0;z-index:1;"></div>
@@ -1288,7 +1295,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
       <div id="ai-status" style="display:none;margin-top:10px;"></div>
       </div>
     </details>
-    <div class="ig"><label class="lb">Cover fotka</label><div class="cover-area" onclick="document.getElementById('ng-img').click()"><img id="ng-img-prev" class="cover-thumb" alt=""/><div id="ng-img-ph" class="cover-area-ph"><div style="font-size:32px;margin-bottom:8px;"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg></div><div style="font-size:13px;color:var(--txt2);">Klikněte · max. 2 MB</div></div></div><input type="file" id="ng-img" accept="image/*" style="display:none;" onchange="handleCover(event,'ng-img-prev','ng-img-ph','new')"/></div>
+    <div class="ig"><label class="lb">Cover fotka</label><div class="cover-area" onclick="document.getElementById('ng-img').click()"><img id="ng-img-prev" class="cover-thumb" alt=""/><div id="ng-img-ph" class="cover-area-ph"><div style="font-size:32px;margin-bottom:8px;"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg></div><div style="font-size:13px;color:var(--txt2);">Klikněte · max. 2 MB</div></div></div><input type="file" id="ng-img" accept="image/*" style="display:none;" onchange="handleCover(event,'ng-img-prev','ng-img-ph','new')"/><button type="button" class="btn btn-ghost btn-xs" id="ng-img-del" onclick="removeCover()" style="display:none;margin-top:8px;">Odebrat fotku</button></div>
     <div class="ig"><label class="lb">Název mise</label><input class="inp" id="ng-nm" type="text" placeholder="Záhada starého mlýna…"/></div>
     <div class="ig"><label class="lb">Krátký popis</label><input class="inp" id="ng-ds" type="text" placeholder="Jedna věta lákající hráče…"/></div>
     <div class="ig"><label class="lb">Plný popis / příběh</label><textarea class="inp" id="ng-fdesc" placeholder="Příběh mise, atmosféra, co hráče čeká…" style="min-height:100px;"></textarea></div>
@@ -1451,6 +1458,7 @@ input[type=checkbox],input[type=radio]{accent-color:var(--kost);}
         <button type="button" class="ky-chip" onclick="taskTpl('then')"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg> Tehdy a teď</button>
         <button type="button" class="ky-chip" onclick="taskTpl('bearing')"><svg class=qi aria-hidden=true><use href=#qi-compass /></svg> Kompas a kroky</button>
         <button type="button" class="ky-chip" onclick="taskTpl('branch')"><svg class=qi aria-hidden=true><use href=#qi-branch /></svg> Volba příběhu</button>
+        <button type="button" class="ky-chip" onclick="taskTpl('silhouette')"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg> Silueta</button>
         <button type="button" class="ky-chip" onclick="taskTpl('photo')"><svg class=qi aria-hidden=true><use href=#qi-camera /></svg> Fotodůkaz</button>
       </div></div>
     <div class="ig"><label class="lb">Typ úkolu</label>
@@ -1739,6 +1747,29 @@ const S={
 const FEAT={globalProgress:false};
 // Porovnání odpovědí: bez diakritiky, velikosti písmen a nadbytečných mezer
 function normAns(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();}
+// Čas „10:30“ přijme i 10.30, 10,30, 1030, 10 30, 10:30 h, 10h30
+function parseTimeAns(v){
+  const m=String(v??'').trim().toLowerCase().match(/^(\d{1,2})\s*(?:[:.,h]|\s)?\s*(\d{2})\s*(?:h|hod|hodin)?\.?$/);
+  if(!m)return null;const h=+m[1],mi=+m[2];
+  return h<=24&&mi<=59?h*60+mi:null;
+}
+// Číslo: jednotky a slova kolem se ignorují (8 minut, 1 800 Kč, 3,5 m), ale číslo musí být v odpovědi jen jedno
+function parseNumAns(v){
+  const t=String(v??'').replace(/(\d)[\s\u00a0]+(?=\d{3}(?!\d))/g,'$1');
+  const nums=t.match(/-?\d+(?:[.,]\d+)?/g);
+  if(!nums||nums.length!==1)return null;
+  const n=parseFloat(nums[0].replace(',','.'));return Number.isFinite(n)?n:null;
+}
+function looseText(v){return normAns(v).replace(/[.,!?;:"'„“”‚‘()\[\]\-–—]+/g,' ').replace(/\s+/g,' ').trim();}
+function answerMatches(given,ca,type){
+  const c=String(ca??'').trim();if(!c)return false;
+  if(/^\d{1,2}:\d{2}$/.test(c)){const a=parseTimeAns(given),b=parseTimeAns(c);if(a!=null&&b!=null)return a===b;}
+  if(type==='nm'||/^-?\d+(?:[.,]\d+)?$/.test(c.replace(/[\s\u00a0]/g,''))){
+    const a=parseNumAns(given),b=parseNumAns(c);
+    if(a!=null&&b!=null)return Math.abs(a-b)<1e-9;
+  }
+  return looseText(given)===looseText(c);
+}
 // Hvězdy za misi: 1 = dokončeno, 2 = bez odhalené odpovědi, 3 = navíc v cílovém čase
 function computeStars(g,p){
   const revealed=Object.values(p?.usedHints||{}).some(l=>(l||0)>=4);
@@ -1855,6 +1886,32 @@ async function sendEdgeMail(to,subject,html){
   }catch(e){console.warn('Edge e-mail selhal (zkusí se EmailJS):',sbErrMsg(e));return false;}
 }
 
+// ══ SYNCHRONIZACE MISÍ ═════════════════════════════════
+// Do Supabase jde jen mise, která se od poslední synchronizace změnila.
+// Čas poslední úpravy (games.updated_at) chrání novější verzi: starší tab
+// nebo jiné zařízení ji nepřepíše, ohlásí konflikt. Ze Supabase se mise
+// maže jen přes deleteGame(), nikdy proto, že v místní kopii chybí.
+const SYNC={base:{},rv:{},conflicts:{},busy:false,again:false,mediaErr:null,mediaWarned:false,mediaCache:{}};
+function syncMeta(){const m=DB.get('syncMeta',null);return m&&typeof m==='object'?{rv:m.rv||{},dirty:m.dirty||{}}:{rv:{},dirty:{}};}
+function saveSyncMeta(dirty){DB.set('syncMeta',{rv:SYNC.rv,dirty:dirty||{}});}
+function gameSnap(g){const{creatorId,...d}=g||{};return JSON.stringify(d);}
+function isCreatorSession(){return S.cu?.role==='creator';}
+function sameTs(a,b){if(!a||!b)return a===b;if(a===b)return true;const x=Date.parse(a),y=Date.parse(b);return Number.isFinite(x)&&x===y;}
+// Která mise se od poslední synchronizace změnila (nebo ještě nese obrázky v datech)
+function dirtyGames(){
+  return (S.games||[]).filter(g=>{
+    const snap=gameSnap(g);
+    if(snap!==SYNC.base[g.id])return true;
+    return !SYNC.mediaErr&&snap.includes('"data:image/');
+  });
+}
+function markDirtyMeta(){
+  const m=syncMeta();const d={};
+  (S.games||[]).forEach(g=>{if(gameSnap(g)!==SYNC.base[g.id])d[g.id]=true;});
+  // Dřív zaznamenané neuložené změny se nezapomínají
+  Object.keys(m.dirty).forEach(id=>{if((S.games||[]).some(g=>g.id===id)&&gameSnap((S.games||[]).find(g=>g.id===id))!==SYNC.base[id])d[id]=true;});
+  saveSyncMeta(d);
+}
 let sbSyncTimer=null;
 function scheduleSbSync(){
   if(!sb)return;
@@ -1862,25 +1919,155 @@ function scheduleSbSync(){
   sbSyncTimer=setTimeout(syncGamesToSupabase,1000);
 }
 async function syncGamesToSupabase(){
-  if(!sb)return;
-  setSbStatus('syncing');
+  if(!sb||!isCreatorSession())return;
+  if(SYNC.busy){SYNC.again=true;return;}
+  const todo=dirtyGames().filter(g=>!SYNC.conflicts[g.id]);
+  if(!todo.length){setSbStatus(Object.keys(SYNC.conflicts).length?'conflict':'ok');return;}
+  SYNC.busy=true;setSbStatus('syncing');
+  let failed=null;
   try{
-    const localIds=S.games.map(g=>g.id);
-    if(S.games.length){
-      // creatorId do veřejné tabulky nepatří (prozrazovalo id administrátora)
-      const rows=S.games.map(g=>{const{creatorId,...data}=g;return{id:g.id,data,updated_at:new Date().toISOString()};});
-      const{error}=await sb.from('games').upsert(rows);
-      if(error)throw error;
+    for(const g of todo){
+      try{
+        await offloadGameMedia(g);
+        const snap=gameSnap(g);
+        const ts=await saveGameRemote(g,SYNC.rv[g.id]||null);
+        SYNC.rv[g.id]=ts;SYNC.base[g.id]=snap;
+      }catch(e){
+        if(e&&e.conflict){SYNC.conflicts[g.id]={remoteTs:e.remoteTs||null};continue;}
+        failed=e;break;
+      }
     }
-    const{data:remoteRows,error:selErr}=await sb.from('games').select('id');
-    if(selErr)throw selErr;
-    const toDelete=(remoteRows||[]).map(r=>r.id).filter(id=>!localIds.includes(id));
-    if(toDelete.length){
-      const{error:delErr}=await sb.from('games').delete().in('id',toDelete);
-      if(delErr)throw delErr;
-    }
-    setSbStatus('ok');
-  }catch(e){const msg=sbErrMsg(e);console.warn('Supabase sync selhal (data zůstávají bezpečně uložená lokálně):',msg);setSbStatus('error',msg);}
+  }finally{
+    SYNC.busy=false;
+    DB.set('games',S.games);markDirtyMeta();
+  }
+  if(failed){const msg=sbErrMsg(failed);console.warn('Supabase sync selhal (data zůstávají bezpečně uložená lokálně):',msg);setSbStatus('error',msg);}
+  else setSbStatus(Object.keys(SYNC.conflicts).length?'conflict':'ok');
+  if(SYNC.again){SYNC.again=false;scheduleSbSync();}
+}
+// Uloží jednu misi. Nejdřív přes RPC save_game (atomická kontrola času úpravy v databázi),
+// bez migrace v6 náhradní cestou: přečíst čas úpravy, porovnat, teprve pak zapsat.
+async function saveGameRemote(g,expected){
+  const{creatorId,...data}=g;
+  const r=await sb.rpc('save_game',{p_id:g.id,p_data:data,p_expected:expected});
+  if(!r.error)return r.data;
+  const e=r.error;
+  if(e.code==='40001'||/conflict/i.test(e.message||'')){const c=new Error('conflict');c.conflict=true;c.remoteTs=e.details||null;throw c;}
+  const missing=e.code==='PGRST202'||e.code==='42883'||/save_game/i.test(e.message||'');
+  if(!missing)throw e;
+  const{data:cur,error:selErr}=await sb.from('games').select('updated_at').eq('id',g.id).maybeSingle();
+  if(selErr)throw selErr;
+  if(cur&&(!expected||!sameTs(cur.updated_at,expected))){const c=new Error('conflict');c.conflict=true;c.remoteTs=cur.updated_at;throw c;}
+  const ts=new Date().toISOString();
+  const{data:up,error:upErr}=await sb.from('games').upsert({id:g.id,data,updated_at:ts}).select('updated_at').maybeSingle();
+  if(upErr)throw upErr;
+  return up?.updated_at||ts;
+}
+// Konflikt: tvůrce si vybere, která verze platí. Místní verze se vždy nejdřív zazálohuje.
+async function resolveConflict(id,mode){
+  const g=(S.games||[]).find(x=>x.id===id);
+  if(!g){delete SYNC.conflicts[id];setSbStatus('ok');return;}
+  try{localStorage.setItem('q7_conflict_'+id,JSON.stringify(g));}catch(e){}
+  const{data:row,error}=await sb.from('games').select('*').eq('id',id).maybeSingle();
+  if(error){toast('Nepodařilo se načíst verzi ze serveru: '+sbErrMsg(error),5000,'warn');return;}
+  if(mode==='remote'){
+    if(row){Object.keys(g).forEach(k=>delete g[k]);Object.assign(g,row.data);SYNC.rv[id]=row.updated_at;SYNC.base[id]=gameSnap(g);}
+    delete SYNC.conflicts[id];DB.set('games',S.games);markDirtyMeta();
+    toast('Načtena verze ze serveru. Tvoje předchozí verze je zálohovaná.',4500,'check');
+    refreshCreatorViews();setSbStatus(Object.keys(SYNC.conflicts).length?'conflict':'ok');
+  }else{
+    SYNC.rv[id]=row?row.updated_at:null;delete SYNC.conflicts[id];
+    toast('Ukládám tvoji verzi přes tu na serveru…',3000,'cloud');
+    syncGamesToSupabase();
+  }
+}
+function refreshCreatorViews(){
+  try{
+    if(document.getElementById('v-cr')?.classList.contains('act'))renderCrList();
+    if(S.cg&&document.getElementById('v-cr-gd')?.classList.contains('act'))openCrDetail(S.cg.id);
+  }catch(e){console.warn(e);}
+}
+// Když se tvůrce vrátí do tabu, zkontroluje, jestli se mise mezitím nezměnily jinde.
+// Nezměněné místní mise se tiše aktualizují (objekty zůstávají stejné, takže
+// otevřený editor neztratí odkaz), u rozpracovaných se ohlásí konflikt.
+async function refreshGamesIfStale(){
+  if(!sb||!isCreatorSession()||SYNC.busy)return;
+  const{data,error}=await sb.from('games').select('id,updated_at');
+  if(error||!data)return;
+  const changed=data.filter(r=>!sameTs(r.updated_at,SYNC.rv[r.id]));
+  const dirtyIds=new Set(dirtyGames().map(g=>g.id));
+  const fetchIds=[];
+  changed.forEach(r=>{
+    if(dirtyIds.has(r.id)&&SYNC.rv[r.id])SYNC.conflicts[r.id]={remoteTs:r.updated_at};
+    else if(!dirtyIds.has(r.id))fetchIds.push(r.id);
+  });
+  if(fetchIds.length){
+    const{data:rows}=await sb.from('games').select('*').in('id',fetchIds);
+    (rows||[]).forEach(row=>{
+      let g=S.games.find(x=>x.id===row.id);
+      if(g){Object.keys(g).forEach(k=>delete g[k]);Object.assign(g,row.data);}
+      else{g=row.data;S.games.push(g);}
+      SYNC.rv[row.id]=row.updated_at;SYNC.base[row.id]=gameSnap(g);
+    });
+  }
+  // Mise smazané jinde zmizí, pokud v nich tady nejsou neuložené změny
+  const remoteIds=new Set(data.map(r=>r.id));
+  S.games=S.games.filter(g=>remoteIds.has(g.id)||dirtyIds.has(g.id)||!SYNC.rv[g.id]);
+  DB.set('games',S.games);markDirtyMeta();
+  if(fetchIds.length){refreshCreatorViews();toast('Mise byly mezitím upravené jinde, načetl jsem novou verzi.',3500,'cloud');}
+  setSbStatus(Object.keys(SYNC.conflicts).length?'conflict':(dirtyIds.size?'syncing':'ok'));
+  if(dirtyIds.size)scheduleSbSync();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refreshGamesIfStale().catch(e=>console.warn(e));});
+
+// ══ OBRÁZKY MISÍ → SUPABASE STORAGE ════════════════════
+// Obrázky (obal, obrázky úkolů a předmětů, siluety…) se v editoru drží jako data:
+// URL jen dočasně. Před uložením mise se nahrají do bucketu a v datech mise
+// zůstane jen adresa. Bez migrace v6 (bucket chybí) zůstanou v misi jako dřív.
+const MEDIA_BUCKET='questly-media';
+function isDataImg(v){return typeof v==='string'&&/^data:image\/(png|jpe?g|gif|webp);base64,/i.test(v);}
+function shrinkDataUrl(u,maxPx,type,q){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const sc=Math.min(1,maxPx/Math.max(img.width,img.height));
+      const cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(img.width*sc));cv.height=Math.max(1,Math.round(img.height*sc));
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      try{const out=cv.toDataURL(type,q);res(out.length<u.length?out:u);}catch(e){res(u);}
+    };
+    img.onerror=()=>res(u);img.src=u;
+  });
+}
+async function uploadMedia(dataUrl,folder){
+  if(SYNC.mediaCache[dataUrl])return SYNC.mediaCache[dataUrl];
+  let u=dataUrl;
+  const isPng=/^data:image\/png/i.test(u);
+  if(!isPng&&!/^data:image\/gif/i.test(u)&&u.length>450000)u=await shrinkDataUrl(u,1800,'image/jpeg',.86);
+  else if(isPng&&u.length>1500000)u=await shrinkDataUrl(u,1600,'image/png');
+  const blob=await (await fetch(u)).blob();
+  const hashBuf=await crypto.subtle.digest('SHA-256',await blob.arrayBuffer());
+  const hash=[...new Uint8Array(hashBuf)].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join('');
+  const ext=({'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[blob.type]||'img';
+  const path=`${folder}/${hash}.${ext}`;
+  const{error}=await sb.storage.from(MEDIA_BUCKET).upload(path,blob,{contentType:blob.type,upsert:true,cacheControl:'31536000'});
+  if(error&&!/exists|duplicate/i.test(error.message||''))throw error;
+  const url=sb.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+  SYNC.mediaCache[dataUrl]=url;
+  return url;
+}
+async function offloadGameMedia(g){
+  if(SYNC.mediaErr||!gameSnap(g).includes('"data:image/'))return;
+  const folder='games/'+String(g.id).replace(/[^a-zA-Z0-9_-]/g,'');
+  const walk=async(o)=>{
+    if(Array.isArray(o)){for(let i=0;i<o.length;i++){if(isDataImg(o[i]))o[i]=await uploadMedia(o[i],folder);else if(o[i]&&typeof o[i]==='object')await walk(o[i]);}}
+    else if(o&&typeof o==='object'){for(const k of Object.keys(o)){if(isDataImg(o[k]))o[k]=await uploadMedia(o[k],folder);else if(o[k]&&typeof o[k]==='object')await walk(o[k]);}}
+  };
+  try{await walk(g);}
+  catch(e){
+    SYNC.mediaErr=sbErrMsg(e);
+    console.warn('Nahrání obrázků do Storage selhalo, zůstanou v datech mise:',SYNC.mediaErr);
+    if(!SYNC.mediaWarned){SYNC.mediaWarned=true;toast('Obrázky se zatím ukládají přímo do mise. Spusť v Supabase migraci v6 (úložiště obrázků).',6000,'warn');}
+  }
 }
 // ══ SDÍLENÁ KONFIGURACE (app_config) ═══════════════════
 // mailCfg, stránky a odznaky dřív žily jen v localStorage tvůrce — hráči je neviděli
@@ -1924,7 +2111,25 @@ async function loadGamesFromSupabase(){
   try{
     const{data,error}=await withTimeout(sb.from('games').select('*'),8000);
     if(error)throw error;
-    if(data&&data.length){S.games=data.map(row=>row.data);DB.set('games',S.games);}
+    // Sloučení se zbytkem místních neuložených změn (např. zavřený tab před synchronizací)
+    const meta=syncMeta();const local=DB.get('games',[])||[];
+    const byId=new Map(local.map(g=>[g.id,g]));
+    const merged=[];const lost=[];
+    (data||[]).forEach(row=>{
+      const loc=byId.get(row.id);
+      SYNC.rv[row.id]=row.updated_at;
+      if(meta.dirty[row.id]&&loc){
+        if(meta.rv[row.id]&&sameTs(meta.rv[row.id],row.updated_at)){merged.push(loc);SYNC.base[row.id]=gameSnap(row.data);return;}
+        try{localStorage.setItem('q7_conflict_'+row.id,JSON.stringify(loc));}catch(e){}
+        lost.push(loc.name||row.id);
+      }
+      merged.push(row.data);SYNC.base[row.id]=gameSnap(row.data);
+    });
+    // Mise vytvořené tady a ještě neodeslané zůstávají
+    local.forEach(g=>{if(meta.dirty[g.id]&&!(data||[]).some(r=>r.id===g.id)&&!meta.rv[g.id])merged.push(g);});
+    if((data&&data.length)||merged.length){S.games=merged;DB.set('games',S.games);}
+    markDirtyMeta();
+    if(lost.length)setTimeout(()=>toast(`Neuložené změny v misi „${lost[0]}“ přepsala novější verze ze serveru. Tvoje verze je zálohovaná v prohlížeči.`,7000,'warn'),1500);
     setSbStatus('ok');
     return true;
   }catch(e){const msg=sbErrMsg(e);console.warn('Nepodařilo se načíst mise ze Supabase, používám lokální data:',msg);setSbStatus('error',msg);return false;}
@@ -1934,13 +2139,18 @@ function setSbStatus(status,detail){
   if(status==='error')S.sbLastError=detail||S.sbLastError;
   const el=document.getElementById('sb-status');if(!el)return;
   if(!sb){el.style.display='none';return;}
-  el.style.display='inline-flex';
+  el.style.display=status==='conflict'?'block':'inline-flex';
   if(status==='syncing')el.innerHTML='<svg class=qi aria-hidden=true><use href=#qi-cloud /></svg> Synchronizuji…';
   else if(status==='ok')el.innerHTML='<svg class=qi aria-hidden=true><use href=#qi-cloud /></svg> Synchronizováno';
+  else if(status==='conflict'){
+    const ids=Object.keys(SYNC.conflicts);
+    el.innerHTML=ids.map(id=>{const g=(S.games||[]).find(x=>x.id===id);return`<span style="display:block;padding:10px 12px;border:1.5px solid var(--vosk);border-radius:5px;margin-bottom:6px;line-height:1.5;"><svg class=qi aria-hidden=true><use href=#qi-warn /></svg> Mise „${esc(g?.name||id)}“ byla mezitím upravená jinde (jiný tab nebo zařízení). Tvoje změny jsem neuložil.<br><button class="btn btn-ghost btn-xs" style="margin:6px 6px 0 0;" onclick="resolveConflict('${esc(id)}','remote')">Načíst novější verzi</button><button class="btn btn-ghost btn-xs" style="margin-top:6px;" onclick="resolveConflict('${esc(id)}','local')">Přepsat mojí verzí</button></span>`;}).join('');
+    el.style.display='block';
+  }
   else el.innerHTML=`<svg class=qi aria-hidden=true><use href=#qi-warn /></svg> Jen lokálně — ${detail||S.sbLastError||'Supabase nedostupné'}`;
 }
 
-function persist(){DB.set('spis',S.spis);DB.set('games',S.games);DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);DB.set('giftCfg',S.giftCfg);scheduleSbSync();scheduleConfigSync();}
+function persist(){DB.set('spis',S.spis);DB.set('games',S.games);if(isCreatorSession())markDirtyMeta();DB.set('codes',S.codes);DB.set('pages',S.pages);DB.set('badges',S.badges);DB.set('reports',S.reports);DB.set('mailCfg',S.mailCfg);DB.set('giftCfg',S.giftCfg);scheduleSbSync();scheduleConfigSync();}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 function fmt(s){s=Math.max(0,Math.floor(s));return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
 let toastTi=null;
@@ -2059,7 +2269,7 @@ function nav(id){
   if(id==='v-disc')initDisc();
   if(id==='v-miss')renderMiss();
   if(id==='v-prof')renderProf();
-  if(id==='v-cr')renderCrList();
+  if(id==='v-cr'){renderCrList();if(isCreatorSession()){setSbStatus(S.sbStatus||'ok');scheduleSbSync();}}
   if(id==='v-cr-map')setTimeout(()=>{try{initCMap();}catch(e){console.warn('Mapa se nepodařila načíst',e);}},80);
   if(id==='v-cr-sts')renderStList();
   if(id==='v-cr-codes')renderCodes();
@@ -2837,6 +3047,8 @@ function resumeMission(g,sess){
   if(!S.pl.usedItems)S.pl.usedItems=[];
   if(!S.pl.answers)S.pl.answers=[];
   if(!S.pl.inventory)S.pl.inventory=[];
+  // Uložený postup ze starší verze může mít u předmětů emoji ikonu — sjednotit s misí
+  [...S.pl.inventory,...(S.pl.usedItems||[])].forEach(it=>{if(it&&it.icon){const ni=emojiToQi(it.icon);if(ni)it.icon=ni;}});
   if(!S.pl.visitedStations)S.pl.visitedStations=[];
   toast('▶ Pokračujete v rozehrané misi');
   const rv=sess.progress.resumeView;
@@ -2977,12 +3189,25 @@ function startTravel(){
   if(!p.visitedStations.includes(st.id))p.visitedStations.push(st.id);
   document.getElementById('trv-team').textContent=p.teamName;
   document.getElementById('trv-time').textContent=fmt(p.totalSecs);
+  updatePointsHud();
   document.getElementById('trv-dest').textContent=st.name||`Stanoviště ${p.si+1}`;
   document.getElementById('trv-hint').textContent=st.hint?`„${st.hint}"`:'Postupujte dle pokynů organizátora.';
   document.getElementById('arrive-btn').innerHTML=`${ic('pin')} Jsem na místě`;
   document.getElementById('trv-prox').innerHTML='';
   nav('v-travel');
   saveProgress('v-travel');
+}
+// Malá růžice v rohu mapy: sever je u Leafletu vždy nahoře, ať se podle toho dá orientovat
+function addNorthRose(map){
+  try{
+    const C=L.Control.extend({options:{position:'bottomleft'},onAdd(){
+      const d=L.DomUtil.create('div','north-rose');
+      d.setAttribute('aria-label','Sever je nahoře');
+      d.innerHTML='<svg viewBox="0 0 48 48" width="46" height="46" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#0C2645" fill-opacity=".88" stroke="#EEE7D7" stroke-opacity=".45"/><path d="M24 10 L28.5 24 L24 22 L19.5 24 Z" fill="#D9776C"/><path d="M24 38 L19.5 24 L24 26 L28.5 24 Z" fill="#EEE7D7" fill-opacity=".7"/><g font-size="7.5" font-weight="700" fill="#EEE7D7" text-anchor="middle" font-family="sans-serif"><text x="24" y="8.6">S</text><text x="24" y="45">J</text><text x="6.5" y="26.6">Z</text><text x="41.5" y="26.6">V</text></g></svg>';
+      d.style.cssText='margin:0 0 14px 12px;pointer-events:none;';
+      return d;}});
+    new C().addTo(map);
+  }catch(e){}
 }
 function initPMap(){
   if(S.maps.pmap){S.maps.pmap.remove();S.maps.pmap=null;}
@@ -2991,7 +3216,7 @@ function initPMap(){
   // Když je špendlík skrytý, nesmí mapa polohu prozradit ani vycentrováním — použije se město/start.
   const g=S.cg;
   const ctr=pinVisible?[st.lat,st.lng]:(g?.cityLat?[g.cityLat,g.cityLng]:(g?.startPointLat?[g.startPointLat,g.startPointLng]:[50.0755,14.4378]));
-  const map=L.map('pmap',{center:ctr,zoom:pinVisible?15:14,zoomControl:false});
+  const map=L.map('pmap',{center:ctr,zoom:pinVisible?15:14,zoomControl:false});addNorthRose(map);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
   S.maps.pmap=map;S.pm=null;
   if(pinVisible){
@@ -3098,8 +3323,12 @@ function renderStoryStation(){
 function storyContinue(){nextStation();}
 
 // ══ GAME ══════════════════════════════════════════════
+// Aktuální body týmu v misi (stejný výpočet jako na konci hry)
+function currentPoints(p){p=p||S.pl;const a=p?.answers||[];return Math.max(0,a.reduce((n,x)=>n+(x.pts||0),0)-a.reduce((n,x)=>n+(x.pen||0),0));}
+function updatePointsHud(){const v=currentPoints();['g-pts','trv-pts'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=v;});}
 function renderGameTask(){
   const{cg:g,pl:p}=S;if(!g)return;
+  updatePointsHud();
   const st=g.stations[p.si];if(!st||!st.tasks.length){nextStation();return;}
   const task=st.tasks[p.ti2];
   document.getElementById('g-task-num').textContent=`${p.ti2+1} / ${st.tasks.length}`;
@@ -3231,7 +3460,7 @@ function initGameMap(){
   const g=S.cg;if(!g)return;
   const st=g.stations[S.pl.si];
   const ctr=(st?.lat&&st.showPin!==false)?[st.lat,st.lng]:[g.stations[0]?.lat||g.cityLat||50.0755,g.stations[0]?.lng||g.cityLng||14.4378];
-  const map=L.map('game-map',{center:ctr,zoom:15,zoomControl:false});
+  const map=L.map('game-map',{center:ctr,zoom:15,zoomControl:false});addNorthRose(map);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
   S.maps.game=map;S.gameMe=null;S.gameMeAcc=null;
   updateGameMapMarkers();
@@ -3304,21 +3533,35 @@ function itemUsableNow(label){
   return!!(task&&task.type==='inventory'&&task.ca===label);
 }
 function invLabel(item){return`${item.icon} ${item.name}`;}
+// Vlastní obrázek předmětu (nahraný tvůrcem), jinak ikona ze sady
+function itemVisual(item,size){
+  const src=safeImgSrc(item?.img||'');
+  if(src)return`<img src="${src}" alt="" style="width:${size}px;height:${size}px;object-fit:contain;display:block;"/>`;
+  return icSafe(item?.icon,{s:Math.round(size*.9)});
+}
+// Z interního štítku „ikona Název“ udělá jen název (do deníku a odpovědí)
+function itemLabelName(label,g){
+  label=String(label||'');
+  const it=((g||S.cg)?.items||[]).find(x=>`${x.icon} ${x.name}`===label);
+  if(it)return it.name;
+  const sp=label.indexOf(' ');if(sp<0)return label;
+  const first=label.slice(0,sp);
+  return(QI_SET.has(first)||!/[\p{L}\p{N}]/u.test(first))?label.slice(sp+1):label;
+}
 function renderInv(){
   const c=document.getElementById('inv-list');const inv=S.pl.inventory||[];
   const used=(S.pl.usedItems||[]);
   if(!inv.length&&!used.length){c.innerHTML=`<div style="text-align:center;padding:26px 20px;color:var(--txt2);font-size:14px;line-height:1.6;">${icBox('bag',56)}<div style="margin-top:12px;">Inventář je prázdný.<br>Předměty získáte plněním úkolů.</div></div>`;return;}
   const row=(item,i,spent)=>{
-    const usable=!spent&&itemUsableNow(invLabel(item));
     return`<div class="inv-item" style="${spent?'opacity:.45;':''}">
       <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer;" onclick="showItemDetailIdx(${i},${spent?1:0})">
-        <div class="inv-icon">${icSafe(item.icon)}</div>
+        <div class="inv-icon">${itemVisual(item,26)}</div>
         <div style="min-width:0;">
           <div style="font-size:14px;font-weight:700;">${esc(item.name)}${spent?' <span style="font-size:12px;color:var(--txt3);font-weight:600;">· spotřebováno</span>':''}</div>
           <div style="font-size:12px;color:var(--txt2);margin-top:2px;">${esc(item.desc||'Ťukni pro detail')}</div>
         </div>
       </div>
-      ${spent?'':`<button class="btn ${usable?'btn-teal':'btn-ghost'} btn-xs" onclick="event.stopPropagation();useInventoryItemIdx(${i})" style="flex-shrink:0;">Použít</button>`}
+      ${spent?'':`<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();useInventoryItemIdx(${i})" style="flex-shrink:0;">Použít</button>`}
     </div>`;
   };
   c.innerHTML=inv.map((it,i)=>row(it,i,false)).join('')
@@ -3339,23 +3582,22 @@ function showItemDetail(label){
   const item=inv.find(it=>invLabel(it)===label)||used.find(it=>invLabel(it)===label);
   if(!item)return;
   const spent=!inv.some(it=>invLabel(it)===label);
-  document.getElementById('item-detail-icon').innerHTML=icSafe(item.icon,{s:56});
+  document.getElementById('item-detail-icon').innerHTML=itemVisual(item,item.img?120:56);
   document.getElementById('item-detail-name').textContent=item.name;
-  document.getElementById('item-detail-desc').textContent=item.desc||'K tomuhle předmětu tvůrce nenapsal popis.';
+  const dEl=document.getElementById('item-detail-desc');dEl.textContent=item.desc||'';dEl.style.display=item.desc?'':'none';
   const lore=document.getElementById('item-detail-lore');
   if(item.lore){lore.textContent=item.lore;lore.style.display='block';}else lore.style.display='none';
   document.getElementById('item-detail-meta').innerHTML=[
     item.foundAt?ic('pin')+' Nalezeno: '+esc(item.foundAt):'',
     item.consumable?ic('spark')+' Použitím se spotřebuje':ic('bag')+' Zůstává v inventáři',
-    spent?ic('check')+' Už jsi ho použil':''
+    spent?ic('check')+' Už použito':''
   ].filter(Boolean).join('<br>');
   const btn=document.getElementById('item-detail-use');
   if(spent){btn.style.display='none';}
   else{
     btn.style.display='';
-    const usable=itemUsableNow(label);
-    btn.className='btn btn-f '+(usable?'btn-teal':'btn-ghost');
-    btn.textContent=usable?'Použít tady':'Použít';
+    btn.className='btn btn-f btn-teal';
+    btn.textContent='Použít';
     btn.onclick=()=>{closeItemDetail();useInventoryItem(label);};
   }
   document.getElementById('item-detail-ov').classList.add('show');
@@ -3408,8 +3650,8 @@ function renderJournal(){
         ${a.cx?`<div style="font-size:12.5px;color:var(--txt2);line-height:1.55;margin-bottom:8px;">${esc(a.cx)}</div>`:''}
         ${ph?`<img src="${safeImgSrc(ph.dataUrl)}" onclick="closeJournal();openAlbumPhoto(${album.indexOf(ph)})" style="width:100%;max-height:150px;object-fit:cover;border-radius:4px;margin-bottom:9px;cursor:pointer;" alt=""/>`:''}
         <div style="font-size:13px;line-height:1.6;">
-          <div style="display:flex;gap:7px;"><span style="color:var(--txt3);flex-shrink:0;min-width:74px;">${isBranch?'Zvolil jsi':'Odpověď'}</span><span style="color:${bad?'#E8A097':'var(--txt)'};font-weight:600;">${esc(a.given||'—')}</span></div>
-          ${bad&&a.correct?`<div style="display:flex;gap:7px;margin-top:3px;"><span style="color:var(--txt3);flex-shrink:0;min-width:74px;">Správně</span><span style="color:var(--teal2);font-weight:600;">${esc(a.correct)}</span></div>`:''}
+          <div style="display:flex;gap:7px;"><span style="color:var(--txt3);flex-shrink:0;min-width:74px;">${isBranch?'Tvoje volba':'Odpověď'}</span><span style="color:${bad?'#E8A097':'var(--txt)'};font-weight:600;">${esc((a.type==='inventory'?itemLabelName(a.given,g):a.given)||'—')}</span></div>
+          ${bad&&a.correct?`<div style="display:flex;gap:7px;margin-top:3px;"><span style="color:var(--txt3);flex-shrink:0;min-width:74px;">Správně</span><span style="color:var(--teal2);font-weight:600;">${esc(a.type==='inventory'?itemLabelName(a.correct,g):a.correct)}</span></div>`:''}
           ${hintLbl?`<div style="display:flex;gap:7px;margin-top:3px;"><span style="color:var(--txt3);flex-shrink:0;min-width:74px;">Použito</span><span style="color:var(--amber2);">${hintLbl}</span></div>`:''}
         </div>
       </div>`);
@@ -3548,6 +3790,9 @@ function closeHistMap(){document.getElementById('hm-ov').classList.remove('show'
 // ══ ZÁMKY (číselný, písmenkový, směrový) ═══════════════
 let lockSt=null;
 const LOCK_CHARS={digits:'0123456789',letters:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'};
+const LOCK_BLANK='·';
+// Pevný počet koleček (lockLen) skryje délku odpovědi; nevyužitá kolečka zůstanou na „·“
+function lockLenOf(task,kind){const a=normLock(task.ca,kind).length||4;const f=parseInt(task.lockLen)||0;return Math.max(1,Math.min(10,Math.max(a,f)));}
 const DIR_ARROWS={U:'↑',R:'→',D:'↓',L:'←'};
 function lockKindOf(task){return['tx','nm','cd'].includes(task?.type)&&['digits','letters','dirs'].includes(task?.lock)?task.lock:'';}
 function normLock(v,kind){
@@ -3557,21 +3802,23 @@ function normLock(v,kind){
   return x.replace(/[^A-Z]/g,'');
 }
 function lockHTML(task){
-  const kind=lockKindOf(task),len=Math.max(1,Math.min(10,normLock(task.ca,kind).length||4));
-  lockSt={kind,len,vals:kind==='dirs'?[]:Array(len).fill(0)};
-  if(kind==='dirs')return`<div class="lk-wrap"><div class="lk-label">${len} ${len<5?'pohyby':'pohybů'}</div><div class="lk-seq" id="lk-seq"></div>
+  const kind=lockKindOf(task),len=lockLenOf(task,kind);
+  const padded=(parseInt(task.lockLen)||0)>normLock(task.ca,kind).length;
+  lockSt={kind,len,padded,vals:kind==='dirs'?[]:Array(len).fill(0)};
+  if(kind==='dirs')return`<div class="lk-wrap"><div class="lk-label">${padded?`nejvýš ${len} ${len<5?'pohyby':'pohybů'}`:`${len} ${len<5?'pohyby':'pohybů'}`}</div><div class="lk-seq" id="lk-seq"></div>
     <div class="lk-pad">${['U','L','D','R'].map(d=>`<button type="button" class="lk-dir lk-${d}" onclick="lockDir('${d}')" aria-label="${{U:'Nahoru',D:'Dolů',L:'Doleva',R:'Doprava'}[d]}">${DIR_ARROWS[d]}</button>`).join('')}</div>
     <button type="button" class="btn btn-ghost btn-xs" onclick="lockDir('back')" style="margin-top:12px;">Smazat poslední</button><input type="hidden" id="p-a" value=""/></div>`;
-  const set=LOCK_CHARS[kind];
+  const set=lockSet(kind);
   return`<div class="lk-wrap"><div class="lk-dials">${Array.from({length:len},(_,i)=>`<div class="lk-dial"><button type="button" onclick="lockStep(${i},1)" aria-label="Pozice ${i+1}: další znak">${ic('up')}</button><div class="lk-val" id="lk-${i}" aria-live="polite">${set[0]}</div><button type="button" onclick="lockStep(${i},-1)" aria-label="Pozice ${i+1}: předchozí znak">${ic('down')}</button></div>`).join('')}</div><input type="hidden" id="p-a" value="${set[0].repeat(len)}"/></div>`;
 }
+function lockSet(kind){return lockSt?.padded?LOCK_BLANK+LOCK_CHARS[kind]:LOCK_CHARS[kind];}
 function lockStep(i,d){
   if(!lockSt||lockSt.kind==='dirs')return;
-  const set=LOCK_CHARS[lockSt.kind];
+  const set=lockSet(lockSt.kind);
   lockSt.vals[i]=(lockSt.vals[i]+d+set.length)%set.length;
   const el=document.getElementById('lk-'+i);
   if(el){el.textContent=set[lockSt.vals[i]];el.classList.remove('tick');void el.offsetWidth;el.classList.add('tick');}
-  const inp=document.getElementById('p-a');if(inp)inp.value=lockSt.vals.map(v=>set[v]).join('');
+  const inp=document.getElementById('p-a');if(inp)inp.value=lockSt.vals.map(v=>set[v]).join('').split(LOCK_BLANK).join('');
   try{navigator.vibrate&&navigator.vibrate(6);}catch(e){}
 }
 function lockDir(d){
@@ -3587,6 +3834,7 @@ function answerDisplay(task){
   if(task.type==='mc')return(task.opts||[])[task.ci];
   if(task.type==='order')return(task.opts||[]).join(' → ');
   if(lockKindOf(task)==='dirs')return normLock(task.ca,'dirs').split('').map(c=>DIR_ARROWS[c]).join(' ');
+  if(task.type==='inventory')return itemLabelName(task.ca);
   return task.ca;
 }
 
@@ -3672,7 +3920,7 @@ function openAnsGame(){
   else if(lk){area.innerHTML=lockHTML(task);if(lk==='dirs')lockDir('init');}
   else if(task.type==='bearing'){stopBearing();brg={on:false,h:null,hold:null,ok:false,manual:false,ti:null,abs:false};area.innerHTML=bearingHTML(task);}
   else if(task.type==='tx')area.innerHTML=`<input class="inp" id="p-a" type="text" placeholder="Vaše odpověď…" style="font-size:17px;padding:15px;"/>`;
-  else if(task.type==='nm')area.innerHTML=`<input class="inp" id="p-a" type="number" placeholder="Číslo…" style="font-size:28px;text-align:center;padding:16px;"/>`;
+  else if(task.type==='nm')area.innerHTML=`<input class="inp" id="p-a" type="text" inputmode="decimal" autocomplete="off" placeholder="Číslo…" style="font-size:28px;text-align:center;padding:16px;"/>`;
   else if(task.type==='cd')area.innerHTML=`<input class="inp" id="p-a" type="text" placeholder="Kód…" style="font-size:28px;text-align:center;padding:16px;letter-spacing:8px;font-weight:800;" maxlength="8"/>`;
   else if(task.type==='photo'){photoState={dataUrl:null,geo:null,dist:null,checks:[],warn:null};area.innerHTML=photoTaskHTML(task);}
   else if(task.type==='gps')area.innerHTML=`<div style="text-align:center;padding:16px;"><div style="font-size:40px;margin-bottom:10px;"><svg class=qi aria-hidden=true><use href=#qi-pin /></svg></div><div style="font-size:14px;color:var(--txt2);">Potvrďte, že jste na správném místě</div></div>`;
@@ -3682,7 +3930,7 @@ function openAnsGame(){
   document.getElementById('ans-ov').classList.add('show');
   document.getElementById('gbb-ans').classList.add('active-tab');
 }
-function closeAns(){stopBearing();document.getElementById('ans-ov').classList.remove('show');document.getElementById('gbb-ans').classList.remove('active-tab');}
+function closeAns(){stopBearing();if(typeof stopSilhouette==='function'&&sil.stream)stopSilhouette();document.getElementById('ans-ov').classList.remove('show');document.getElementById('gbb-ans').classList.remove('active-tab');}
 // Pořadí drží stavové pole orderItems (ne DOM) — HTML5 drag&drop na dotykových
 // zařízeních vůbec nefunguje, proto ovládání šipkami + přetažení přes Pointer Events.
 let orderItems=[];
@@ -3750,7 +3998,7 @@ function pickOpt(el,i){document.querySelectorAll('.ao').forEach(o=>o.classList.r
 // fotka z galerie), GPS v momentě focení, a že snímek vůbec něco zachycuje.
 // Zároveň se ukládá do deníku mise — hráč z ní má na konci hmatatelnou vzpomínku.
 let photoState=null;
-const PHOTO_KIND_LBL={object:'Detail místa',team:'Týmová fotka',recreate:'Znovu vyfoť předlohu',free:'Vzpomínka'};
+const PHOTO_KIND_LBL={object:'Detail místa',team:'Týmová fotka',recreate:'Znovu vyfoť předlohu',free:'Vzpomínka',silhouette:'Silueta'};
 function photoBriefOf(task){
   const b=(task.photoBrief||[]).filter(Boolean);
   if(b.length)return b;
@@ -3759,7 +4007,17 @@ function photoBriefOf(task){
   if(task.photoKind==='object')return['Objekt ze zadání je jasně vidět'];
   return[];
 }
+function photoTestSkipHTML(){
+  return(S.testMode&&isCreatorSession())?`<button type="button" class="btn btn-ghost btn-xs" onclick="skipPhotoTest()" style="margin-top:12px;">${ic('flask')} Přeskočit fotku (jen v testu)</button>`:'';
+}
+// Přeskočit fotku smí jen tvůrce v testovacím režimu; hráčovi se tlačítko vůbec nevykreslí
+function skipPhotoTest(){
+  if(!(S.testMode&&isCreatorSession())){toast('Fotku přeskočit nejde',0,'warn');return;}
+  stopSilhouette();finalizeAnswer(true,'Přeskočeno v testu');
+}
+const PHOTO_PRIVACY='Fotka zůstane jen v tomhle telefonu. Nikam se neodesílá.';
 function photoTaskHTML(task){
+  if(task.photoKind==='silhouette')return silhouetteTaskHTML(task);
   const brief=photoBriefOf(task);
   const ref=task.photoKind==='recreate'&&task.qImg;
   return`
@@ -3772,7 +4030,10 @@ function photoTaskHTML(task){
   </div>
   <input type="file" id="photo-in" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoTask(event)"/>
   <img id="photo-prev" style="width:100%;border-radius:4px;object-fit:cover;max-height:210px;display:none;margin-top:12px;" alt=""/>
+  <button type="button" class="btn btn-ghost btn-xs" id="photo-save-dev" onclick="savePhotoToDevice(photoState?.dataUrl)" style="display:none;margin-top:8px;">${ic('download')} Uložit fotku do telefonu</button>
   <div id="photo-status" style="font-size:12.5px;margin-top:10px;line-height:1.6;"></div>
+  <div style="font-size:12px;color:var(--txt3);margin-top:6px;">${PHOTO_PRIVACY}</div>
+  ${photoTestSkipHTML()}
   ${brief.length?`<div id="photo-checks" style="margin-top:12px;background:rgba(238,231,215,.04);border:1px solid var(--bdr);border-radius:4px;padding:12px 14px;">
     <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);margin-bottom:8px;">Zkontrolujte, že na fotce je</div>
     ${brief.map((b,i)=>`<label style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;margin-bottom:7px;cursor:pointer;"><input type="checkbox" class="photo-chk" data-i="${i}" style="accent-color:var(--teal);width:17px;height:17px;margin-top:1px;"/><span>${esc(b)}</span></label>`).join('')}
@@ -3837,6 +4098,7 @@ async function handlePhotoTask(e){
   }
   photoState.dataUrl=sc.dataUrl;
   const prev=document.getElementById('photo-prev');if(prev){prev.src=sc.dataUrl;prev.style.display='block';}
+  const sv=document.getElementById('photo-save-dev');if(sv)sv.style.display='';
   const drop=document.getElementById('photo-drop');if(drop)drop.querySelector('div:nth-child(2)').textContent='Vyfotit znovu';
   photoSetStatus(ic('check')+' Fotka připravená.','var(--teal2)');
   // 3) GPS v momentě focení
@@ -3856,7 +4118,8 @@ async function handlePhotoTask(e){
 }
 // Ověření před odesláním odpovědi
 function validatePhotoTask(task){
-  if(!photoState?.dataUrl){toast('Nejprve vyfoť fotku',0,'warn');return{ok:false};}
+  if(!photoState?.dataUrl){toast(task.photoKind==='silhouette'?'Nejdřív vyfoť záběr podle siluety':'Nejprve vyfoť fotku',0,'warn');return{ok:false};}
+  if(task.photoKind==='silhouette'&&!photoState.silOk){toast('Záběr ještě nesedí se siluetou',0,'warn');return{ok:false};}
   const brief=photoBriefOf(task);
   if(brief.length){
     const boxes=[...document.querySelectorAll('.photo-chk')];
@@ -3868,9 +4131,167 @@ function validatePhotoTask(task){
     station:st?.name||'',caption:(task.q||'').slice(0,90),
     kind:task.photoKind||'object',dist:photoState.dist,geo:photoState.geo,at:Date.now()
   });
-  toast('Fotka uložena do deníku mise',2600,'camera');
+  toast('Fotka uložena do deníku mise v tomhle telefonu',2600,'camera');
   return{ok:true,label:brief.length?brief.join(' · '):'Fotodůkaz',photo:id};
 }
+// Uložení fotky do telefonu. Na mobilu se otevře sdílení s volbou „Uložit obrázek“
+// (fotka skončí v galerii), jinde se stáhne jako soubor. Nikam se neodesílá.
+async function savePhotoToDevice(dataUrl,n){
+  if(!dataUrl){toast('Fotka tu není',0,'warn');return;}
+  const name=`questly-${(S.cg?.name||'mise').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}-${n||Date.now()}.jpg`;
+  try{
+    const blob=await (await fetch(dataUrl)).blob();
+    const file=new File([blob],name,{type:blob.type||'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+      await navigator.share({files:[file],title:S.cg?.name||'Questly'});return;
+    }
+  }catch(e){if(e&&e.name==='AbortError')return;}
+  const a=document.createElement('a');a.href=dataUrl;a.download=name;document.body.appendChild(a);a.click();a.remove();
+}
+
+// ══ SILUETA: namiř foťák podle obrysu ═════════════════
+// Tvůrce nahraje obrys (nejlíp PNG s průhledným pozadím nebo tmavá kresba na bílém).
+// Hráč vidí živý obraz z kamery a přes něj obrys. Appka průběžně měří, kolik
+// obrysu sedí na hranách ve skutečném obraze, a vyfotit jde až při shodě.
+// Je to odhad, ne rozpoznání objektu: tvůrce si přísnost vyzkouší na místě.
+// Prahy podle testu na syntetických záběrech: přesná shoda ~1,0, posun o 10 % ~0,22,
+// jiná budova nebo rušná ulice ~0,15. Ve skutečném světě bývá shoda nižší než 1.
+const SIL_THR={low:.3,mid:.4,high:.55};
+const SIL_W=72,SIL_H=96;
+let sil={stream:null,ti:null,mask:null,good:0,score:0,task:null};
+function silhouetteTaskHTML(task){
+  return`<div style="font-size:12px;text-transform:uppercase;letter-spacing:1.1px;color:var(--amber);margin-bottom:8px;">${esc(PHOTO_KIND_LBL.silhouette)}</div>
+  <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+    <div style="width:76px;height:100px;flex-shrink:0;border:1px solid var(--bdr2);border-radius:4px;background:#0C2645;display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${safeImgSrc(task.qImg||'')}" alt="" style="max-width:100%;max-height:100%;opacity:.9;"/></div>
+    <div style="font-size:13px;color:var(--txt2);line-height:1.55;">Najdi místo, odkud obrys přesně sedí na skutečnost. Fotka půjde pořídit, až se obrys a obraz překryjí.</div>
+  </div>
+  <button type="button" class="btn btn-teal btn-f" onclick="openSilhouette()">${ic('camera')} Otevřít hledáček</button>
+  <img id="photo-prev" style="width:100%;border-radius:4px;object-fit:cover;max-height:210px;display:none;margin-top:12px;" alt=""/>
+  <button type="button" class="btn btn-ghost btn-xs" id="photo-save-dev" onclick="savePhotoToDevice(photoState?.dataUrl)" style="display:none;margin-top:8px;">${ic('download')} Uložit fotku do telefonu</button>
+  <div id="photo-status" style="font-size:12.5px;margin-top:10px;line-height:1.6;"></div>
+  <div style="font-size:12px;color:var(--txt3);margin-top:6px;">${PHOTO_PRIVACY}</div>
+  ${photoTestSkipHTML()}`;
+}
+function silEnsureOverlay(){
+  let ov=document.getElementById('sil-ov');if(ov)return ov;
+  ov=document.createElement('div');ov.id='sil-ov';
+  ov.style.cssText='position:fixed;inset:0;z-index:900;background:#05101F;display:none;flex-direction:column;align-items:center;justify-content:center;padding:14px;';
+  ov.innerHTML=`<div id="sil-box" style="position:relative;width:min(92vw,calc((100vh - 170px)*.75));aspect-ratio:3/4;background:#000;border-radius:6px;overflow:hidden;">
+      <video id="sil-video" playsinline muted autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+      <img id="sil-img" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:.55;pointer-events:none;filter:drop-shadow(0 0 1px #fff);"/>
+    </div>
+    <div style="width:min(92vw,calc((100vh - 170px)*.75));margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#AFC0D9;margin-bottom:5px;"><span id="sil-msg">Zaměřuji…</span><span id="sil-pct">0 %</span></div>
+      <div style="height:8px;background:rgba(238,231,215,.15);border-radius:4px;overflow:hidden;position:relative;"><div id="sil-bar" style="height:100%;width:0;background:#D9776C;transition:width .2s;"></div><div id="sil-mark" style="position:absolute;top:-2px;bottom:-2px;width:2px;background:#EEE7D7;"></div></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button type="button" class="btn btn-ghost" style="flex:1;color:#EEE7D7;border-color:rgba(238,231,215,.4);" onclick="stopSilhouette()">Zavřít</button>
+        <button type="button" class="btn btn-teal" id="sil-shot" style="flex:2;" disabled onclick="silCapture()">${ic('camera')} Vyfotit</button>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);return ov;
+}
+// Obrys z obrázku: hranice průhledné/neprůhledné části, u kresby bez průhlednosti tmavé čáry
+function silBuildMask(img){
+  const cv=document.createElement('canvas');cv.width=SIL_W;cv.height=SIL_H;const cx=cv.getContext('2d');
+  const sc=Math.min(SIL_W/img.naturalWidth,SIL_H/img.naturalHeight);
+  const w=img.naturalWidth*sc,h=img.naturalHeight*sc;
+  cx.drawImage(img,(SIL_W-w)/2,(SIL_H-h)/2,w,h);
+  const d=cx.getImageData(0,0,SIL_W,SIL_H).data;
+  let transparent=0;for(let i=3;i<d.length;i+=4)if(d[i]<128)transparent++;
+  const useAlpha=transparent>SIL_W*SIL_H*.08;
+  const ink=new Uint8Array(SIL_W*SIL_H);
+  for(let i=0,p=0;i<d.length;i+=4,p++){
+    ink[p]=useAlpha?(d[i+3]>=128?1:0):((.299*d[i]+.587*d[i+1]+.114*d[i+2])<110&&d[i+3]>=128?1:0);
+  }
+  const out=[];
+  for(let y=1;y<SIL_H-1;y++)for(let x=1;x<SIL_W-1;x++){
+    const p=y*SIL_W+x;if(!ink[p])continue;
+    if(!useAlpha||!ink[p-1]||!ink[p+1]||!ink[p-SIL_W]||!ink[p+SIL_W])out.push(p);
+  }
+  return out;
+}
+// Shoda: kolik bodů obrysu leží na výrazné hraně v obraze, očištěno o náhodu
+function silScoreFrame(video,mask){
+  const cv=silScoreFrame.cv||(silScoreFrame.cv=document.createElement('canvas'));cv.width=SIL_W;cv.height=SIL_H;
+  const cx=cv.getContext('2d',{willReadFrequently:true});
+  const vw=video.videoWidth,vh=video.videoHeight;if(!vw||!vh)return 0;
+  const sc=Math.max(SIL_W/vw,SIL_H/vh),w=vw*sc,h=vh*sc;
+  cx.drawImage(video,(SIL_W-w)/2,(SIL_H-h)/2,w,h);
+  const d=cx.getImageData(0,0,SIL_W,SIL_H).data;
+  const g=new Float32Array(SIL_W*SIL_H);
+  for(let i=0,p=0;i<d.length;i+=4,p++)g[p]=.299*d[i]+.587*d[i+1]+.114*d[i+2];
+  const mag=new Float32Array(SIL_W*SIL_H);
+  for(let y=1;y<SIL_H-1;y++)for(let x=1;x<SIL_W-1;x++){
+    const p=y*SIL_W+x;
+    const gx=-g[p-SIL_W-1]-2*g[p-1]-g[p+SIL_W-1]+g[p-SIL_W+1]+2*g[p+1]+g[p+SIL_W+1];
+    const gy=-g[p-SIL_W-1]-2*g[p-SIL_W]-g[p-SIL_W+1]+g[p+SIL_W-1]+2*g[p+SIL_W]+g[p+SIL_W+1];
+    mag[p]=Math.abs(gx)+Math.abs(gy);
+  }
+  const sorted=Array.from(mag).sort((a,b)=>a-b);
+  const thr=Math.max(40,sorted[Math.floor(sorted.length*.82)]);
+  const edge=new Uint8Array(SIL_W*SIL_H);
+  for(let y=1;y<SIL_H-1;y++)for(let x=1;x<SIL_W-1;x++){
+    const p=y*SIL_W+x;if(mag[p]<thr)continue;
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)edge[p+dy*SIL_W+dx]=1;
+  }
+  let base=0;for(let p=0;p<edge.length;p++)base+=edge[p];base/=edge.length;
+  let hit=0;for(const p of mask)hit+=edge[p];
+  const cov=mask.length?hit/mask.length:0;
+  return base>=.98?0:Math.max(0,Math.min(1,(cov-base)/(1-base)));
+}
+async function openSilhouette(){
+  const task=S.cg?.stations?.[S.pl.si]?.tasks?.[S.pl.ti2];if(!task)return;
+  if(!task.qImg){toast('Tvůrce k úkolu nenahrál siluetu',0,'warn');return;}
+  const ov=silEnsureOverlay();
+  const img=document.getElementById('sil-img');
+  img.crossOrigin='anonymous';img.src=task.qImg;
+  sil.task=task;sil.good=0;sil.score=0;
+  const thr=SIL_THR[task.silTol]||SIL_THR.mid;
+  document.getElementById('sil-mark').style.left=(thr*100)+'%';
+  ov.style.display='flex';
+  try{
+    await (img.complete&&img.naturalWidth?Promise.resolve():new Promise((r,j)=>{img.onload=r;img.onerror=j;}));
+    sil.mask=silBuildMask(img);
+  }catch(e){sil.mask=null;}
+  if(!sil.mask||sil.mask.length<20){document.getElementById('sil-msg').textContent='Siluetu nejde načíst.';return;}
+  try{
+    sil.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:1706}},audio:false});
+  }catch(e){
+    document.getElementById('sil-msg').textContent='Kameru se nepodařilo zapnout. Povol ji prohlížeči a zkus to znovu.';return;
+  }
+  const v=document.getElementById('sil-video');v.srcObject=sil.stream;try{await v.play();}catch(e){}
+  clearInterval(sil.ti);
+  sil.ti=setInterval(()=>{
+    let sc=0;try{sc=silScoreFrame(v,sil.mask);}catch(e){sc=0;}
+    sil.score=sil.score*.5+sc*.5;
+    sil.good=sil.score>=thr?sil.good+1:0;
+    const ok=sil.good>=3;
+    document.getElementById('sil-bar').style.width=Math.round(Math.min(1,sil.score/Math.max(thr,.01)*.8)*100)+'%';
+    document.getElementById('sil-bar').style.background=ok?'#8FC3A0':'#D9776C';
+    document.getElementById('sil-pct').textContent=ok?'sedí':Math.round(sil.score/thr*100)+' %';
+    document.getElementById('sil-msg').textContent=ok?'Teď! Drž telefon a vyfoť.':sil.score>thr*.6?'Skoro… dorovnej obrys.':'Hledej místo, kde obrys sedí.';
+    document.getElementById('sil-shot').disabled=!ok;
+  },220);
+}
+function stopSilhouette(){
+  clearInterval(sil.ti);sil.ti=null;
+  if(sil.stream){sil.stream.getTracks().forEach(t=>t.stop());sil.stream=null;}
+  const ov=document.getElementById('sil-ov');if(ov)ov.style.display='none';
+}
+function silCapture(){
+  const v=document.getElementById('sil-video');if(!v||!v.videoWidth)return;
+  if(sil.good<3){toast('Ještě to nesedí',0,'warn');return;}
+  const W=900,H=1200,cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const sc=Math.max(W/v.videoWidth,H/v.videoHeight),w=v.videoWidth*sc,h=v.videoHeight*sc;
+  cv.getContext('2d').drawImage(v,(W-w)/2,(H-h)/2,w,h);
+  if(!photoState)photoState={dataUrl:null,geo:null,dist:null,checks:[],warn:null};
+  photoState.dataUrl=cv.toDataURL('image/jpeg',.8);photoState.silOk=true;photoState.silScore=+sil.score.toFixed(2);
+  stopSilhouette();
+  const prev=document.getElementById('photo-prev');if(prev){prev.src=photoState.dataUrl;prev.style.display='block';}
+  const sv=document.getElementById('photo-save-dev');if(sv)sv.style.display='';
+  photoSetStatus(ic('check')+' Obrys sedí. Fotka je připravená, odešli odpověď.','var(--teal2)');
+}
+
 // ══ DENÍK MISE (fotky) ════════════════════════════════
 function albumKey(){return 'album_'+(S.cg?.id||'x');}
 function loadAlbum(){return DB.get(albumKey(),[])||[];}
@@ -3901,7 +4322,7 @@ function openAlbumPhoto(i){
   document.getElementById('album-img').src=safeImgSrc(ph.dataUrl);
   document.getElementById('album-cap').textContent=ph.caption||'';
   document.getElementById('album-meta').innerHTML=[ph.station?ic('pin')+' '+esc(ph.station):'',ph.dist!=null?ic('ruler')+` ~${ph.dist} m`:'' ].filter(Boolean).join(' &nbsp;·&nbsp; ');
-  document.getElementById('album-dl').onclick=()=>{const a2=document.createElement('a');a2.href=ph.dataUrl;a2.download=`questly-${(S.cg?.name||'mise').replace(/[^a-z0-9]+/gi,'-').toLowerCase()}-${i+1}.jpg`;a2.click();};
+  document.getElementById('album-dl').onclick=()=>savePhotoToDevice(ph.dataUrl,i+1);
   document.getElementById('album-ov').classList.add('show');
 }
 function closeAlbumPhoto(){document.getElementById('album-ov').classList.remove('show');}
@@ -3938,12 +4359,14 @@ function showHintTxt(task,level){
     let ans;
     if(task.type==='mc')ans=`${['A','B','C','D'][task.ci]}: ${task.opts[task.ci]}`;
     else if(task.type==='order')ans=(task.opts||[]).join(' → ');
-    else if(task.type==='branch')ans='Rozhodnutí — žádná volba není špatně, vyberte podle sebe.';
+    else if(task.type==='branch')ans='Tady se nic neluští. Rozhodni se podle sebe.';
     else if(task.type==='photo')ans='Nahrajte libovolnou fotku a potvrďte.';
     else if(task.type==='gps')ans='Stačí potvrdit příchod na místo.';
+    else if(task.type==='inventory')ans=itemLabelName(task.ca)||'—';
+    else if(lockKindOf(task)==='dirs')ans=answerDisplay(task);
     else ans=task.ca||'—';
     el.innerHTML=`<b>Správná odpověď:</b> ${esc(ans)}`;el.style.borderColor='var(--vosk)';el.style.color='var(--vosk)';}
-  else{const h=task.hints?.[level-1]||'Nápověda není dostupná.';el.innerHTML=`<b>Nápověda ${level}:</b> ${h}`;el.style.borderColor='';el.style.color='';}
+  else{const h=task.hints?.[level-1]||'Nápověda není dostupná.';el.innerHTML=`<b>Nápověda ${level}:</b> ${esc(h)}`;el.style.borderColor='';el.style.color='';}
 }
 
 // ══ SUBMIT ════════════════════════════════════════════
@@ -3972,12 +4395,13 @@ function submitAns(){
     const inp=document.getElementById('p-a');const lk=lockKindOf(task);
     if(lk){
       given=inp?.value||'';
-      if(lk==='dirs'&&given.length<normLock(task.ca,'dirs').length){toast('Zadejte celou kombinaci',0,'warn');return;}
+      if(lk==='dirs'&&!lockSt?.padded&&given.length<normLock(task.ca,'dirs').length){toast('Zadejte celou kombinaci',0,'warn');return;}
+      if(lk==='dirs'&&!given.length){toast('Zadejte kombinaci',0,'warn');return;}
       ok=normLock(given,lk)===normLock(task.ca,lk);
       if(lk==='dirs')given=given.split('').map(c=>DIR_ARROWS[c]||c).join(' ');
     }else{
       if(!inp?.value.trim()){toast('Zadejte odpověď',0,'warn');return;}
-      given=inp.value.trim();ok=normAns(given)===normAns(task.ca);
+      given=inp.value.trim();ok=answerMatches(given,task.ca,task.type);
     }
   }
   finalizeAnswer(ok,given);
@@ -4015,8 +4439,8 @@ function answerText(task){
   if(task.type==='order')return(task.opts||[]).join(' → ');
   if(task.type==='photo')return'Fotodůkaz';
   if(task.type==='gps')return'Potvrzení polohy';
-  if(task.type==='inventory')return task.ca||'';
-  if(task.type==='branch')return'Rozhodnutí — žádná volba není špatně';
+  if(task.type==='inventory')return itemLabelName(task.ca||'');
+  if(task.type==='branch')return'';
   return task.ca||'';
 }
 function logAnswer(task,d){
@@ -4069,6 +4493,7 @@ function finalizeAnswer(ok,given){
   const hPen=[0,10,20,30,50][hLvl]||0;
   const pen=ok?hPen:(parseInt(task.pen)||0)+hPen;const pts=ok?Math.max(0,(parseInt(task.pts)||0)-hPen):0;
   logAnswer(task,{ok,pts,pen,given});
+  updatePointsHud();
   saveProgress('v-game');
   // Give inventory item
   if(ok&&task.givesItem)grantItem(task.givesItem);
@@ -4098,7 +4523,7 @@ function useInventoryItem(itemLabel){
     updateInvCount();
     toast(`${item.name} — spotřebováno`,3000,'spark');
   }else toast('Použito!',0,'spark');
-  finalizeAnswer(true,itemLabel);
+  finalizeAnswer(true,item?item.name:itemLabelName(itemLabel));
 }
 // ══ ZÍSKÁNÍ PŘEDMĚTU ══════════════════════════════════
 let gainTi=null;
@@ -4111,6 +4536,7 @@ function grantItem(label){
     name:def?.name||parts.slice(1).join(' ')||String(label),
     desc:def?.desc||'',
     lore:def?.lore||'',
+    img:def?.img||'',
     consumable:def?.consumable!==false,
     foundAt:g?.stations?.[p.si]?.name||''
   };
@@ -4120,7 +4546,7 @@ function grantItem(label){
   showItemGain(item);
 }
 function showItemGain(item){
-  document.getElementById('gain-ico').innerHTML=icSafe(item.icon,{s:54});
+  document.getElementById('gain-ico').innerHTML=itemVisual(item,item.img?96:54);
   document.getElementById('gain-name').textContent=item.name;
   document.getElementById('gain-desc').textContent=item.desc||(item.consumable?'Jednorázový předmět — až ho použiješ, zmizí.':'Zůstane ti v inventáři až do konce mise.');
   const ov=document.getElementById('gain-ov');
@@ -5055,7 +5481,9 @@ function deleteGame(id){
   S.games=S.games.filter(g=>g.id!==id);
   S.codes=S.codes.filter(c=>c.gameId!==id);
   S.entitlements=(S.entitlements||[]).filter(e=>e.game_id!==id);
+  delete SYNC.base[id];delete SYNC.rv[id];delete SYNC.conflicts[id];
   if(sb){
+    sb.from('games').delete().eq('id',id).then(({error})=>{if(error){console.warn('Smazání mise ze Supabase selhalo',sbErrMsg(error));toast('Misi se nepodařilo smazat ze serveru: '+sbErrMsg(error),5000,'warn');}});
     sb.from('entitlements').delete().eq('game_id',id).then(({error})=>{if(error)console.warn('Úklid entitlements selhal',sbErrMsg(error));});
     sb.from('results').delete().eq('game_id',id).then(({error})=>{if(error)console.warn('Úklid results selhal',sbErrMsg(error));});
   }
@@ -5130,21 +5558,43 @@ function saveEndings(){
 
 // ══ CHECKLIST PŘIPRAVENOSTI MISE ═══════════════════════
 // Kontrola konzistence předmětů: úkol vyžaduje předmět, který nikdo nedává
+// Projde každou možnou cestu misí (včetně větvení) a u každého úkolu „použij
+// předmět“ ověří, že ho tým na té cestě opravdu má. Spotřební předmět po použití
+// z inventáře zmizí, takže se kontroluje i jeho druhé použití.
 function itemChainIssues(g){
-  const out=[];
-  (g.stations||[]).forEach((st,i)=>(st.tasks||[]).forEach((t,j)=>{
-    if(t.type!=='inventory'||!t.ca)return;
-    let givenBefore=false;
-    (g.stations||[]).forEach((st2,i2)=>{if(i2>=i&&!(i2===i))return;(st2.tasks||[]).forEach(t2=>{if(t2.givesItem===t.ca)givenBefore=true;});});
-    const givenAnywhere=(g.stations||[]).some(st2=>(st2.tasks||[]).some(t2=>t2.givesItem===t.ca));
-    if(!givenAnywhere)out.push(`${st.name||'Stanoviště '+(i+1)} · úkol ${j+1}: vyžaduje předmět, který žádný úkol nedává`);
-    else if(!givenBefore)out.push(`${st.name||'Stanoviště '+(i+1)} · úkol ${j+1}: předmět se dává až později v misi`);
-  }));
+  const sts=g?.stations||[];const out=[];const seenMsg=new Set();
+  if(!sts.length)return out;
+  const defOf=lbl=>(g.items||[]).find(it=>`${it.icon} ${it.name}`===lbl);
+  const givenAnywhere=lbl=>sts.some(st=>(st.tasks||[]).some(t=>t.givesItem===lbl));
+  const nameOf=i=>sts[i]?.name||`Stanoviště ${i+1}`;
+  const visited=new Set();let budget=20000;
+  const walk=(i,inv,path)=>{
+    if(i<0||i>=sts.length||budget--<=0)return;
+    if(path.includes(i))return; // smyčku hlásí analyzeBranchGraph
+    const key=i+'|'+[...inv].sort().join('§');
+    if(visited.has(key))return;visited.add(key);
+    const cur=new Map(inv);const st=sts[i];
+    (st.tasks||[]).forEach((t,j)=>{
+      if(t.type==='inventory'&&t.ca){
+        if(!(cur.get(t.ca)>0)){
+          const why=givenAnywhere(t.ca)?'na téhle cestě ho tým ještě nemá':'žádný úkol ho nedává';
+          const route=[...path,i].map(nameOf).join(' → ');
+          const msg=`${nameOf(i)} · úkol ${j+1}: chce „${itemLabelName(t.ca,g)}“, ale ${why} (cesta: ${route})`;
+          const k=i+'/'+j+'/'+why;
+          if(!seenMsg.has(k)){seenMsg.add(k);out.push(msg);}
+        }else if(defOf(t.ca)?.consumable!==false)cur.set(t.ca,cur.get(t.ca)-1);
+      }
+      if(t.givesItem)cur.set(t.givesItem,(cur.get(t.givesItem)||0)+1);
+    });
+    const next=[...new Set(stationSuccessors(g,i))];
+    next.forEach(n=>{if(n>=0)walk(n,[...cur.entries()].filter(e=>e[1]>0),[...path,i]);});
+  };
+  walk(0,[],[]);
   return out;
 }
 function renderCrChecklist(g){
   const el=document.getElementById('cgd-checklist');if(!el)return;
-  const noPos=(g.stations||[]).filter(s=>!s.lat).length;
+  const noPos=(g.stations||[]).filter(s=>!isStoryStation(s)&&!s.lat).length;
   const noTasks=(g.stations||[]).filter(s=>!isStoryStation(s)&&!s.tasks?.length).length;
   const noStory=(g.stations||[]).filter(s=>isStoryStation(s)&&!(s.storyText||'').trim()).length;
   // Větvení: cíle voleb i „pokračovat na" musí ukazovat na existující stanoviště
@@ -5187,8 +5637,22 @@ function renderCrChecklist(g){
   </div>`;
 }
 function handleCover(e,prevId,phId,mode){
-  const file=e.target.files[0];if(!file)return;if(file.size>2000000){toast('Max. 2 MB',0,'warn');return;}
-  const r=new FileReader();r.onload=ev=>{const img=document.getElementById(prevId);img.src=ev.target.result;img.style.display='block';const ph=document.getElementById(phId);if(ph)ph.style.display='none';if(mode==='new')S.newGameImg=ev.target.result;else if(S.cg)S.cg.coverImage=ev.target.result;};r.readAsDataURL(file);
+  const file=e.target.files[0];if(!file)return;if(file.size>12000000){toast('Max. 12 MB',0,'warn');return;}
+  const r=new FileReader();
+  r.onload=async ev=>{
+    // Fotka z mobilu má klidně 5 MB; obal stačí 1800 px, jinak by se nevešel do prohlížeče
+    let url=ev.target.result;
+    if(/^data:image\/(jpe?g|webp|heic|heif)/i.test(url)||url.length>450000)url=await shrinkDataUrl(url,1800,'image/jpeg',.86);
+    const img=document.getElementById(prevId);img.src=url;img.style.display='block';const ph=document.getElementById(phId);if(ph)ph.style.display='none';
+    S.removeCover=false;const del=document.getElementById('ng-img-del');if(del)del.style.display='';
+    if(mode==='new')S.newGameImg=url;else if(S.cg)S.cg.coverImage=url;
+  };
+  r.readAsDataURL(file);e.target.value='';
+}
+function removeCover(){
+  S.newGameImg=null;S.removeCover=true;
+  const img=document.getElementById('ng-img-prev'),ph=document.getElementById('ng-img-ph'),del=document.getElementById('ng-img-del');
+  if(img){img.removeAttribute('src');img.style.display='none';}if(ph)ph.style.display='flex';if(del)del.style.display='none';
 }
 function genCode(){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';document.getElementById('ng-cd').value=Array.from({length:6},()=>ch[Math.random()*ch.length|0]).join('');}
 // ══ EDITACE ÚDAJŮ EXISTUJÍCÍ MISE ══════════════════════
@@ -5204,6 +5668,7 @@ function editGameMeta(){
   const img=document.getElementById('ng-img-prev'),ph=document.getElementById('ng-img-ph');
   if(img){img.src=g.coverImage||'';img.style.display=g.coverImage?'block':'none';}
   if(ph)ph.style.display=g.coverImage?'none':'flex';
+  S.removeCover=false;{const del=document.getElementById('ng-img-del');if(del)del.style.display=g.coverImage?'':'none';}
   const ai=document.getElementById('ng-ai-card');if(ai)ai.style.display='none';
   const ti=document.getElementById('ng-form-title');if(ti)ti.textContent='Upravit misi';
   const btn=document.getElementById('ng-submit-btn');if(btn)btn.innerHTML='<svg class=qi aria-hidden=true><use href=#qi-save /></svg> Uložit změny';
@@ -5225,6 +5690,7 @@ function resetGameForm(){
   set('ng-price','299');set('ng-xp','500');set('ng-diff','střední');set('ng-dur','90');
   const img=document.getElementById('ng-img-prev'),ph=document.getElementById('ng-img-ph');
   if(img){img.src='';img.style.display='none';}if(ph)ph.style.display='flex';
+  S.removeCover=false;{const del=document.getElementById('ng-img-del');if(del)del.style.display='none';}
 }
 function createGame(){
   const nm=document.getElementById('ng-nm').value.trim(),cd=document.getElementById('ng-cd').value.trim().toUpperCase();
@@ -5249,6 +5715,7 @@ function createGame(){
     g.difficulty=document.getElementById('ng-diff').value;
     g.duration=parseInt(document.getElementById('ng-dur').value)||90;
     g.timeLimit=g.duration;
+    if(S.removeCover)g.coverImage=null;
     if(S.newGameImg)g.coverImage=S.newGameImg;
     persist();resetGameForm();toast('Změny uloženy',0,'check');openCrDetail(g.id);
     if(!g.cityLat){S.cg=g;updateGameCityFromStations();}
@@ -5282,13 +5749,16 @@ function createGame(){
   // ensureGameItemOn() dogeneruje z holeho labelu
   if(Array.isArray(S.pendingAiItems)&&S.pendingAiItems.length){
     if(!g.items)g.items=[];
+    let cut=0;
     S.pendingAiItems.slice(0,20).forEach(it=>{
       const icon=QI_SET.has(String((it&&it.icon)||''))?String(it.icon):'box';
       const name=String((it&&it.name)||'').trim();if(!name)return;
       if(g.items.some(x=>x.icon===icon&&x.name===name))return;
+      const lore=String((it&&it.lore)||'');if(lore.length>3000)cut++;
       g.items.push({id:uid(),icon,name,desc:String((it&&it.desc)||'').slice(0,120),
-        lore:String((it&&it.lore)||'').slice(0,600),consumable:(it&&it.consumable)!==false});
+        lore:lore.slice(0,3000),consumable:(it&&it.consumable)!==false});
     });
+    if(cut)setTimeout(()=>toast(`${cut}× byl skrytý popis předmětu delší než 3000 znaků a zkrátil se. Zkontroluj ho v Předmětech.`,6500,'warn'),800);
   }
   S.pendingAiItems=null;
   if(Array.isArray(S.pendingAiStations)&&S.pendingAiStations.length){
@@ -5428,7 +5898,7 @@ function toggleRoute(){
 }
 function updateMapUI(){
   const n=S.rm.length;const sb=document.getElementById('cm-sb');if(sb)sb.textContent=`${n} bodů`;
-  const ht=document.getElementById('cm-ht');if(ht)ht.textContent=S.ar?`Klepejte na mapu (${n})`:n?`${n} stanovišť — <svg class=qi aria-hidden=true><use href=#qi-plus /></svg> přidat`:'Stiskněte <svg class=qi aria-hidden=true><use href=#qi-plus /></svg> a klepejte na mapu';
+  const ht=document.getElementById('cm-ht');if(ht)ht.innerHTML=S.ar?`Klepejte na mapu (${n})`:n?`${n} stanovišť — <svg class=qi aria-hidden=true><use href=#qi-plus /></svg> přidat`:'Stiskněte <svg class=qi aria-hidden=true><use href=#qi-plus /></svg> a klepejte na mapu';
   const dist=calcDist();const dd=document.getElementById('cm-dist');if(dd){dd.style.display=dist>0?'block':'none';dd.innerHTML=dist>=1000?ic('ruler')+` ${(dist/1000).toFixed(1)} km`:ic('ruler')+` ${dist} m`;}
   const ub=document.getElementById('undo-btn');if(ub)ub.style.opacity=n>0?'1':'.4';
 }
@@ -5557,7 +6027,8 @@ function editTask(i){
 function resetTaskImgPreview(prevId,phId){setTaskImgPreview(prevId,phId,null);}
 function lockHelp(){
   const k=document.getElementById('cte-lock')?.value||'',el=document.getElementById('cte-lock-help');if(!el)return;
-  el.textContent={'':'',digits:'Jen číslice, nejvýš 10. Počet koleček = počet číslic odpovědi.',letters:'Jen písmena A–Z (diakritika se odstraní), nejvýš 10.',dirs:'Zapište jako U (nahoru), D (dolů), L (doleva), R (doprava), např. UURDL. Nejvýš 10 pohybů.'}[k];
+  const lw=document.getElementById('cte-locklen-wrap');if(lw)lw.style.display=k?'':'none';
+  el.textContent={'':'',digits:'Jen číslice, nejvýš 10. Bez vyplněného počtu koleček je jich tolik, kolik má odpověď číslic.',letters:'Jen písmena A–Z (diakritika se odstraní), nejvýš 10.',dirs:'Zapište jako U (nahoru), D (dolů), L (doleva), R (doprava), např. UURDL. Nejvýš 10 pohybů.'}[k];
 }
 // Rozšiřující pole úkolu (tehdy a teď, zvuk, historická mapa)
 function fillMediaFields(t){
@@ -5638,7 +6109,7 @@ function renderCrItems(){
       const uses=(g.stations||[]).reduce((n,st)=>n+(st.tasks||[]).filter(t=>t.type==='inventory'&&t.ca===gameItemLabel(it)).length,0);
       const gives=(g.stations||[]).reduce((n,st)=>n+(st.tasks||[]).filter(t=>t.givesItem===gameItemLabel(it)).length,0);
       return`<div class="sti" onclick="openItemEdit('${it.id}')">
-        <div class="stn" style="background:var(--amber3);color:var(--amber2);font-size:16px;">${icSafe(it.icon)}</div>
+        <div class="stn" style="background:var(--amber3);color:var(--amber2);font-size:16px;overflow:hidden;">${itemVisual(it,22)}</div>
         <div style="flex:1;min-width:0;">
           <div style="font-weight:700;font-size:14px;">${esc(it.name)}</div>
           <div style="font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${it.consumable!==false?'spotřební':'trvalý'} · dává ${gives}× · potřeba ${uses}×${it.lore?' · skrytý popis':''}</div>
@@ -5660,9 +6131,26 @@ function openItemEdit(id,ret){
   document.getElementById('ie-lore').value=it?.lore||'';
   document.getElementById('ie-consum').checked=it?it.consumable!==false:true;
   document.getElementById('ie-del').style.display=it?'block':'none';
+  setItemImg(it?.img||null);
   document.getElementById('item-edit-ov').classList.add('show');
 }
 function closeItemEdit(){document.getElementById('item-edit-ov').classList.remove('show');}
+function setItemImg(url){
+  S.ieImg=url||null;
+  const pv=document.getElementById('ie-img-prev'),del=document.getElementById('ie-img-del');
+  if(pv)pv.innerHTML=S.ieImg?`<img src="${safeImgSrc(S.ieImg)}" alt="" style="width:100%;height:100%;object-fit:contain;"/>`:ic('camera',{s:22});
+  if(del)del.style.display=S.ieImg?'':'none';
+}
+function handleItemImg(e){
+  const file=e.target.files[0];if(!file)return;e.target.value='';
+  if(file.size>8000000){toast('Max. 8 MB',0,'warn');return;}
+  const r=new FileReader();
+  r.onload=async ev=>{
+    const isPng=/^data:image\/png/i.test(ev.target.result);
+    setItemImg(await shrinkDataUrl(ev.target.result,600,isPng?'image/png':'image/jpeg',.88));
+  };
+  r.readAsDataURL(file);
+}
 function saveItemEdit(){
   const g=S.cg;if(!g)return;if(!g.items)g.items=[];
   const name=document.getElementById('ie-name').value.trim();
@@ -5670,6 +6158,7 @@ function saveItemEdit(){
   const icon=S.ieIcon||'key';
   const data={icon,name,desc:document.getElementById('ie-desc').value.trim(),
     lore:document.getElementById('ie-lore').value.trim(),
+    img:S.ieImg||'',
     consumable:!!document.getElementById('ie-consum').checked};
   const newLabel=`${icon} ${name}`;
   if(g.items.some(x=>x.id!==editingItemId&&gameItemLabel(x)===newLabel)){toast('Takový předmět už v misi je',0,'warn');return;}
@@ -5735,13 +6224,14 @@ function renderTF(t=null){
     const lk=t?.lock||'';
     const inp=tp==='cd'?`<input class="inp" id="ca" type="text" style="font-size:26px;text-align:center;letter-spacing:6px;font-weight:700;" value="${esc(t?.ca||'')}"/>`
       :`<input class="inp" id="ca" type="text" ${tp==='nm'?'inputmode="decimal"':''} value="${esc(t?.ca||'')}" placeholder="${tp==='nm'?'42':'Text…'}"/>`;
-    c.innerHTML=`<div class="ig"><label class="lb" for="ca">${tp==='tx'?'Správná odpověď':tp==='nm'?'Správná číselná odpověď':'Správný kód'}</label>${inp}<div style="font-size:12px;color:var(--txt2);margin-top:6px;">Velikost písmen, diakritika a mezery se při kontrole nepočítají.</div></div>
+    c.innerHTML=`<div class="ig"><label class="lb" for="ca">${tp==='tx'?'Správná odpověď':tp==='nm'?'Správná číselná odpověď':'Správný kód'}</label>${inp}<div style="font-size:12px;color:var(--txt2);margin-top:6px;">Velikost písmen, diakritika, mezery a interpunkce se nepočítají. U času projde i 10.30 nebo 1030, u čísla i „8 minut“.</div></div>
       <div class="ig"><label class="lb" for="cte-lock">Jak hráč odpověď zadá</label><select class="inp" id="cte-lock" onchange="lockHelp()">
         <option value="" ${!lk?'selected':''}>Do políčka (klávesnice)</option>
         <option value="digits" ${lk==='digits'?'selected':''}>Číselný zámek (kolečka 0–9)</option>
         <option value="letters" ${lk==='letters'?'selected':''}>Písmenkový zámek (kolečka A–Z)</option>
         <option value="dirs" ${lk==='dirs'?'selected':''}>Směrový zámek (šipky)</option>
-      </select><div id="cte-lock-help" style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;"></div></div>`;
+      </select><div id="cte-lock-help" style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;"></div></div>
+      <div class="ig" id="cte-locklen-wrap"><label class="lb" for="cte-locklen">Počet koleček / pozic (nepovinné)</label><input class="inp" id="cte-locklen" type="number" min="1" max="10" placeholder="podle odpovědi" value="${t?.lockLen||''}"/><div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Když zadáš víc, než má odpověď znaků, hráč z počtu koleček délku nepozná. Nevyužitá kolečka nechá na „·“.</div></div>`;
     lockHelp();
   }
   else if(tp==='bearing'){c.innerHTML=`<div style="background:rgba(238,231,215,.08);border:1px solid rgba(238,231,215,.2);border-radius:4px;padding:12px 14px;font-size:12.5px;color:var(--txt2);line-height:1.55;margin-bottom:14px;">${ic('compass')} Hráč se postaví na místo ze zadání a natočí telefon. Úkol se splní, když drží směr níže (0° = sever, 90° = východ, 180° = jih, 270° = západ). Telefony bez kompasu potvrdí ručně. Do zadání napište, odkud a kolik kroků jít — další úkol se pak může ptát, co hráči uviděli.</div>
@@ -5751,12 +6241,21 @@ function renderTF(t=null){
     const k=t?.photoKind||'object';
     c.innerHTML=`<div style="background:rgba(238,231,215,.08);border:1px solid rgba(238,231,215,.2);border-radius:4px;padding:12px 14px;font-size:12.5px;color:var(--txt2);line-height:1.55;margin-bottom:14px;">${ic('camera')} Fotka se hráči uloží do <b>deníku mise</b> — na konci ji uvidí a může ji sdílet. Zadání níže hráč vidí jako úkol i jako kontrolní seznam.</div>
       <div class="ig"><label class="lb">Typ fotky</label>
-        <select class="inp" id="cte-photo-kind">
+        <select class="inp" id="cte-photo-kind" onchange="document.getElementById('cte-sil-wrap').style.display=this.value==='silhouette'?'':'none'">
           <option value="object" ${k==='object'?'selected':''}>Detail místa / objektu — dokaž, že jsi to našel</option>
           <option value="team" ${k==='team'?'selected':''}>Týmová fotka / selfie na místě</option>
           <option value="recreate" ${k==='recreate'?'selected':''}>Znovu vyfoť předlohu (použije obrázek k otázce)</option>
           <option value="free" ${k==='free'?'selected':''}>Volná fotka — jen vzpomínka</option>
+          <option value="silhouette" ${k==='silhouette'?'selected':''}>Silueta — namiř foťák podle obrysu (obrys = obrázek k otázce)</option>
         </select>
+      </div>
+      <div class="ig" id="cte-sil-wrap" style="${k==='silhouette'?'':'display:none;'}"><label class="lb" for="cte-sil-tol">Přísnost shody se siluetou</label>
+        <select class="inp" id="cte-sil-tol">
+          <option value="low" ${t?.silTol==='low'?'selected':''}>Mírná — stačí přibližně</option>
+          <option value="mid" ${!t?.silTol||t?.silTol==='mid'?'selected':''}>Střední</option>
+          <option value="high" ${t?.silTol==='high'?'selected':''}>Přísná — musí sedět přesně</option>
+        </select>
+        <div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.5;">Obrys nahraj jako <b>obrázek k otázce</b> výše: nejlíp PNG s průhledným pozadím (obrys budovy, sochy, věže), nebo tmavá kresba na bílém. Shodu appka odhaduje z hran v obraze, přísnost si vyzkoušej na místě v testu.</div>
       </div>
       <div class="ig"><label class="lb">Co musí být na fotce (každý bod na řádek)</label>
         <textarea class="inp" id="cte-photo-brief" placeholder="Celý tým\nLví hlava nad vchodem" style="min-height:72px;">${esc((t?.photoBrief||[]).join('\n'))}</textarea>
@@ -5846,11 +6345,12 @@ function handleOptImg(e,idx){
   r.readAsDataURL(file);
 }
 function taskTpl(k){
-  const map={digits:['cd','digits'],dirs:['cd','dirs'],then:['tx',''],bearing:['bearing',''],branch:['branch',''],photo:['photo','']};
+  const map={digits:['cd','digits'],dirs:['cd','dirs'],then:['tx',''],bearing:['bearing',''],branch:['branch',''],photo:['photo',''],silhouette:['photo','']};
   const[tp,lk]=map[k]||['mc',''];
   document.getElementById('cte-tp').value=tp;renderTF();renderTimeoutFields();
   if(lk){const s=document.getElementById('cte-lock');if(s){s.value=lk;lockHelp();}}
   const more=document.getElementById('cte-more');if(more)more.open=(k==='then');
+  if(k==='silhouette'){const pk=document.getElementById('cte-photo-kind');if(pk){pk.value='silhouette';pk.onchange();}}
   if(k==='then')setTimeout(()=>document.getElementById('cte-then')?.focus(),50);
   else document.getElementById('cte-q')?.focus();
 }
@@ -5896,6 +6396,10 @@ function saveTask(opt={}){
     task.photoGeo=!!document.getElementById('cte-photo-geo')?.checked;
     task.photoFresh=!!document.getElementById('cte-photo-fresh')?.checked;
     if(task.photoKind==='recreate'&&!task.qImg){toast('K režimu „znovu vyfoť předlohu" přidejte obrázek k otázce',4500,'warn');return;}
+    if(task.photoKind==='silhouette'){
+      if(!task.qImg){toast('K siluetě nahraj obrys jako obrázek k otázce',4500,'warn');return;}
+      task.silTol=document.getElementById('cte-sil-tol')?.value||'mid';task.photoGeo=false;
+    }
   }
   else if(tp==='bearing'){
     task.bearing=(((parseInt(document.getElementById('cte-brg')?.value)||0)%360)+360)%360;
@@ -5911,6 +6415,9 @@ function saveTask(opt={}){
         if(v.length>10){toast('Zámek má nejvýš 10 pozic',0,'warn');return;}
         if(v.length!==normAns(task.ca).replace(/\s+/g,'').length){toast(lk==='dirs'?'Směrový zámek: použijte jen U, D, L, R':lk==='digits'?'Číselný zámek: jen číslice':'Písmenkový zámek: jen písmena',5000,'warn');return;}
         task.lock=lk;
+        const ll=parseInt(document.getElementById('cte-locklen')?.value)||0;
+        if(ll>10){toast('Zámek má nejvýš 10 pozic',0,'warn');return;}
+        if(ll>v.length)task.lockLen=ll;
       }
     }
   }
@@ -6461,8 +6968,34 @@ async function aiGenerate(){
 }
 
 // ══ INIT ══════════════════════════════════════════════
+// Starší mise a odznaky mají jako ikonu emoji. V appce vypadají cize a každý
+// telefon je kreslí jinak, proto se převedou na ikony ze sady (i v odkazech úkolů).
+const EMOJI_QI={'🗝':'key','🔑':'key','🔮':'gem','💎':'gem','🔦':'lantern','🕯':'lantern','💡':'lantern','📜':'scroll','📓':'book','📖':'book','📕':'book','📘':'book','📚':'book','📄':'doc','📃':'doc','🗒':'doc','📝':'doc','✉':'mail','📨':'mail','📩':'mail','🔨':'hammer','⛏':'hammer','🔧':'gear','🔩':'gear','⚙':'gear','🎞':'film','📷':'camera','📸':'camera','🗺':'map','🧭':'compass','⚡':'bolt','🧠':'brain','🎒':'bag','🔗':'link','⛓':'link','🪙':'coin','💰':'coin','🏅':'medal','🎖':'medal','🏆':'trophy','👑':'crown','🛡':'shield','🗡':'shield','⚔':'shield','🎲':'dice','💀':'skull','☠':'skull','🌱':'leaf','🌿':'leaf','🍀':'leaf','🌸':'leaf','🥔':'leaf','🍎':'leaf','🔭':'eye','👁':'eye','🔍':'eye','🔎':'eye','🎵':'bell','🔔':'bell','🎶':'bell','⏳':'hourglass','⌛':'hourglass','⏰':'timer','🕰':'timer','⌚':'timer','🌞':'star','⭐':'star','🌟':'star','✨':'spark','🎁':'gift','🎫':'ticket','🎟':'ticket','🪶':'feather','🧪':'flask','⚗':'flask','🎭':'mask','💍':'ring','🌍':'globe','🌎':'globe','📍':'pin','🚩':'flag','🎯':'target','🪨':'box','🧱':'box','📦':'box','🖼':'card','🃏':'card','🐊':'skull'};
+function emojiToQi(v){
+  v=String(v||'').trim();if(!v||QI_SET.has(v))return v;
+  const base=v.replace(/[\uFE0F\u200D]/g,'');
+  return EMOJI_QI[base]||EMOJI_QI[v]||(/[\p{L}]/u.test(v)?v:'box');
+}
+function normalizeGameIcons(g){
+  if(!g||!Array.isArray(g.items))return false;
+  let changed=false;const ren={};
+  g.items.forEach(it=>{
+    const ni=emojiToQi(it.icon);
+    if(ni&&ni!==it.icon){const old=`${it.icon} ${it.name}`;it.icon=ni;ren[old]=`${ni} ${it.name}`;changed=true;}
+  });
+  if(changed)(g.stations||[]).forEach(st=>(st.tasks||[]).forEach(t=>{
+    if(t.givesItem&&ren[t.givesItem])t.givesItem=ren[t.givesItem];
+    if(t.type==='inventory'&&ren[t.ca])t.ca=ren[t.ca];
+  }));
+  return changed;
+}
+function normalizeAllIcons(){
+  let ch=false;(S.games||[]).forEach(g=>{if(normalizeGameIcons(g))ch=true;});
+  (S.badges||[]).forEach(b=>{const ni=emojiToQi(b.icon);if(ni&&ni!==b.icon){b.icon=ni;ch=true;}});
+  return ch;
+}
 function migrateData(){
-  let changed=false;
+  let changed=normalizeAllIcons();
   S.games.forEach(g=>{
     if(!g.items){
       const seen=new Set();g.items=[];
@@ -6478,11 +7011,13 @@ async function init(){
   initMonitoring();
   migrateData();
   await Promise.all([loadGamesFromSupabase(),loadConfigFromSupabase()]);
+  // Převod emoji ikon: u tvůrce se uloží (persist po přihlášení), hráč ho má jen v paměti
+  if(normalizeAllIcons())DB.set('games',S.games);
   initMail();
   await restoreSession();
   if(S.cu){
     updateAuthBtns();
-    if(S.cu.role==='creator'){setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');nav('v-cr');},900);return;}
+    if(S.cu.role==='creator'){scheduleSbSync();setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');nav('v-cr');},900);return;}
   }
   setTimeout(()=>{document.getElementById('v-splash').classList.remove('act');navMain('v-disc');},900);
 }
